@@ -8,7 +8,7 @@
 class World {
 
 private:
-	static const int width = 10, height = 30;
+	static const int width = 10, height = 10;
 	Life* map[width][height];
 	std::string log;
 	int step;

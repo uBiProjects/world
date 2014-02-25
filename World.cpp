@@ -8,6 +8,7 @@
 #include "stdlib.h"
 #include <string>
 #include "Utils.h"
+#include <time.h>
 
 
 /*
@@ -60,6 +61,7 @@ void World :: run(){
 
 
 		//
+		std:: cout << "hi\n";
 		performOneStep();
 		std:: cout << "hi\n";
 
@@ -89,33 +91,33 @@ void World::performOneStep(){
 
 		std :: cout << "step" << step << "." << noch % 2 << "\n";
 
-	//set everything walkable
-	for(int i = 0; i < width; i ++){
-		for(int j = 0; j < height; j ++){
-			if((dynamic_cast<ConsumerI*>( map[i][j] )
-			 || dynamic_cast<ConsumerII*>( map[i][j] ))){
-			 	(*map[i][j]).setWalkable(true);
-			 }
+		//set everything walkable
+		for(int i = 0; i < width; i ++){
+			for(int j = 0; j < height; j ++){
+				if((dynamic_cast<ConsumerI*>( map[i][j] )
+						|| dynamic_cast<ConsumerII*>( map[i][j] ))){
+					(*map[i][j]).setWalkable(true);
+				}
+			}
 		}
-	}
 
 
-	for(int i = 0; i < width; i ++){
-		for(int j = 0; j < height; j ++){
-			if((dynamic_cast<ConsumerI*>( map[i][j] )
-			 || (dynamic_cast<ConsumerII*>( map[i][j] )&& noch % 2 == 1))
-			 && (*map[i][j]).isWalkable() ){
+		for(int i = 0; i < width; i ++){
+			for(int j = 0; j < height; j ++){
+				if((dynamic_cast<ConsumerI*>( map[i][j] )
+						|| (dynamic_cast<ConsumerII*>( map[i][j] )&& noch % 2 == 1))
+						&& (*map[i][j]).isWalkable() ){
 
-				//save current Life as Creature
-				Creature* d = (Creature*)( map[i][j] );
+					//save current Life as Creature
+					Creature* d = (Creature*)( map[i][j] );
 
 
 
-				/*
-				 * calculate position and save creature
-				 */
-				 int posX = i, posY = j;
-				 int plusX = i, plusY = j;
+					/*
+					 * calculate position and save creature
+					 */
+					int posX = i, posY = j;
+					int plusX = i, plusY = j;
 
 
 				 //if Creature smells another creature
@@ -222,6 +224,7 @@ void World::performOneStep(){
 	}
 	print();
 	}
+
 }
 
 bool World:: smell(Creature* d, int* plusX, int* plusY){
@@ -453,29 +456,28 @@ void World :: print(){
 	//system("clear");
 
 
-				std::cout << "\n\n\n	+";
+	std::cout << "\n	+";
 	for(int i = 0; i < width; i ++){
-			std::cout << "--+-";
+		std::cout << "--+-";
 	}
 
-				std::cout << "\n";
+	std::cout << "\n";
 	for(int i = 0; i < height; i ++){
 		for(int j = 0; j < width; j ++){
 			if(j == 0){
-
 				std::cout << "	|";
 			}
 
 
-			if(dynamic_cast<ConsumerI*>( map[i][j] ) ){
+			if(dynamic_cast<ConsumerI*>( map[j][i] ) ){
 
 				std::cout << "c | ";
 			}
-			else if(dynamic_cast<ConsumerII*>( map[i][j] ) ){
+			else if(dynamic_cast<ConsumerII*>( map[j][i] ) ){
 
 				std::cout << "C | ";
 			}
-			else if(dynamic_cast<Vegetal*>( map[i][j] ) ){
+			else if(dynamic_cast<Vegetal*>( map[j][i] ) ){
 				std::cout << "v | ";
 			}
 			else {
@@ -495,7 +497,6 @@ void World :: print(){
 		}
 		std::cout << "\n";
 	}
-
  }
 
  int World:: maximum(int a, int b){
