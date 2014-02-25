@@ -6,7 +6,10 @@
 
 //for getting error number in method is_file
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
+#include <fstream>
 
 #ifdef _WIN32
 
@@ -23,6 +26,40 @@
 #endif
 
 bool is_file(const char* path) {
+
+
+
+
+
+	   struct stat Status;
+	   int Dateityp;
+	   stat(path, &Status);
+	   Dateityp = Status.st_mode & S_IFMT;
+	   switch (Dateityp) {
+	     case S_IFREG:
+	    	 puts("Datei");
+	    	 return false;
+	     case S_IFLNK:
+	    	 puts("Symbolischer Link");
+	    	 return false;
+	     case S_IFDIR:
+	    	 puts("Verzeichnis");
+	    	 return false;
+	     default:
+	    	 puts("Sonstiges");
+
+
+	    	 return true;
+	   }
+
+
+
+
+
+	   return true;
+
+/*
+
 	FILE *file = fopen(path, "r");
 
 	std::cout << path;
@@ -42,7 +79,7 @@ bool is_file(const char* path) {
 
 	fclose(file);
 	std::cout << " es ist wahr!\n";
-	return true;
+	return true;*/
 }
 
 
