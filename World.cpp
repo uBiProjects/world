@@ -21,7 +21,7 @@ World :: World() {
 
 	//initialize creatures
 	initializeCreature();
-
+	return;
 	//start life of creatures.
 	run();
 
@@ -35,15 +35,13 @@ World :: World() {
  */
 void World :: initializeCreature(){
 
+	//initialize pointer array with value 0
+	for(int w = 0; w < width; w ++) {
+		for(int h = 0; h < height; h ++) {
+			map[w][h] = 0;
+		}
+	}
 
-//	for(int i = 0; i < width; i ++) {
-//		for(int h = 0; h < height; h ++) {
-//			map[i][h] = ;
-//		}
-//	}
-
-	//initialize Creatures
-	//Zufallswerte?
 	map[0][0] = new ConsumerI(0,0);
 	map[0][1] = new ConsumerI(0,0);
 	map[0][4] = new Vegetal(0,1);
@@ -53,7 +51,6 @@ void World :: initializeCreature(){
 	map[6][8] = new ConsumerI(2,2);
 	map[8][8] = new ConsumerI(2,2);
 	map[1][0] = new Vegetal(1,0);
-
 }
 
 
@@ -529,7 +526,47 @@ void World :: print(){
  	return toReturn;
  }
 
-int main(){
+
+/**
+ * method main.
+ * checks parameters and creates a new instance of world.
+ */
+int main(int _anzParam, char** strings){
+
+	/*
+	 * parameter syntax (8):
+	 *	1	[int]	height
+	 *	2	[int]	width
+	 *	3	[int]	maximal number of steps in one simulation
+	 *	4	[int]	number of consumer 1 at the beginning
+	 *	5	[int]	number of consumer 2 at the beginning
+	 *	6	[char*]	path to vegetal.txt
+	 *	7	[char*]	path to consumer1.txt
+	 *	8	[char*]	path to consumer2.txt
+	 */
+	std::string errorMessage =
+			(std::string)"Recall World with 8 parameters like \n" +
+			(std::string)"World [int] [int] [int] [int] [int] [char*] [char*] [char*]"+
+			(std::string) "\n\n1st Param	[height]\n2nd param	[width]\n"+
+			(std::string) "3rd param	[maxNumberOfStepsInSimulation]\n4th param	"+
+			(std::string) "[NumberOfC1AtTheBeginning]\n5th param	"+
+			(std::string) "[NumberOfC2AtTheBeginning]<<\n6th param	[pathToVegetal.txt]"+
+			(std::string) "\n7th param	[pathToConsumerI]\n8th param	[consumer2]";
+
+
+	//if the amount of parameters is not equal to 8 + 1.
+	if(_anzParam != 9) {
+
+		//print error message
+		std::cout << "Missing or wrong arguments.\n" << errorMessage;
+		return -1;
+	}
+
+	//parameter length is okay.
+	//int height = dynamic_cast <int> (strings[0]);
+	//std::cout << height << ".";
+
+	std::cout << "anzahl paramter" << _anzParam;
 	new World();
 	return 0;
 }
