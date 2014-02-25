@@ -11,6 +11,10 @@
 #include <time.h>
 #include <cstddef>
 
+//for checking whether file does not exist (in method main).
+#include <fstream>
+
+
 /*
  * Constructor
  */
@@ -21,7 +25,7 @@ World :: World() {
 
 	//initialize creatures
 	initializeCreature();
-	return;
+
 	//start life of creatures.
 	run();
 
@@ -461,32 +465,32 @@ void World :: print(){
 	//system("clear");
 
 
-	std::cout << "\n	+";
+	std::cout << "\n +";
 	for(int i = 0; i < width; i ++){
-		std::cout << "--+-";
+		std::cout << "---+";
 	}
 
 	std::cout << "\n";
 	for(int i = 0; i < height; i ++){
 		for(int j = 0; j < width; j ++){
 			if(j == 0){
-				std::cout << "	|";
+				std::cout << " |";
 			}
 
 
 			if(dynamic_cast<ConsumerI*>( map[j][i] ) ){
 
-				std::cout << "c | ";
+				std::cout << " c |";
 			}
 			else if(dynamic_cast<ConsumerII*>( map[j][i] ) ){
 
-				std::cout << "C | ";
+				std::cout << " C |";
 			}
 			else if(dynamic_cast<Vegetal*>( map[j][i] ) ){
-				std::cout << "v | ";
+				std::cout << " v |";
 			}
 			else {
-                std::cout << "  | ";
+                std::cout << "   |";
 			}
 
 		}
@@ -495,9 +499,9 @@ void World :: print(){
 		for(int j = 0; j < width; j ++){
 		if(j == 0){
 
-				std::cout << "	+";
+				std::cout << " +";
 			}
-			std::cout << "--+-";
+			std::cout << "---+";
 
 		}
 		std::cout << "\n";
@@ -533,6 +537,12 @@ void World :: print(){
  */
 int main(int _anzParam, char** strings){
 
+
+	is_file("bla");
+	is_file("README");
+	is_file("Debug");
+
+	return 0;
 	/*
 	 * parameter syntax (8):
 	 *	1	[int]	height
@@ -558,17 +568,34 @@ int main(int _anzParam, char** strings){
 	if(_anzParam != 9) {
 
 		//print error message
-		std::cout << "Missing or wrong arguments.\n" << errorMessage;
+		std::cout << "Missing arguments.\n" << errorMessage;
 		return -1;
 	}
 
-	//parameter length is okay.
-	//int height = dynamic_cast <int> (strings[0]);
-	//std::cout << height << ".";
+	//save integer values
+	int height = atoi(((std::string)strings[1]).c_str());
+	int width = atoi(((std::string)strings[1]).c_str());
+	int maxNumberOfSteps = atoi(((std::string)strings[1]).c_str());
+	int numberConsumer1 = atoi(((std::string)strings[1]).c_str());
+	int numberConsumer2 = atoi(((std::string)strings[1]).c_str());
 
-	std::cout << "anzahl paramter" << _anzParam;
+	//check whether integer values are correct (greater than 0)
+	if(height <= 0 || width <= 0 || maxNumberOfSteps <= 0
+			|| numberConsumer1 <= 0 || numberConsumer2 <= 0) {
+
+
+		//print error message
+		std::cout << "Wrong arguments.\n" << errorMessage;
+		return -1;
+	}
+
+	if(!is_file(strings[6]) || !is_file(strings[8]) || !is_file(strings[7])){
+		std:: cout << "file does not exist or is a directory" << strings[6];
+		return -1;
+	}
+
+
 	new World();
 	return 0;
 }
-
 
