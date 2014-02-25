@@ -9,7 +9,7 @@
 #include <string>
 #include "Utils.h"
 #include <time.h>
-
+#include <cstddef>
 
 /*
  * Constructor
@@ -30,11 +30,17 @@ World :: World() {
 }
 
 
-
 /*
  * initialize the creatures.
  */
 void World :: initializeCreature(){
+
+
+//	for(int i = 0; i < width; i ++) {
+//		for(int h = 0; h < height; h ++) {
+//			map[i][h] = ;
+//		}
+//	}
 
 	//initialize Creatures
 	//Zufallswerte?
@@ -94,9 +100,11 @@ void World::performOneStep(){
 		//set everything walkable
 		for(int i = 0; i < width; i ++){
 			for(int j = 0; j < height; j ++){
-				if((dynamic_cast<ConsumerI*>( map[i][j] )
-						|| dynamic_cast<ConsumerII*>( map[i][j] ))){
-					(*map[i][j]).setWalkable(true);
+				if(map[i][j] != 0) {
+					if (dynamic_cast<ConsumerI*>( map[i][j] )
+							|| dynamic_cast<ConsumerII*>( map[i][j] )){
+						(*map[i][j]).setWalkable(true);
+					}
 				}
 			}
 		}
