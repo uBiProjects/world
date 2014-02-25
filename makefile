@@ -1,6 +1,5 @@
 all: World
 
-
 World: World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o
 	g++ -o World World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o
 

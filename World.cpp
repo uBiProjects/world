@@ -7,7 +7,6 @@
 #include "Vegetal.h"
 #include "stdlib.h"
 #include <string>
-#include <unistd.h>
 
 World :: World() {
 
@@ -20,6 +19,7 @@ World :: World() {
 	//start life of creatures.
 	run();
 	
+
 	std::cout << log;
 }
 void World :: run(){
