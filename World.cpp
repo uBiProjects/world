@@ -538,9 +538,9 @@ void World :: print(){
 int main(int _anzParam, char** strings){
 
 
-	is_file("bla");
-	is_file("README");
-	is_file("Debug");
+	//strain("bla");
+	strain("Vegetal.o");
+	//strain("Debug");
 
 	return 0;
 	/*

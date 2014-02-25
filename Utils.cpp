@@ -10,6 +10,9 @@
 #include <sys/stat.h>
 
 #include <fstream>
+#include <iostream>
+#include <string>
+
 
 #ifdef _WIN32
 
@@ -82,4 +85,15 @@ bool is_file(const char* path) {
 	return true;*/
 }
 
-
+void strain(char *argv)
+{
+    std::fstream f;
+    char cstring[256];
+    f.open(argv, std::ios::in);
+    while (!f.eof())
+    {
+        f.getline(cstring, sizeof(cstring));
+        std::cout << cstring << std::endl;
+    }
+    f.close();
+}

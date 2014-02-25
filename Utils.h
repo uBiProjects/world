@@ -12,6 +12,6 @@
 
     void sleepd(unsigned);
     bool is_file(const char* );
-
+    void strain(char*);
 
 #endif /* UTILS_H_ */
