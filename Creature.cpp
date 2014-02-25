@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include <typeinfo>
-#include "Creature.h"
 #include "Life.h"
+#include "Creature.h"
 #include "ConsumerI.h"
 #include "ConsumerII.h"
 #include "Vegetal.h"

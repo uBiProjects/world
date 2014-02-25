@@ -2,8 +2,6 @@
 #define CREATURE_H
 
 
-#include "Life.h"
-
 class Creature : public Life {
 
 private:

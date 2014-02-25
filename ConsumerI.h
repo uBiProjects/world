@@ -1,7 +1,6 @@
 #ifndef ConsumerI_H
 #define ConsumerI_H
 
-#include "Creature.h"
 
 class ConsumerI : public Creature {
 
@@ -13,7 +12,7 @@ class ConsumerI : public Creature {
 		static const int rangeSmellAbgeben = 7;
 		static const int rangeSmellRiechen = 6;
 		static const int speed = 2;
-		static const int maxTimeWithoutFood = maxLifeTime/3;
+		static const int maxTimeWithoutFood = maxLifeTime/2;
 
 };
 

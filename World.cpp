@@ -1,5 +1,3 @@
-#ifndef WORDL_CPP
-#define WORDL_CPP
 
 #include <iostream>
 #include "World.h"
@@ -33,7 +31,8 @@ void World :: run(){
 		
 		
 		//every X rounds a new plant grows in a random place 
-		if(step % 2 == 0){
+                int X = 1;
+		if(step % X == 0){
 		
 			int a = 0; 
 			int b = width;
@@ -146,7 +145,7 @@ void World::laufe(){
 				}
 				
 				//not reproducing
-				else if(index == 1 || map[posX][posY] == NULL){
+				else if(index == 1){
 					
 					(*d).changePosition(plusX, plusY);
 					map[i][j] = NULL;
@@ -156,7 +155,18 @@ void World::laufe(){
 					if( noch % 2 == 0){
 		 				timePassed(d, posX, posY);
 					}
-				}
+                                        (*d).setTimeWithoutFood(0);
+				} else if (map[posX][posY] == NULL){
+
+					(*d).changePosition(plusX, plusY);
+					map[i][j] = NULL;
+					map[posX][posY] = d;
+		 			(*map[posX][posY]).setWalkable(false);
+		 			
+					if( noch % 2 == 0){
+		 				timePassed(d, posX, posY);
+					}
+                                }
 				//no interaction
 				 else if ( index == -1){
 				 
@@ -499,5 +509,4 @@ int main(){
 	return 0;
 }
 
-#endif
 

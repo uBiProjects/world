@@ -1,7 +1,6 @@
 #ifndef ConsumerII_H
 #define ConsumerII_H
 
-#include "Creature.h"
 
 class ConsumerII : public Creature {
 

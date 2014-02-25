@@ -1,8 +1,6 @@
 #ifndef VEGETAL_H
 #define VEGETAL_H
 
-#include "Life.h"
-
 class Vegetal : public Life {
 
 
