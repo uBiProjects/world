@@ -4,7 +4,7 @@
 
 
 #include "ConsumerII.h"
-#include "Creature.cpp"
+#include "Creature.h"
 
 ConsumerII:: ConsumerII(int x, int y): Creature(x,y,(int)maxLifeTime,(int)rangeSmellAbgeben, (int) rangeSmellRiechen, (int) speed, (int) maxTimeWithoutFood){
 }

@@ -6,11 +6,10 @@
 #include <iostream>
 #include <typeinfo>
 #include "Creature.h"
-#include "Life.cpp"
 #include "Life.h"
-#include "ConsumerI.cpp"
-#include "ConsumerII.cpp"
-#include "Vegetal.cpp"
+#include "ConsumerI.h"
+#include "ConsumerII.h"
+#include "Vegetal.h"
 
 Creature:: Creature(int _coordianteX, int _coordinateY, int _maxLifeTime, int _rangeSmellAbgeben, int _rangeSmell, int _speed, int _maxTimeWithoutFood) : Life(_coordianteX, _coordinateY, 0, _maxLifeTime, _rangeSmellAbgeben){
 

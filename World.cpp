@@ -3,8 +3,10 @@
 
 #include <iostream>
 #include "World.h"
-#include "Creature.cpp"
-#include "Vegetal.cpp"
+#include "Creature.h"
+#include "ConsumerI.h"
+#include "ConsumerII.h"
+#include "Vegetal.h"
 #include "stdlib.h"
 #include <string>
 #include <unistd.h>
