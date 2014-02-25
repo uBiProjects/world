@@ -30,7 +30,7 @@ void World :: run(){
 		laufe();
 		
 		
-		//every ten rounds a new plant is 
+		//every X rounds a new plant grows in a random place 
 		if(step % 2 == 0){
 		
 			int a = 0; 
@@ -51,6 +51,7 @@ void World :: run(){
 void World :: initializeCreature(){
 
 	//initialize Creatures
+	//Zufallswerte?
 	map[0][0] = new ConsumerI(0,0);
 	map[0][1] = new ConsumerI(0,0);
 	map[0][4] = new Vegetal(0,1);
@@ -65,9 +66,7 @@ void World :: initializeCreature(){
 
 void World::laufe(){
 	
-	//kgv berechenen, aktuelles level modulo kgv rechnen
-	
-		
+	//kgv berechenen, aktuelles level modulo kgv rechnen		
 	int kgv = 2;
 	for(int noch = 0; noch < kgv; noch ++){
 
@@ -130,7 +129,6 @@ void World::laufe(){
 				
 					posX = modulo(i + plusX,width);
 					posY = modulo(j + plusY,height);
-					 //TODO: Satz von Wilson Beweis
 					
 				}
 				 
@@ -361,13 +359,15 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 	}
 
 	//entscheide, was machen: fliehen, fressen, vermehren
-	
+	// score= FE * (TWF/MTWF) + (STE-PE) * ((MTWF-TWF)/MTWF)
+	//SOLL ALLES IN FUNKTIONEN!!!
 	if(foundA){
 	
-	*plusX = plxA;
-	*plusY = plyA;
-	//std:: cout << "too " << (plx) << "." << (ply) << "\n";
-	return foundA;
+		*plusX = plxA;
+		*plusY = plyA;
+		//std:: cout << "too " << (plx) << "." << (ply) << "\n";
+		
+		return foundA;
 	}
 	else if (foundB){
 		
@@ -413,6 +413,8 @@ void World:: timePassed(Creature* d, int i, int j){
 	if((*d).getTimeWithoutFood() >= (*d).getMaxTimeWithoutFood()
 		|| (*d).getLifeTime() >= (*d).getMaxLifeTime()){
 		
+		std::cout << "I died!\n";
+		std::cout << "current time without food: "<<(*d).getTimeWithoutFood()<<"\n"<<"current life time: "<<(*d).getLifeTime()<<"\n";
 		map[i][j] = NULL;
 	}
 }
