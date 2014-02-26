@@ -307,11 +307,13 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 
 			//std :: cout <<"bla	"<< i << "was" << j << "abstand" << abstand << "\n";
 			//if distance is in range
-
+			
+			
+			
+			//CONSUMERI:
 			if(dynamic_cast<ConsumerI*>( d )) {
 
-
-				//meet something to eat.
+				//CONSUMERI X VEGETAL:
 				if(dynamic_cast<Vegetal*>( map[a][b] )){
 
 					//if the current element is the 'best' food
@@ -329,8 +331,7 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 					}
 				}
 
-
-				//meet someone of the same race
+				//CONSUMERI X CONSUMERI:
 				else if(dynamic_cast<ConsumerI*>( map[a][b] ) ){
 
 				 	//if
@@ -362,6 +363,8 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 							foundB = true;
 						}
 					}
+					
+				//CONSUMERI X CONSUMERII:
 				} else if(dynamic_cast<ConsumerII*> ( map[a][b] )){
 
 					if(abstand <= currentKleinsterAbstandC
@@ -377,49 +380,53 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 					}
 				}
 			}
+			
+			//CONSUMERII:
 			else if(dynamic_cast<ConsumerII*>( d ) ){
+			
+				//CONSUMERII X CONSUMERI:
 				if(dynamic_cast<ConsumerI*>( map[a][b] )){
 					if(abstand <= currentKleinsterAbstandA){
-							if((*map[a][b]).getStinkRange() >= abstand){
-
-								currentKleinsterAbstandA = abstand;
-								cA = map[a][b];
-								posxA = a;
-								posyA = b;
-								plxA = i - cwidth;
-								plyA = j - cheight;
-								foundA = true;
-							}
+						if((*map[a][b]).getStinkRange() >= abstand){
+							currentKleinsterAbstandA = abstand;
+							cA = map[a][b];
+							posxA = a;
+							posyA = b;
+							plxA = i - cwidth;
+							plyA = j - cheight;
+							foundA = true;
 						}
 					}
-					else if(dynamic_cast<ConsumerII*>( map[a][b] ) ){
+				}
+				//CONSUMERII X CONSUMERII:
+				else if(dynamic_cast<ConsumerII*>( map[a][b] ) ){
 
-				 		ConsumerII* ob1 = (ConsumerII*) d;
-				 		ConsumerII* ob2 = (ConsumerII*) map[a][b];
-				 		int mlt =  (*ob1).getMaxLifeTime();
+			 		ConsumerII* ob1 = (ConsumerII*) d;
+			 		ConsumerII* ob2 = (ConsumerII*) map[a][b];
+			 		int mlt =  (*ob1).getMaxLifeTime();
 
-				 		//check whether distance is smaller than the
-				 		//current smallest distance and
-				 		//check that both consumer are old enough
-				 		//to reproduce.
-						if(abstand <= currentKleinsterAbstandB
-						&& (*ob1).getLifeTime() > mlt/2
-						&& (*ob2).getLifeTime() > mlt/2){
-							if((*map[a][b]).getStinkRange() >= abstand){
+			 		//check whether distance is smaller than the
+			 		//current smallest distance and
+			 		//check that both consumer are old enough
+			 		//to reproduce.
+					if(abstand <= currentKleinsterAbstandB
+					&& (*ob1).getLifeTime() > mlt/2
+					&& (*ob2).getLifeTime() > mlt/2){
+						if((*map[a][b]).getStinkRange() >= abstand){
 
 
-								currentKleinsterAbstandB = abstand;
-								cB = map[a][b];
-								posxB = a;
-								posyB = b;
-								plxB = i - cwidth;
-								plyB = j - cheight;
-								foundB = true;
-							}
+							currentKleinsterAbstandB = abstand;
+							cB = map[a][b];
+							posxB = a;
+							posyB = b;
+							plxB = i - cwidth;
+							plyB = j - cheight;
+							foundB = true;
 						}
 					}
 				}
 			}
+		}
 	}
 
 	//entscheide, was machen: fliehen, fressen, vermehren
