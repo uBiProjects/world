@@ -1,9 +1,9 @@
 all: World
 
-World: World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o
-	g++ -o World World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o
+World: World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o Utils.o
+	g++ -o World World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o Utils.o
 
-World.o: World.cpp World.h Life.h Creature.h ConsumerI.h ConsumerII.h Vegetal.h
+World.o: World.cpp World.h Life.h Creature.h ConsumerI.h ConsumerII.h Vegetal.h Utils.h
 	g++ -o World.o -c World.cpp -Wall -pedantic
 
 ConsumerI.o: ConsumerI.cpp ConsumerI.h Life.h Creature.h
@@ -22,6 +22,9 @@ Vegetal.o: Vegetal.cpp Vegetal.h Life.h
 
 Life.o: Life.cpp Life.h
 	g++ -o Life.o -c Life.cpp -Wall -pedantic
+
+Utils.o: Utils.cpp Utils.h
+	g++ -o Utils.o -c Utils.cpp -Wall -pedantic
 
 clean:
 	rm -f *.o Vegetal.o

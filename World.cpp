@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include "World.h"
 #include "Creature.h"
@@ -538,10 +539,10 @@ int main(int _anzParam, char** strings){
 
 
 	//strain("bla");
-	strain("Vegetal.o");
+//	strain("Vegetal.o");
 	//strain("Debug");
 
-	return 0;
+//	return 0;
 	/*
 	 * parameter syntax (8):
 	 *	1	[int]	height
