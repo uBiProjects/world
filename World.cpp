@@ -17,13 +17,13 @@
 /*
  * Constructor
  */
-World :: World() {
-
+World :: World(int nC1, int nC2) {
+	std:: cout << nC1 << "test\n";
 	//tell random to generate random numbers
 	srand((unsigned) time( NULL));
 
 	//initialize creatures
-	initializeCreature();
+	initializeCreature(nC1,nC2);
 
 	//start life of creatures.
 	run();
@@ -36,7 +36,7 @@ World :: World() {
 /*
  * initialize the creatures.
  */
-void World :: initializeCreature(){
+void World :: initializeCreature(int nC1, int nC2){
 
 	//initialize pointer array with value 0
 	for(int w = 0; w < width; w ++) {
@@ -44,15 +44,24 @@ void World :: initializeCreature(){
 			map[w][h] = 0;
 		}
 	}
-
-	map[0][0] = new ConsumerI(0,0);
-	map[0][1] = new ConsumerI(0,0);
+	for(int i = 0; i < nC1; i ++) {
+		int a=0;
+		int b=width;
+		int x =  a + ( modulo(rand(), ( b - a + 1 )));
+		int y =  a + ( modulo(rand(), ( b - a + 1 )));
+		
+		map[x][y] = new ConsumerI(x,y);
+	}
+	
+	
+	//map[0][0] = new ConsumerI(0,0);
+	//map[0][1] = new ConsumerI(0,0);
 	map[0][4] = new Vegetal(0,1);
 	map[0][5] = new Vegetal(0,1);
-	map[4][3] = new ConsumerI(3,3);
+	//map[4][3] = new ConsumerI(3,3);
 
-	map[6][8] = new ConsumerI(2,2);
-	map[8][8] = new ConsumerI(2,2);
+	//map[6][8] = new ConsumerI(2,2);
+	//map[8][8] = new ConsumerI(2,2);
 	map[1][0] = new Vegetal(1,0);
 }
 
@@ -573,10 +582,10 @@ int main(int _anzParam, char** strings){
 
 	//save integer values
 	int height = atoi(((std::string)strings[1]).c_str());
-	int width = atoi(((std::string)strings[1]).c_str());
-	int maxNumberOfSteps = atoi(((std::string)strings[1]).c_str());
-	int numberConsumer1 = atoi(((std::string)strings[1]).c_str());
-	int numberConsumer2 = atoi(((std::string)strings[1]).c_str());
+	int width = atoi(((std::string)strings[2]).c_str());
+	int maxNumberOfSteps = atoi(((std::string)strings[3]).c_str());
+	int numberConsumer1 = atoi(((std::string)strings[4]).c_str());
+	int numberConsumer2 = atoi(((std::string)strings[5]).c_str());
 	
 
 	//check whether integer values are correct (greater than 0)
@@ -596,6 +605,8 @@ int main(int _anzParam, char** strings){
 
 // * test
 	new World();
+
+	new World(numberConsumer1, numberConsumer2);
 	return 0;
 }
  

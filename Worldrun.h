@@ -1,22 +1,17 @@
-#ifndef WORDL_H
-#define WORDL_H
+#ifndef WORDLR_H
+#define WORDLR_H
 
 
-#include "Life.h"
-#include "Creature.h"
 
-class World {
+class Worldrun {
 
 private:
 	static const int width = 10, height = 10;
 	Life* map[width][height];
 	std::string log;
 	int step;
-	int numberConsumer1;
-	int numberConsumer2;
-	
 public:
-	World(int,int);
+	World();
 	void initializeCreature();
 	void print();
 	Life getLife(int, int);
