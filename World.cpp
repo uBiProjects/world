@@ -17,8 +17,9 @@
 /*
  * Constructor
  */
-World :: World(int nC1, int nC2) {
-	std:: cout << nC1 << "test\n";
+World :: World(int nC1, int nC2, int mstep) {
+
+	maxsteps=mstep;
 	//tell random to generate random numbers
 	srand((unsigned) time( NULL));
 
@@ -87,7 +88,7 @@ void World :: initializeCreature(int nC1, int nC2){
 void World :: run(){
 
 	//inside this loop each step is gone
-	for(step= 0; step < 900; step ++){
+	for(step= 0; step < maxsteps; step ++){
 
 
 		//
@@ -619,9 +620,8 @@ int main(int _anzParam, char** strings){
 	}
 
 // * test
-	new World();
 
-	new World(numberConsumer1, numberConsumer2);
+	new World(numberConsumer1, numberConsumer2,maxNumberOfSteps);
 	return 0;
 }
  

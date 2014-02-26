@@ -12,11 +12,12 @@ private:
 	Life* map[width][height];
 	std::string log;
 	int step;
+	int maxsteps;
 	int numberConsumer1;
 	int numberConsumer2;
 	
 public:
-	World(int,int);
+	World(int,int,int);
 	void initializeCreature(int,int);
 	void print();
 	Life getLife(int, int);
