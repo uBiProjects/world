@@ -39,12 +39,22 @@ World :: World(int nC1, int nC2, int mstep) {
  */
 void World :: initializeCreature(int nC1, int nC2){
 
+	
 	//initialize pointer array with value 0
 	for(int w = 0; w < width; w ++) {
 		for(int h = 0; h < height; h ++) {
 			map[w][h] = 0;
 		}
 	}
+	
+	//Baut Vegetals
+	map[0][4] = new Vegetal(0,4);
+	map[0][5] = new Vegetal(0,5);
+	map[3][5] = new Vegetal(3,5);
+	map[5][5] = new Vegetal(5,5);
+	map[1][2] = new Vegetal(1,2);
+	map[2][2] = new Vegetal(2,2);
+	map[3][2] = new Vegetal(3,2);
 	
 	//Baut ConsumerI
 	for(int i = 0; i < nC1; i ++) {
@@ -56,6 +66,7 @@ void World :: initializeCreature(int nC1, int nC2){
 			map[x][y] = new ConsumerI(x,y);
 		}
 		else i--;
+		//std :: cout << "voll1...";
 	}
 	
 	//Baut ConsumerII
@@ -68,17 +79,9 @@ void World :: initializeCreature(int nC1, int nC2){
 			map[x][y] = new ConsumerII(x,y);
 		}
 		else i--;
+		//std :: cout << "voll2...";
 	}
-	
-	//map[0][0] = new ConsumerI(0,0);
-	//map[0][1] = new ConsumerI(0,0);
-	map[0][4] = new Vegetal(0,1);
-	map[0][5] = new Vegetal(0,1);
-	//map[4][3] = new ConsumerI(3,3);
-
-	//map[6][8] = new ConsumerI(2,2);
-	//map[8][8] = new ConsumerI(2,2);
-	map[1][0] = new Vegetal(1,0);
+	print();
 }
 
 
@@ -92,9 +95,9 @@ void World :: run(){
 
 
 		//
-		std:: cout << "hi\n";
+		//std:: cout << "hi\n";
 		performOneStep();
-		std:: cout << "hi\n";
+		//std:: cout << "hi\n";
 
 		//every X rounds a new plant grows in a random place 
 		if(step % 1 == 0){
@@ -204,7 +207,6 @@ void World::performOneStep(){
 		 			(*map[posX][posY]).setWalkable(false);
 
 					if( noch % 2 == 0){
-		 				timePassed(d, posX, posY);
 					}
                                         (*d).setTimeWithoutFood(0);
 				} else if (map[posX][posY] == NULL){
@@ -215,14 +217,12 @@ void World::performOneStep(){
 		 			(*map[posX][posY]).setWalkable(false);
 
 					if( noch % 2 == 0){
-		 				timePassed(d, posX, posY);
 					}
                                 }
 				//no interaction
 				 else if ( index == -1){
 
 					if( noch % 2 == 0){
-		 				timePassed(d, i, j);
 					}
 					//j --;
 				}
@@ -230,7 +230,6 @@ void World::performOneStep(){
 				else if(index == 0){
 
 					if( noch % 2 == 0){
-		 				timePassed(d, i, j);
 		 			}
 		 			Creature a = *((Creature*) (map[posX][posY]));
 		 			Creature b = *((Creature*) (d));
@@ -246,10 +245,10 @@ void World::performOneStep(){
 		 				std:: cout << "zeit2: " << a.getPregnantTime() << "\n";
 		 				(*((Creature*) (d))).setPregnant(true);//TODO::
 		 				std:: cout << "zeit3: " << a.getPregnantTime() << "\n";
-					};
-
+					}
 
 				}
+ 				timePassed(d, i, j);
 			} else{
 
 			}
