@@ -17,7 +17,7 @@ private:
 	
 public:
 	World(int,int);
-	void initializeCreature();
+	void initializeCreature(int,int);
 	void print();
 	Life getLife(int, int);
 	void setLife(int, int, Life);

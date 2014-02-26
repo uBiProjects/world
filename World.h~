@@ -16,7 +16,7 @@ private:
 	int numberConsumer2;
 	
 public:
-	World();
+	World(int,int);
 	void initializeCreature();
 	void print();
 	Life getLife(int, int);

@@ -23,7 +23,7 @@ World :: World(int nC1, int nC2) {
 	srand((unsigned) time( NULL));
 
 	//initialize creatures
-	initializeCreature();
+	initializeCreature(nC1,nC2);
 
 	//start life of creatures.
 	run();

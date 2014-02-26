@@ -36,7 +36,7 @@ World :: World(int nC1, int nC2) {
 /*
  * initialize the creatures.
  */
-void World :: initializeCreature(){
+void World :: initializeCreature(int nC1, int nC2){
 
 	//initialize pointer array with value 0
 	for(int w = 0; w < width; w ++) {
