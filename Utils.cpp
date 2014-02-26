@@ -46,7 +46,7 @@
 		else {
 			/* out some file info*/
 			printf("File size     : %ld\n", Status.st_size);
-			printf("Drive         : %c:\n", Status.st_dev + 'A');
+		//	printf("Drive         : %c:\n", Status.st_dev + 'A');
 			Dateityp = Status.st_mode & S_IFMT;
 			switch (Dateityp) {
 				case S_IFREG:

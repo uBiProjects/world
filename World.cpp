@@ -263,20 +263,17 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 
 	int range = (*d).getRangeOfSmellDetection();
 
-	//TODO: entscheiden ob lieber von Feinden weg, essen oder paaren
-	//verweis auf die creature, die den kleinsten abstand hat
 
-
-	Life* cA;
-	Life* cB;
-	Life* cC;
-
+	//the currently smallest distance between the
+	//creature *d and the current Life in range
 	int currentKleinsterAbstandA = range+1;
 	int currentKleinsterAbstandB = range+1;
 	int currentKleinsterAbstandC = range+1;
 
+	//the location in map of the best Life to interact.
 	int posxA,posyA, posxB, posyB, posxC, posyC;
 
+	//the position where to go
 	int plxA = -1, plxB = -1, plxC = -1;
 	int plyA = -1, plyB = -1, plyC = -1;
 
@@ -287,13 +284,17 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 	bool foundB = false;
 	bool foundC = false;
 
-	int maxStink = maximum(maximum(ConsumerI::rangeSmellAbgeben, ConsumerII::rangeSmellAbgeben),
-				Vegetal::rangeSmellAbgeben);
+	//the maximal distance between the current creature and
+	//another life with which the current creature is interacting
+	int maxStink = maximum(maximum(ConsumerI::rangeSmellAbgeben,
+			ConsumerII::rangeSmellAbgeben), Vegetal::rangeSmellAbgeben);
 
 
+	//for loop going through the array of Life.
 	for(int i = cwidth -range - maxStink; i < cwidth + range + maxStink; i ++){
 		for(int j = cheight -range- maxStink; j < cheight + range + maxStink; j ++){
 
+			//do not interact with yourself
 			if (i == cwidth && j == cheight){
 				j++;
 			}
@@ -301,18 +302,19 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 			//calculate distance
 			int abstand = abs(*plusX-i) + abs(*plusY - j);
 
+			//calculate the 'real' position of the current creature. Here
+			//it is necessary to use the modulo method, because i and
+			//j can be signed integers.
 			int a = modulo(i,width);
 			int b = modulo(j,height);
 
-			//std :: cout <<"bla	"<< i << "was" << j << "abstand" << abstand << "\n";
-			//if distance is in range
-			
-			
-			
-			//CONSUMERI:
+
+			//Interactions of ConsumerI. ConsumerI is able to
+			//	(1) eat a Vegetal
+			//	(2) reproduce with another ConsumerI
 			if(dynamic_cast<ConsumerI*>( d )) {
 
-				//CONSUMERI X VEGETAL:
+				//eat a vegetal
 				if(dynamic_cast<Vegetal*>( map[a][b] )){
 
 					//if the current element is the 'best' food
@@ -320,8 +322,10 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 					if(abstand < range + (*map[a][b]).getStinkRange()
 					&& abstand <= currentKleinsterAbstandA){
 
+						//contains the currently best value for a
 						currentKleinsterAbstandA = abstand;
-						cA = map[a][b];
+
+						//save the position othe
 						posxA = a;
 						posyA = b;
 						plxA = i - cwidth;
@@ -354,7 +358,6 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 
 
 							currentKleinsterAbstandB = abstand;
-							cB = map[a][b];
 							posxB = a;
 							posyB = b;
 							plxB = i - cwidth;
@@ -370,7 +373,6 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 						&& abstand < range + (*map[a][b]).getStinkRange()){
 
 						currentKleinsterAbstandC = abstand;
-						cC = map[a][b];
 						posxC = a;
 						posyC = b;
 						plxC = i - cwidth;
@@ -394,7 +396,6 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 					if(abstand <= currentKleinsterAbstandA){
 						if((*map[a][b]).getStinkRange() >= abstand){
 							currentKleinsterAbstandA = abstand;
-							cA = map[a][b];
 							posxA = a;
 							posyA = b;
 							plxA = i - cwidth;
@@ -425,7 +426,6 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 
 
 							currentKleinsterAbstandB = abstand;
-							cB = map[a][b];
 							posxB = a;
 							posyB = b;
 							plxB = i - cwidth;
@@ -433,37 +433,34 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 							foundB = true;
 						}
 					}
-			 		
-
-			 		/*ALT:
-			 		ConsumerII* ob1 = (ConsumerII*) d;
-			 		ConsumerII* ob2 = (ConsumerII*) map[a][b];
-			 		int mlt =  (*ob1).getMaxLifeTime();
-			 		
-			 		
-					if(abstand <= currentKleinsterAbstandB
-					&& (*ob1).getLifeTime() > mlt/2
-					&& (*ob2).getLifeTime() > mlt/2){
-						if((*map[a][b]).getStinkRange() >= abstand){
-
-
-							currentKleinsterAbstandB = abstand;
-							cB = map[a][b];
-							posxB = a;
-							posyB = b;
-							plxB = i - cwidth;
-							plyB = j - cheight;
-							foundB = true;
-						}
-					}
-					*/
 				}
 			}
 		}
 	}
 
 	//entscheide, was machen: fliehen, fressen, vermehren
-	// score= FE * (TWF/MTWF) + (STE-PE) * ((MTWF-TWF)/MTWF)
+	int TWF = (*d).getTimeWithoutFood();
+	int MTWF = (*d).getMaxTimeWithoutFood();
+
+	//gesamte stink range
+
+	int FE = 0;
+	int PE = 0;
+	int STE = 0;
+	if(foundA)
+	FE = ((*d).getRangeOfSmellDetection() + (map[posxA][posyA])->getStinkRange())
+			- (abs(cwidth- posxA) + abs(cheight - posyA));
+	if(foundB)
+	PE = ((*d).getRangeOfSmellDetection() + (map[posxB][posyB])->getStinkRange())
+			- (abs(cwidth- posxB) + abs(cheight - posyB));
+	if(foundC)
+	STE = ((*d).getRangeOfSmellDetection() + (map[posxC][posyC])->getStinkRange())
+			- (abs(cwidth- posxC) + abs(cheight - posyC));
+
+
+	int score= FE * (TWF/MTWF) + (STE-PE) * ((MTWF-TWF)/MTWF);
+
+	std:: cout << "smell(): currents score\n" << score;
 	//SOLL ALLES IN FUNKTIONEN!!!
 	if(foundA){
 
