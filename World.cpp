@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "World.h"
 #include "Creature.h"
@@ -561,7 +560,7 @@ int main(int _anzParam, char** strings){
 			(std::string) "3rd param	[maxNumberOfStepsInSimulation]\n4th param	"+
 			(std::string) "[NumberOfC1AtTheBeginning]\n5th param	"+
 			(std::string) "[NumberOfC2AtTheBeginning]<<\n6th param	[pathToVegetal.txt]"+
-			(std::string) "\n7th param	[pathToConsumerI]\n8th param	[consumer2]";
+			(std::string) "\n7th param	[pathToConsumerI]\n8th param	[consumer2]\n";
 
 
 	//if the amount of parameters is not equal to 8 + 1.
@@ -578,6 +577,7 @@ int main(int _anzParam, char** strings){
 	int maxNumberOfSteps = atoi(((std::string)strings[1]).c_str());
 	int numberConsumer1 = atoi(((std::string)strings[1]).c_str());
 	int numberConsumer2 = atoi(((std::string)strings[1]).c_str());
+	
 
 	//check whether integer values are correct (greater than 0)
 	if(height <= 0 || width <= 0 || maxNumberOfSteps <= 0
@@ -598,4 +598,4 @@ int main(int _anzParam, char** strings){
 	new World();
 	return 0;
 }
-
+ 

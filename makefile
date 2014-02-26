@@ -27,5 +27,5 @@ Utils.o: Utils.cpp Utils.h
 	g++ -o Utils.o -c Utils.cpp -Wall -pedantic
 
 clean:
-	rm -f *.o Vegetal.o
+	rm -f *.o Utils.o
 
