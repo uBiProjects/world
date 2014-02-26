@@ -381,6 +381,12 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 				}
 			}
 			
+			/*
+			* ConsumerII muss entweder über
+			* Pflanzen laufen oder um Pflanzen
+			* herumgehen können...
+			*/
+			
 			//CONSUMERII:
 			else if(dynamic_cast<ConsumerII*>( d ) ){
 			
