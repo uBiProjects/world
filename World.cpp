@@ -594,7 +594,7 @@ int main(int _anzParam, char** strings){
 		return -1;
 	}
 
-
+// * test
 	new World();
 	return 0;
 }
