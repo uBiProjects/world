@@ -138,7 +138,7 @@ void World::performOneStep(){
 		for(int i = 0; i < width; i ++){
 			for(int j = 0; j < height; j ++){
 				if((dynamic_cast<ConsumerI*>( map[i][j] )
-						|| (dynamic_cast<ConsumerII*>( map[i][j] )&& noch % 2 == 1))
+						|| (dynamic_cast<ConsumerII*>( map[i][j] )&& noch % 2 == 0))
 						&& (*map[i][j]).isWalkable() ){
 
 					//save current Life as Creature
@@ -400,15 +400,42 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 				}
 				//CONSUMERII X CONSUMERII:
 				else if(dynamic_cast<ConsumerII*>( map[a][b] ) ){
+			 		
+			 		//NEU:
+					if(abstand <= currentKleinsterAbstandB
+					&& abstand < range + (*map[a][b]).getStinkRange()){
 
+						//save consumer and maximal life time
+						ConsumerII* ob1 = (ConsumerII*) d;
+						ConsumerII* ob2 = (ConsumerII*) map[a][b];
+						int mlt =  (*ob1).getMaxLifeTime();
+
+				 		//check that both consumer are old enough
+				 		//to reproduce.
+						if(((*ob1).getLifeTime() > mlt/4)
+						&& ((*ob1).getX() != (*ob2).getX()  || (*ob1).getY() != (*ob2).getY())
+						&& ((*ob1).getPregnantTime() >= (*ob1).getMaxPregnantTime()+1)
+						&& ((*ob2).getPregnantTime() >= (*ob2).getMaxPregnantTime()+1)
+						&& (*ob2).getLifeTime() > mlt/4){
+
+
+							currentKleinsterAbstandB = abstand;
+							cB = map[a][b];
+							posxB = a;
+							posyB = b;
+							plxB = i - cwidth;
+							plyB = j - cheight;
+							foundB = true;
+						}
+					}
+			 		
+
+			 		/*ALT:
 			 		ConsumerII* ob1 = (ConsumerII*) d;
 			 		ConsumerII* ob2 = (ConsumerII*) map[a][b];
 			 		int mlt =  (*ob1).getMaxLifeTime();
-
-			 		//check whether distance is smaller than the
-			 		//current smallest distance and
-			 		//check that both consumer are old enough
-			 		//to reproduce.
+			 		
+			 		
 					if(abstand <= currentKleinsterAbstandB
 					&& (*ob1).getLifeTime() > mlt/2
 					&& (*ob2).getLifeTime() > mlt/2){
@@ -424,6 +451,7 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 							foundB = true;
 						}
 					}
+					*/
 				}
 			}
 		}
@@ -471,6 +499,8 @@ void World:: timePassed(Creature* d, int i, int j){
 								}
 								else if(dynamic_cast<ConsumerII*>( map[i][j] ) ){
 									map[xPos][ yPos]  = new ConsumerII(xPos, yPos);
+									
+		 							std:: cout << "-----C2 hat ein Kind bekommen---\n";
 								}
 								x = 100;
 								y = 100;
@@ -514,8 +544,13 @@ void World :: print(){
 				std::cout << " c |";
 			}
 			else if(dynamic_cast<ConsumerII*>( map[j][i] ) ){
-
+				Creature* c = (Creature*) map[j][i] ;
+				if((*c).getPregnantTime()<( (*c)).getMaxPregnantTime()){
+				std::cout << " P |";
+				}
+				else{
 				std::cout << " C |";
+				}
 			}
 			else if(dynamic_cast<Vegetal*>( map[j][i] ) ){
 				std::cout << " v |";
@@ -613,7 +648,7 @@ int main(int _anzParam, char** strings){
 
 	//check whether integer values are correct (greater than 0)
 	if(height <= 0 || width <= 0 || maxNumberOfSteps <= 0
-			|| numberConsumer1 <= 0 || numberConsumer2 <= 0) {
+			|| numberConsumer1 < 0 || numberConsumer2 < 0) {
 
 
 		//print error message

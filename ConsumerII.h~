@@ -8,7 +8,7 @@ class ConsumerII : public Creature {
 	public:
 		ConsumerII(int, int);
 		virtual ~ConsumerII();
-		static const int maxLifeTime = 100;
+		static const int maxLifeTime = 20;
 		static const int rangeSmellAbgeben = 10;
 		static const int rangeSmellRiechen = 5;
 		static const int speed = 1;
