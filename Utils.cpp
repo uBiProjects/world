@@ -8,7 +8,6 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -28,40 +27,46 @@
     }
 #endif
 
-bool is_file(const char* path) {
+	bool is_file(const char* path) {
 
+		struct stat Status;
+		int Dateityp, result;
+		result = stat(path, &Status);
+		if (result != 0) {
+			perror("Problem getting information");
+			switch (errno) {
+				case  ENOENT:
+					printf("File %s not found.\n", path);
+					break;
+				case EINVAL:
+					printf("Invalid parameter to stat.\n");
+					break;
+				default: /* Should never be reached*/
+					printf("Unexpected error in is_file.\n");
+					break;
+			}
+		}
+		else {
+			/* out some file info*/
+			printf("File size     : %ld\n", Status.st_size);
+			printf("Drive         : %c:\n", Status.st_dev + 'A');
+			Dateityp = Status.st_mode & S_IFMT;
+			switch (Dateityp) {
+				case S_IFREG:
+					puts("is a file");
+					return true;
+				case S_IFDIR:
+					puts("is a folder");
+					break;
+				default:
+					puts("is somting elese");
+					break;
+			}
+		}
+		return false;
+	}
 
-
-
-
-	   struct stat Status;
-	   int Dateityp;
-	   stat(path, &Status);
-	   Dateityp = Status.st_mode & S_IFMT;
-	   switch (Dateityp) {
-	     case S_IFREG:
-	    	 puts("Datei");
-	    	 return false;
-	     case S_IFLNK:
-	    	 puts("Symbolischer Link");
-	    	 return false;
-	     case S_IFDIR:
-	    	 puts("Verzeichnis");
-	    	 return false;
-	     default:
-	    	 puts("Sonstiges");
-
-
-	    	 return true;
-	   }
-
-
-
-
-
-	   return true;
-
-/*
+	/*
 
 	FILE *file = fopen(path, "r");
 
@@ -83,7 +88,7 @@ bool is_file(const char* path) {
 	fclose(file);
 	std::cout << " es ist wahr!\n";
 	return true;*/
-}
+
 
 void strain(char *argv)
 {

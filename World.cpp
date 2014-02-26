@@ -21,7 +21,7 @@
 World :: World() {
 
 	//tell random to generate random numbers
-	srand(time(NULL));
+	srand((unsigned) time( NULL));
 
 	//initialize creatures
 	initializeCreature();
