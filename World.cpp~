@@ -23,7 +23,7 @@ World :: World(int nC1, int nC2) {
 	srand((unsigned) time( NULL));
 
 	//initialize creatures
-	initializeCreature();
+	initializeCreature(nC1,nC2);
 
 	//start life of creatures.
 	run();
@@ -44,15 +44,30 @@ void World :: initializeCreature(int nC1, int nC2){
 			map[w][h] = 0;
 		}
 	}
+	
+	//Baut ConsumerI
 	for(int i = 0; i < nC1; i ++) {
 		int a=0;
 		int b=width;
 		int x =  a + ( modulo(rand(), ( b - a + 1 )));
 		int y =  a + ( modulo(rand(), ( b - a + 1 )));
-		
-		map[x][y] = new ConsumerI(x,y);
+		if(map[x][y]==0){
+			map[x][y] = new ConsumerI(x,y);
+		}
+		else i--;
 	}
 	
+	//Baut ConsumerII
+	for(int i = 0; i < nC1; i ++) {
+		int a=0;
+		int b=width;
+		int x =  a + ( modulo(rand(), ( b - a + 1 )));
+		int y =  a + ( modulo(rand(), ( b - a + 1 )));
+		if(map[x][y]==0){
+			map[x][y] = new ConsumerII(x,y);
+		}
+		else i--;
+	}
 	
 	//map[0][0] = new ConsumerI(0,0);
 	//map[0][1] = new ConsumerI(0,0);
