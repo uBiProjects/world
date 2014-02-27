@@ -1,17 +1,19 @@
+
 #include <iostream>
+#include "stdlib.h"
+#include <string>
+#include <time.h>
+#include <cstddef>
+#include <fstream> //for checking whether file does not exist (in method main).
+
 #include "Utils.h"
 #include "World.h"
 #include "Creature.h"
 #include "ConsumerI.h"
 #include "ConsumerII.h"
 #include "Vegetal.h"
-#include "stdlib.h"
-#include <string>
-#include <time.h>
-#include <cstddef>
 
-//for checking whether file does not exist (in method main).
-#include <fstream>
+#define DEBUG
 
 /*
  * Constructor
@@ -70,7 +72,10 @@ Coordinate World::getRandomFreePosition(){
         }
     }
 
+#ifdef DEBUG
     std::cout << "everything is full";
+#endif
+
     Coordinate x;
     x.x = -1;
     x.y = -1;
@@ -161,8 +166,9 @@ void World::performOneStep() {
     int kgv = 2;
     for (int noch = 0; noch < kgv; noch++) {
 
+#ifdef DEBUG
         std::cout << "step" << step << "." << noch % 2 << "\n";
-
+#endif
         //set everything walkable
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -266,17 +272,21 @@ void World::performOneStep() {
                         Creature a = *((Creature*) (map[posX][posY]));
                         Creature b = *((Creature*) (d));
 
-
+#ifdef DEBUG
                         std::cout << "zeit1" << a.getPregnantTime() << "\n";
+#endif
                         if (a.getLifeTime() > a.getMaxLifeTime() / 4
                                 && b.getLifeTime() > b.getMaxLifeTime() / 4
                                 && a.getPregnantTime() >= a.getMaxPregnantTime() + 1
                                 && b.getPregnantTime() >= b.getMaxPregnantTime() + 1) {
 
-
+#ifdef DEBUG
                             std::cout << "zeit2: " << a.getPregnantTime() << "\n";
+#endif
                             (*((Creature*) (d))).setPregnant(true); //TODO::
+#ifdef DEBUG
                             std::cout << "zeit3: " << a.getPregnantTime() << "\n";
+#endif
                         }
 
                     }
@@ -491,7 +501,10 @@ bool World::smell(Creature* d, int* plusX, int* plusY) {
 
     int score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
 
+#ifdef DEBUG
     std::cout << "smell(): currents score\n" << score;
+#endif
+
     //SOLL ALLES IN FUNKTIONEN!!!
     if (foundA) {
 
@@ -530,8 +543,9 @@ void World::timePassed(Creature* d, int i, int j) {
                         map[xPos][ yPos] = new ConsumerI(xPos, yPos);
                     } else if (dynamic_cast<ConsumerII*> (map[i][j])) {
                         map[xPos][ yPos] = new ConsumerII(xPos, yPos);
-
+#ifdef DEBUG
                         std::cout << "-----C2 hat ein Kind bekommen---\n";
+#endif
                     }
                     x = 100;
                     y = 100;
@@ -544,14 +558,16 @@ void World::timePassed(Creature* d, int i, int j) {
 
     if ((*d).getTimeWithoutFood() >= (*d).getMaxTimeWithoutFood()
             || (*d).getLifeTime() >= (*d).getMaxLifeTime()) {
-
+#ifdef DEBUG
         std::cout << "I died!\n";
         std::cout << "current time without food: " << (*d).getTimeWithoutFood() << "\n" << "current life time: " << (*d).getLifeTime() << "\n";
+#endif
         map[i][j] = NULL;
     }
 }
 
 void World::print() {
+	clear_screen();
 
     sleepd(400);
     //system("clear");
@@ -641,10 +657,9 @@ int main(int _anzParam, char** strings) {
 
     //if the amount of parameters is not equal to 8 + 1.
     if (_anzParam != 9) {
-
         //print error message
         std::cout << "Missing arguments.\n" << errorMessage;
-        return -1;
+		goto exit_out;
     }
 
     //save integer values
@@ -658,21 +673,22 @@ int main(int _anzParam, char** strings) {
     //check whether integer values are correct (greater than 0)
     if (height <= 0 || width <= 0 || maxNumberOfSteps <= 0
             || numberConsumer1 < 0 || numberConsumer2 < 0) {
-
-
         //print error message
         std::cout << "Wrong arguments.\n" << errorMessage;
-        return -1;
-    }
+		goto exit_out;
+	}
 
     if (!is_file(strings[6]) || !is_file(strings[8]) || !is_file(strings[7])) {
         std::cout << "file does not exist or is a directory" << strings[6];
-        return -1;
+		goto exit_out;
     }
 
     // * test
-
+	clear_screen();
     new World(numberConsumer1, numberConsumer2, maxNumberOfSteps);
+
+exit_out:
+	wait_for_keypressed();
     return 0;
 }
 

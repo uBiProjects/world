@@ -1,28 +1,31 @@
 #include "Utils.h"
 #include <stdio.h>
 #include <iostream>
-
-//for getting error number in method is_file
-#include <errno.h>
+#include <errno.h>		//for getting error number in method is_file
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fstream>
 #include <string>
 
-
-#ifdef _WIN32
-
-    #include <windows.h>
-    void sleepd(unsigned milliseconds) {
-        Sleep(milliseconds);
-    }
+#if (defined _WIN32) || (defined _WIN64)
+	#define	WINDOWS
+	#define CLRSCR "cls"
+	#include <windows.h>
 #else
-
-    #include <unistd.h>
-    void sleepd(unsigned milliseconds) {
-        usleep(milliseconds * 1000);
-    }
+	#define	LINUX
+	#define CLRSCR "clear"
+	#include <unistd.h>
 #endif
+
+	// sleep for milliseconds
+	void sleepd(unsigned milliseconds) {
+#ifdef WINDOWS
+        Sleep(milliseconds);
+#else
+        usleep(milliseconds * 1000);
+#endif
+	}
+
 
 	bool is_file(const char* path) {
 
@@ -63,30 +66,9 @@
 		return false;
 	}
 
-	/*
+	
 
-	FILE *file = fopen(path, "r");
-
-	std::cout << path;
-	if (file == NULL) {
-
-		// file does not exist
-		if(errno == ENOENT){
-			std::cout << " file does not exist\n";
-		} else {
-			std:: cout << " keine ahnung.\n";
-		}
-
-		return false;
-	}
-
-
-
-	fclose(file);
-	std::cout << " es ist wahr!\n";
-	return true;*/
-
-
+// 
 void strain(char *argv)
 {
     std::fstream f;
@@ -109,14 +91,32 @@ void strain(char *argv)
 
 int modulo(int _x, int _y){
 
-	int toReturn;
-	toReturn = (_x % _y);
-	if (toReturn >= 0) {
-		
-	}
-	else {
-		toReturn += _y;
-		// toReturn = modulo(_y + _x, _y);
+	int toReturn = (_x % _y);
+	if (toReturn < 0) {
+		toReturn += _y;		// -a = x mod y => a = -a + y
 	}
 	return toReturn;
+}
+
+// clear keybuffer (discard all pressed keys)
+void clear_keyboard_buffer() {
+
+#ifdef WINDOWS
+	fflush(stdin);
+#else
+	__fpurge(stdin);
+#endif
+
+}
+
+// wait for enter
+void wait_for_keypressed() {
+	printf("\nPress Enter to continue...");
+	clear_keyboard_buffer();
+	getchar();
+}
+
+// clears the screen
+void clear_screen() {
+	system(CLRSCR);
 }
