@@ -618,7 +618,7 @@ void World::print() {
 }
 
 int World::maximum(int a, int b) {
-
+	MAX(a, b);
     if (a < b)
         return a;
     return b;

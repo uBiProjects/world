@@ -2,12 +2,15 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
-/*
-* Utils.h
-*
-*  Created on: 25.02.2014
-*      Author: juli
-*/
+#if (defined _WIN32) || (defined _WIN64)
+	#define	WINDOWS
+#else
+	#define	LINUX
+#endif
+
+#define MAX(a,b) (((a)<(b))?(a):(b))
+#define MIN(a,b) (((a)>(b))?(a):(b))
+
 
 	struct Coordinate {
 		int x;

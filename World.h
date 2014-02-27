@@ -29,7 +29,7 @@ public:
 	void timePassed(Creature*,int,int);
  	// int modulo(int, int);
  	bool smell(Creature*, int*, int*);
- 	int maximum(int, int);
+ 	
 };
 
 #endif
