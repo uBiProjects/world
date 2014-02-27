@@ -570,8 +570,14 @@ void World::print() {
 	
 
     sleepd(50);
+#ifdef DEBUG
+	
+#else
 	clear_screen();
-    //system("clear");
+#endif
+	
+
+    
 
 
     std::cout << "\n +";
