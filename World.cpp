@@ -18,7 +18,9 @@
  */
 World::World(int nC1, int nC2, int mstep) {
 
+	//save maximal amount of steps
     maxsteps = mstep;
+
     //tell random to generate random numbers
     srand((unsigned) time(NULL));
 
@@ -32,7 +34,7 @@ World::World(int nC1, int nC2, int mstep) {
     std::cout << log;
 }
 
-/*
+/**
  * initialize the creatures.
  */
 void World::initializeCreature(int nC1, int nC2) {
@@ -45,7 +47,7 @@ void World::initializeCreature(int nC1, int nC2) {
         }
     }
 
-    //Baut Vegetals
+    //create vegetal
     map[0][4] = new Vegetal(0, 4);
     map[0][5] = new Vegetal(0, 5);
     map[3][5] = new Vegetal(3, 5);
@@ -55,6 +57,7 @@ void World::initializeCreature(int nC1, int nC2) {
     map[3][2] = new Vegetal(3, 2);
 
     /*
+     * Create consumer 1
      * NEU:
      * Suche x. freies Feld, statt
      * zufällige Koordinaten.
@@ -63,7 +66,6 @@ void World::initializeCreature(int nC1, int nC2) {
      * Feld sind wir?)
      * besetzt: zählt besetzte Felder
      */
-    //Baut ConsumerI:
     for (int i = 0; i < nC1; i++) {
         int worldsize = width*height;
         int random = (modulo(rand(), (worldsize)));
