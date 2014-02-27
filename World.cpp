@@ -192,10 +192,9 @@ void World::performOneStep(){
 
 				//not moving
 				if(plusX == plusY && plusY == 0){
-
-				if( noch % 2 == 0){
-					timePassed(d,i,j);
-				}
+					if( noch % 2 == 0){
+						timePassed(d,i,j);
+					}
 				}
 
 				//not reproducing
@@ -313,7 +312,8 @@ bool World:: smell(Creature* d, int* plusX, int* plusY){
 			//	(1) eat a Vegetal
 			//	(2) reproduce with another ConsumerI
 			if(dynamic_cast<ConsumerI*>( d )) {
-
+				
+				//CONSUMERI X VEGETAL:
 				//eat a vegetal
 				if(dynamic_cast<Vegetal*>( map[a][b] )){
 
@@ -496,17 +496,17 @@ void World:: timePassed(Creature* d, int i, int j){
 				int yPos = modulo((*d).getY() + y, height);
 				if(map[xPos][ yPos] == NULL){
 
-								if(dynamic_cast<ConsumerI*>( map[i][j] ) ){
-									map[xPos][ yPos]  = new ConsumerI(xPos, yPos);
-								}
-								else if(dynamic_cast<ConsumerII*>( map[i][j] ) ){
-									map[xPos][ yPos]  = new ConsumerII(xPos, yPos);
-									
-		 							std:: cout << "-----C2 hat ein Kind bekommen---\n";
-								}
-								x = 100;
-								y = 100;
-								break;
+					if(dynamic_cast<ConsumerI*>( map[i][j] ) ){
+						map[xPos][ yPos]  = new ConsumerI(xPos, yPos);
+					}
+					else if(dynamic_cast<ConsumerII*>( map[i][j] ) ){
+						map[xPos][ yPos]  = new ConsumerII(xPos, yPos);
+					
+						std:: cout << "-----C2 hat ein Kind bekommen---\n";
+					}
+					x = 100;
+					y = 100;
+					break;
 				}
 			}
 		}
