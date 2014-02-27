@@ -56,6 +56,22 @@ void World :: initializeCreature(int nC1, int nC2){
 	map[2][2] = new Vegetal(2,2);
 	map[3][2] = new Vegetal(3,2);
 	
+	/*
+	* NEU:
+	* Suche x. freies Feld, statt
+	* zufällige Koordinaten.
+	*/
+	//Baut ConsumerI
+	for(int i = 0; i < nC1; i ++) {
+		int worldsize=width*height;
+		int random = ( modulo(rand(), ( worldsize + 1 )));
+		if(map[random/][y]==0){
+			map[x][y] = new ConsumerI(x,y);
+		}
+		else i--;
+	}
+	
+	/*ALTES BAUEN:
 	//Baut ConsumerI
 	for(int i = 0; i < nC1; i ++) {
 		int a=0;
@@ -81,6 +97,8 @@ void World :: initializeCreature(int nC1, int nC2){
 		else i--;
 		//std :: cout << "voll2...";
 	}
+	*/
+	
 	print();
 }
 
@@ -583,6 +601,11 @@ void World :: print(){
  	return b;
  }
 
+/*
+* _x (mod _y)
+* toReturn: Rückgabewert
+* else: Erhöhen bis Wert positiv
+*/
  int World::modulo(int _x, int _y){
 
  	int toReturn;
