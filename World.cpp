@@ -720,6 +720,7 @@ int main(int _anzParam, char** strings){
 // * test
 
 	new World(numberConsumer1, numberConsumer2,maxNumberOfSteps);
+	sleepd(1000);
 	return 0;
 }
  
