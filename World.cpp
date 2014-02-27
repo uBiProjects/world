@@ -60,15 +60,61 @@ void World :: initializeCreature(int nC1, int nC2){
 	* NEU:
 	* Suche x. freies Feld, statt
 	* zufällige Koordinaten.
+	* Random: Zufallswert
+	* z: Zähler (Beim wievielten freien
+	* Feld sind wir?)
 	*/
-	//Baut ConsumerI
+	//Baut ConsumerI:
 	for(int i = 0; i < nC1; i ++) {
 		int worldsize=width*height;
-		int random = ( modulo(rand(), ( worldsize + 1 )));
-		if(map[random/][y]==0){
-			map[x][y] = new ConsumerI(x,y);
+		int random = ( modulo(rand(), ( worldsize)));
+		int z = 0;
+		int besetzt=0;
+		for(int j = 0; j < random; j++){
+			for(int k = 0; k < height; k++){
+				if(map[j][k]==0){
+					z++;
+					if(z==random){
+						map[j][k] = new ConsumerI(j,k);
+						j=width;
+						k=height;
+					}
+				}
+				else besetzt++;
+			}
+			if(j==width-1){
+				j=0;
+			}
+			if(besetzt==width*height){
+				z=random;
+			}
 		}
-		else i--;
+	}
+	//Baut ConsumerII:
+	for(int i = 0; i < nC2; i ++) {
+		int worldsize=width*height;
+		int random = ( modulo(rand(), ( worldsize)));
+		int z = 0;
+		int besetzt=0;
+		for(int j = 0; z <= random; j++){
+			for(int k = 0; k < height; k++){
+				if(map[j][k]==0){
+					z++;
+					if(z==random){
+						map[j][k] = new ConsumerII(j,k);
+						j=width;
+						k=height;
+					}
+				}
+				else besetzt++;
+			}
+			if(j==width-1){
+				j=0;
+			}
+			if(besetzt==width*height){
+				z=random;
+			}
+		}
 	}
 	
 	/*ALTES BAUEN:
