@@ -63,6 +63,7 @@ void World :: initializeCreature(int nC1, int nC2){
 	* Random: Zufallswert
 	* z: Zähler (Beim wievielten freien
 	* Feld sind wir?)
+        * besetzt: zählt besetzte Felder
 	*/
 	//Baut ConsumerI:
 	for(int i = 0; i < nC1; i ++) {
@@ -84,6 +85,7 @@ void World :: initializeCreature(int nC1, int nC2){
 			}
 			if(j==width-1){
 				j=0;
+                                besetzt=0;
 			}
 			if(besetzt==width*height){
 				z=random;
@@ -110,6 +112,7 @@ void World :: initializeCreature(int nC1, int nC2){
 			}
 			if(j==width-1){
 				j=0;
+                                besetzt=0;
 			}
 			if(besetzt==width*height){
 				z=random;
