@@ -429,7 +429,8 @@ bool World::smell(Creature* d, int* plusX, int* plusY) {
                             foundA = true;
                         }
                     }
-                }                    //CONSUMERII X CONSUMERII:
+                }                    
+                //CONSUMERII X CONSUMERII:
                 else if (dynamic_cast<ConsumerII*> (map[a][b])) {
 
                     //NEU:

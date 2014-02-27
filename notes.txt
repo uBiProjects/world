@@ -1,7 +1,7 @@
-Funktionen einfügen
+Formelnutzung
+C2 müssen Pflanzen umgehen
+Auslesen aus Dateien
+Umsetzen von eingegebenen Startangaben (Vor allem Map-Dimensionen)
 
 
-
-
-
-Pflanzenwachstum
+Code aufräumen
