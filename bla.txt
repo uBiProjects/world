@@ -1,1 +1,3 @@
-test
+Life Time	0
+Max Life Time	10
+Smell Emission	3
