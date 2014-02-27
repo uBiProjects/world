@@ -99,3 +99,24 @@ void strain(char *argv)
     }
     f.close();
 }
+
+/**
+ * calc positive modulo 
+ *              _x (mod _y)
+ * toReturn: Rückgabewert immer positiv
+ * else: Erhöhen bis Wert positiv
+**/
+
+int modulo(int _x, int _y){
+
+	int toReturn;
+
+	if (_x >= 0) {
+		toReturn = (_x % _y);
+	}
+	else {
+		toReturn = (_x % _y) + _y;
+		// toReturn = modulo(_y + _x, _y);
+	}
+	return toReturn;
+}

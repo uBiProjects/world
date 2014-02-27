@@ -603,29 +603,8 @@ int World::maximum(int a, int b) {
     return b;
 }
 
-/*
- * _x (mod _y)
- * toReturn: Rückgabewert
- * else: Erhöhen bis Wert positiv
- */
-int World::modulo(int _x, int _y) {
 
-    int toReturn;
 
-    if (_x >= 0) {
-        toReturn = (_x % _y);
-    } else {
-        toReturn = modulo(_y + _x, _y);
-    }
-
-    //std:: cout << "Fehler" << toReturn << "\n";
-    return toReturn;
-}
-
-/**
- * method main.
- * checks parameters and creates a new instance of world.
- */
 int main(int _anzParam, char** strings) {
 
 
