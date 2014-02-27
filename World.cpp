@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Utils.h"
 #include "World.h"
 #include "Creature.h"
 #include "ConsumerI.h"
@@ -6,7 +7,6 @@
 #include "Vegetal.h"
 #include "stdlib.h"
 #include <string>
-#include "Utils.h"
 #include <time.h>
 #include <cstddef>
 
@@ -34,6 +34,51 @@ World::World(int nC1, int nC2, int mstep) {
     std::cout << log;
 }
 
+Coordinate World::getRandomFreePosition(){
+
+    int worldsize = width*height;
+    int indexFreePosition = (modulo(rand(), (worldsize)));
+
+    //counter
+    int AmountOfPassedFreePos = 0;
+    int amountOfPassedOccupiedPos = 0;
+
+
+    for (int j = 0; j < width; j++) {
+        for (int k = 0; k < height; k++) {
+
+        	//if map is empty increase amount
+        	if (map[j][k] == 0) {
+
+                AmountOfPassedFreePos++;
+                if (AmountOfPassedFreePos == indexFreePosition) {
+
+                	Coordinate c;
+                	c.x = j;
+                	c.y = k;
+                    //exit
+                    return c;
+                }
+            }
+        	//if map is not empty increase amount occupied
+        	else
+            	amountOfPassedOccupiedPos++;
+        }
+        if (j == width - 1  && AmountOfPassedFreePos > 0) {
+            j = 0;
+            amountOfPassedOccupiedPos = 0;
+        }
+    }
+
+    std::cout << "everything is full";
+    Coordinate x;
+    x.x = -1;
+    x.y = -1;
+    return x;
+
+}
+
+
 /**
  * initialize the creatures.
  */
@@ -47,15 +92,8 @@ void World::initializeCreature(int nC1, int nC2) {
         }
     }
 
-    //create vegetal
-    map[0][4] = new Vegetal(0, 4);
-    map[0][5] = new Vegetal(0, 5);
-    map[3][5] = new Vegetal(3, 5);
-    map[5][5] = new Vegetal(5, 5);
-    map[1][2] = new Vegetal(1, 2);
-    map[2][2] = new Vegetal(2, 2);
-    map[3][2] = new Vegetal(3, 2);
 
+    int nV = 5;
     /*
      * Create consumer 1
      * NEU:
@@ -66,56 +104,21 @@ void World::initializeCreature(int nC1, int nC2) {
      * Feld sind wir?)
      * besetzt: zählt besetzte Felder
      */
+    for (int i = 0; i < nV; i++) {
+    	Coordinate c = getRandomFreePosition();
+    	std:: cout << "v	" << c.x << ":" << c.y << "\n";
+    	map [c.x][c.y] = new Vegetal(c.x, c.y);
+    }
     for (int i = 0; i < nC1; i++) {
-        int worldsize = width*height;
-        int random = (modulo(rand(), (worldsize)));
-        int z = 0;
-        int besetzt = 0;
-        for (int j = 0; j < random; j++) {
-            for (int k = 0; k < height; k++) {
-                if (map[j][k] == 0) {
-                    z++;
-                    if (z == random) {
-                        map[j][k] = new ConsumerI(j, k);
-                        j = width;
-                        k = height;
-                    }
-                } else besetzt++;
-            }
-            if (j == width - 1) {
-                j = 0;
-                besetzt = 0;
-            }
-            if (besetzt == width * height) {
-                z = random;
-            }
-        }
+    	Coordinate c = getRandomFreePosition();
+    	std:: cout << "c1	" << c.x << ":" << c.y << "\n";
+    	map [c.x][c.y] = new ConsumerI(c.x, c.y);
     }
     //Baut ConsumerII:
     for (int i = 0; i < nC2; i++) {
-        int worldsize = width*height;
-        int random = (modulo(rand(), (worldsize)));
-        int z = 0;
-        int besetzt = 0;
-        for (int j = 0; z <= random; j++) {
-            for (int k = 0; k < height; k++) {
-                if (map[j][k] == 0) {
-                    z++;
-                    if (z == random) {
-                        map[j][k] = new ConsumerII(j, k);
-                        j = width;
-                        k = height;
-                    }
-                } else besetzt++;
-            }
-            if (j == width - 1) {
-                j = 0;
-                besetzt = 0;
-            }
-            if (besetzt == width * height) {
-                z = random;
-            }
-        }
+    	Coordinate c = getRandomFreePosition();
+    	std:: cout << "c2	" << c.x << ":" << c.y << "\n";
+    	map [c.x][c.y] = new ConsumerI(c.x, c.y);
     }
     print();
 }

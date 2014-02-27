@@ -15,6 +15,7 @@ private:
 	int maxsteps;
 	int numberConsumer1;
 	int numberConsumer2;
+	Coordinate getRandomFreePosition();
 	
 public:
 	World(int,int,int);
