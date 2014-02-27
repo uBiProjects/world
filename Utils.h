@@ -13,5 +13,6 @@
     void sleepd(unsigned);
     bool is_file(const char* );
     void strain(char*);
+	int modulo(int, int);
 
 #endif /* UTILS_H_ */
