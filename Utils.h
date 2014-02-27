@@ -15,4 +15,9 @@
     void strain(char*);
 	int modulo(int, int);
 
+	struct Coordinate {
+		int x;
+		int y;
+	};
+
 #endif /* UTILS_H_ */
