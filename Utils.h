@@ -13,8 +13,10 @@
 
 
 	struct Coordinate {
+		Coordinate() :x(-1), y(-1){}		//** int empty cur-pos
 		int x;
 		int y;
+		operator bool() const { return x >= 0 && y >= 0; }
 	};
 
     void sleepd(unsigned);
@@ -24,5 +26,7 @@
 	void wait_for_keypressed();
 	void clear_keyboard_buffer();
 	void clear_screen();
+	struct Coordinate getCursorPostion();
+
 
 #endif /* UTILS_H_ */

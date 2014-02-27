@@ -7,15 +7,19 @@
 #include <fstream>
 #include <string>
 
-#if (defined _WIN32) || (defined _WIN64)
-	#define	WINDOWS
+
+#ifdef WINDOWS
 	#define CLRSCR "cls"
 	#include <windows.h>
 #else
-	#define	LINUX
 	#define CLRSCR "clear"
 	#include <unistd.h>
 #endif
+
+
+
+
+
 
 	// sleep for milliseconds
 	void sleepd(unsigned milliseconds) {
@@ -119,4 +123,17 @@ void wait_for_keypressed() {
 // clears the screen
 void clear_screen() {
 	system(CLRSCR);
+}
+
+// get position of curor
+Coordinate getCursorPos() {
+	Coordinate pos;
+	CONSOLE_SCREEN_BUFFER_INFO conbi;
+	HANDLE hconsole;
+	hconsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hconsole != INVALID_HANDLE_VALUE && GetConsoleScreenBufferInfo(hconsole, &conbi)){
+		pos.x = conbi.dwCursorPosition.X;
+		pos.y = conbi.dwCursorPosition.Y;
+	}
+	return pos;
 }

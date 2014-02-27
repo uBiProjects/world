@@ -328,7 +328,7 @@ bool World::smell(Creature* d, int* plusX, int* plusY) {
 
     //the maximal distance between the current creature and
     //another life with which the current creature is interacting
-    int maxStink = maximum(maximum(ConsumerI::rangeSmellAbgeben,
+    int maxStink = MAX(MAX(ConsumerI::rangeSmellAbgeben,
             ConsumerII::rangeSmellAbgeben), Vegetal::rangeSmellAbgeben);
 
 
@@ -567,9 +567,10 @@ void World::timePassed(Creature* d, int i, int j) {
 }
 
 void World::print() {
-	clear_screen();
+	
 
     sleepd(400);
+	clear_screen();
     //system("clear");
 
 
@@ -617,12 +618,6 @@ void World::print() {
     }
 }
 
-int World::maximum(int a, int b) {
-	MAX(a, b);
-    if (a < b)
-        return a;
-    return b;
-}
 
 
 
