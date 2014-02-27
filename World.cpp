@@ -569,7 +569,7 @@ void World::timePassed(Creature* d, int i, int j) {
 void World::print() {
 	
 
-    sleepd(400);
+    sleepd(50);
 	clear_screen();
     //system("clear");
 
