@@ -110,12 +110,12 @@ void strain(char *argv)
 int modulo(int _x, int _y){
 
 	int toReturn;
-
-	if (_x >= 0) {
-		toReturn = (_x % _y);
+	toReturn = (_x % _y);
+	if (toReturn >= 0) {
+		
 	}
 	else {
-		toReturn = (_x % _y) + _y;
+		toReturn += _y;
 		// toReturn = modulo(_y + _x, _y);
 	}
 	return toReturn;
