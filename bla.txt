@@ -1,3 +1,25 @@
 Life Time	0
 Max Life Time	10
 Smell Emission	3
+
+The Consumers1 life time.
+Maximal life time.
+Smell emission.
+Smell detection.
+Max time without food.
+Time without food.
+Speed.
+In a file named Consumer2.txt, write in this order :
+–
+–
+–
+–
+–
+The Consumers1 life time.
+Maximal life time.
+Smell emission.
+Smell detection.
+Max time without food.
+– Time without food.
+– Speed.
+
