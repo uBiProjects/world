@@ -120,8 +120,7 @@ void wait_for_keypressed() {
 
 // clears the screen
 void clear_screen() {
-	// using namespace System;
-	// Console::SetCursorPosition(0, 0);
+	// using namespace Sy// Console::SetCursorPosition(0, 0);
 	CLRSCR;
 }
 
