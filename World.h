@@ -10,7 +10,7 @@ class World {
 private:
 	static const int width = 10, height = 10;
 	Life* map[width][height];
-	std::string log="";
+	std::string log="a";
 	int step;
 	int maxsteps;
 	int numberConsumer1;
@@ -23,6 +23,7 @@ public:
 	void print();
 	Life getLife(int, int);
 	void setLife(int, int, Life);
+	bool cell_is_empty(Coordinate);
 	void performOneStep();
 	void run();	
 	

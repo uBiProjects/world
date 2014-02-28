@@ -38,52 +38,50 @@ World::World(int nC1, int nC2, int mstep) {
 }
 
 Coordinate World::getRandomFreePosition(){
+	
+	Coordinate c;											// cell to set the living
+    int worldsize = width*height;		
+    int indexFree = (modulo(rand(), (worldsize)));			// find the indexFreePosition cell 
 
-    int worldsize = width*height;
-    int indexFreePosition = (modulo(rand(), (worldsize)));
+    // counters
+    int AmountOfPassedFreePos = 0;							// free cells found  
 
-    //counter
-    int AmountOfPassedFreePos = 0;
-    int amountOfPassedOccupiedPos = 0;
-
-
-    for (int j = 0; j < width; j++) {
-        for (int k = 0; k < height; k++) {
-
-        	//if map is empty increase amount
-        	if (map[j][k] == 0) {
-
-                AmountOfPassedFreePos++;
-                if (AmountOfPassedFreePos == indexFreePosition) {
-
-                	Coordinate c;
-                	c.x = j;
-                	c.y = k;
-                    //exit
-                    return c;
-                }
-            }
-        	//if map is not empty increase amount occupied
-        	else
-            	amountOfPassedOccupiedPos++;
-        }
-        if (j == width - 1  && AmountOfPassedFreePos > 0) {
-            j = 0;
-            amountOfPassedOccupiedPos = 0;
-        }
+	// find the indexFree empty cell
+	for (c.x = 0; c.x < width; c.x++) {
+		for (c.y = 0; c.y < height; c.y++) {
+			if (cell_is_empty(c)) {
+				if (AmountOfPassedFreePos == indexFree) { 	// is this the indexFree position?
+					return c;
+				}
+				// go on searching for the indexFree empty cell
+				AmountOfPassedFreePos++;
+			}
+		}
+		// we reached the last column and did not find indexFree empty cells
+		if (c.x == width - 1) {
+			// did we find some empty cells 
+			if (AmountOfPassedFreePos > 0) {
+				// yes => restart search at column 0
+				c.x = 0;
+				// and new indexFree = old_indexFree mod NumFree 
+				indexFree = modulo(indexFree, AmountOfPassedFreePos);
+				AmountOfPassedFreePos = 0;
+			}
+		}
     }
-
 #ifdef DEBUG
-    std::cout << "everything is full";
+	perror ("everything is full");
 #endif
-
-    Coordinate x;
-    x.x = -1;
-    x.y = -1;
-    return x;
+	// return false    
+    c.x = -1;
+    c.y = -1;
+    return c;
 
 }
 
+bool World::cell_is_empty(Coordinate c) {
+	return (map[c.x][c.y] == NULL);
+}
 
 /**
  * initialize the creatures.
@@ -94,7 +92,7 @@ void World::initializeCreature(int nC1, int nC2) {
     //initialize pointer array with value 0
     for (int w = 0; w < width; w++) {
         for (int h = 0; h < height; h++) {
-            map[w][h] = 0;
+            map[w][h] = NULL;
         }
     }
 
