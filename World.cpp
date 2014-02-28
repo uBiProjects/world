@@ -566,8 +566,6 @@ void World::timePassed(Creature* d, int i, int j) {
 }
 
 void World::print() {
-	
-
     
 #ifdef DEBUG
 	sleepd(50);

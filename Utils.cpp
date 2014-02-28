@@ -13,12 +13,14 @@
 	#include <windows.system.h>
 	#define CLRSCR system("cls")
 	#define FLUSH_KEYBOARD fflush(stdin)
+	#define SLEEP  Sleep(milliseconds)
 #else
 	#include <unistd.h>
 	#include <stdlib.h>
 	#include <stdio_ext.h>
 	#define CLRSCR system("clear")
     #define FLUSH_KEYBOARD __fpurge(stdin)
+    #define SLEEP usleep(milliseconds * 1000)
 #endif
 
 
@@ -28,12 +30,9 @@
 
 	// sleep for milliseconds
 	void sleepd(unsigned milliseconds) {
-#ifdef WINDOWS
-        Sleep(milliseconds);
-#else
-        usleep(milliseconds * 1000);
-#endif
+        SLEEP;
 	}
+
 
 	/*
 	* Checks whether entered file is valid.
@@ -81,19 +80,6 @@
 
 	
 
-// 
-void strain(char *argv)
-{
-    std::fstream f;
-    char cstring[256];
-    f.open(argv, std::ios::in);
-    while (!f.eof())
-    {
-        f.getline(cstring, sizeof(cstring));
-        std::cout << cstring << std::endl;
-    }
-    f.close();
-}
 
 /**
  * calc positive modulo 
@@ -101,7 +87,6 @@ void strain(char *argv)
  * toReturn: Rückgabewert immer positiv
  * else: Erhöhen bis Wert positiv
 **/
-
 int modulo(int _x, int _y){
 
 	int toReturn = (_x % _y);
@@ -133,20 +118,17 @@ void clear_screen() {
 }
 
 
-// get position of curor
-Coordinate getCursorPos() {
-	Coordinate pos;
-#ifdef WINDOWS
-	
-	CONSOLE_SCREEN_BUFFER_INFO conbi;
-	HANDLE hconsole;
-	hconsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	if (hconsole != INVALID_HANDLE_VALUE && GetConsoleScreenBufferInfo(hconsole, &conbi)){
-		pos.x = conbi.dwCursorPosition.X;
-		pos.y = conbi.dwCursorPosition.Y;
-	}
-	
-#endif
-	return pos;
 
+// 
+void strain(char *argv)
+{
+	std::fstream f;
+	char cstring[256];
+	f.open(argv, std::ios::in);
+	while (!f.eof())
+	{
+		f.getline(cstring, sizeof(cstring));
+		std::cout << cstring << std::endl;
+	}
+	f.close();
 }

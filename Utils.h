@@ -26,7 +26,7 @@
 	void wait_for_keypressed();
 	void clear_keyboard_buffer();
 	void clear_screen();
-	struct Coordinate getCursorPostion();
+	
 
 
 #endif /* UTILS_H_ */
