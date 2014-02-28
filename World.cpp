@@ -14,6 +14,7 @@
 #include "Vegetal.h"
 
 #define DEBUG
+#define CLEAR_SCREEN
 
 /*
  * Constructor
@@ -569,13 +570,16 @@ void World::timePassed(Creature* d, int i, int j) {
 void World::print() {
 	
 
-    sleepd(50);
+    
 #ifdef DEBUG
-	
+	sleepd(50);
 #else
+	sleepd(500);
+#endif
+
+#ifdef CLEAR_SCREEN
 	clear_screen();
 #endif
-	
 
     
 
@@ -628,7 +632,11 @@ void World::print() {
 
 
 int main(int _anzParam, char** strings) {
-
+	int height;
+	int width;
+	int maxNumberOfSteps;
+	int numberConsumer1;
+	int numberConsumer2;
 
     //strain("bla");
     //	strain("Vegetal.o");
@@ -664,11 +672,11 @@ int main(int _anzParam, char** strings) {
     }
 
     //save integer values
-    int height = atoi(((std::string)strings[1]).c_str());
-    int width = atoi(((std::string)strings[2]).c_str());
-    int maxNumberOfSteps = atoi(((std::string)strings[3]).c_str());
-    int numberConsumer1 = atoi(((std::string)strings[4]).c_str());
-    int numberConsumer2 = atoi(((std::string)strings[5]).c_str());
+    height = atoi(((std::string)strings[1]).c_str());
+    width = atoi(((std::string)strings[2]).c_str());
+    maxNumberOfSteps = atoi(((std::string)strings[3]).c_str());
+    numberConsumer1 = atoi(((std::string)strings[4]).c_str());
+    numberConsumer2 = atoi(((std::string)strings[5]).c_str());
 
 
     //check whether integer values are correct (greater than 0)

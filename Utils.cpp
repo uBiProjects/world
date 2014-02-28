@@ -125,9 +125,12 @@ void clear_screen() {
 	system(CLRSCR);
 }
 
+
 // get position of curor
 Coordinate getCursorPos() {
 	Coordinate pos;
+#ifdef WINDOWS
+	
 	CONSOLE_SCREEN_BUFFER_INFO conbi;
 	HANDLE hconsole;
 	hconsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -135,5 +138,6 @@ Coordinate getCursorPos() {
 		pos.x = conbi.dwCursorPosition.X;
 		pos.y = conbi.dwCursorPosition.Y;
 	}
+#endif
 	return pos;
 }
