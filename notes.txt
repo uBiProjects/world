@@ -5,3 +5,8 @@ Umsetzen von eingegebenen Startangaben (Vor allem Map-Dimensionen)
 
 
 Code aufräumen
+
+
+http://www.gnu.org/software/libc/manual/index.html#dir
+
+http://www.cplusplus.com/

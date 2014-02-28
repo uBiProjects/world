@@ -15,6 +15,8 @@
 	#define FLUSH_KEYBOARD fflush(stdin)
 #else
 	#include <unistd.h>
+	#include <stdlib.h>
+	#include <stdio_ext.h>
 	#define CLRSCR system("clear")
     #define FLUSH_KEYBOARD __fpurge(stdin)
 #endif
