@@ -120,10 +120,10 @@ void wait_for_keypressed() {
 
 // clears the screen
 void clear_screen() {
-	 using namespace System;
-	 Console::SetCursorPosition(0, 0);
+	// using namespace System;
+	// Console::SetCursorPosition(0, 0);
 	// std::cout << "\033[0;0H";
-	// CLRSCR;
+	CLRSCR;
 }
 
 

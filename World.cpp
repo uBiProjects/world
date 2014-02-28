@@ -13,7 +13,7 @@
 #include "ConsumerII.h"
 #include "Vegetal.h"
 
-// #define DEBUG
+#define DEBUG
 #define CLEAR_SCREEN
 
 /*
