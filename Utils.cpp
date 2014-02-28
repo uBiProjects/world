@@ -9,11 +9,14 @@
 
 
 #ifdef WINDOWS
-	#define CLRSCR "cls"
 	#include <windows.h>
+	#include <windows.system.h>
+	#define CLRSCR system("cls")
+	#define FLUSH_KEYBOARD fflush(stdin)
 #else
-	#define CLRSCR "clear"
 	#include <unistd.h>
+	#define CLRSCR system("clear")
+    #define FLUSH_KEYBOARD __fpurge(stdin)
 #endif
 
 
@@ -102,15 +105,10 @@ int modulo(int _x, int _y){
 	return toReturn;
 }
 
+
 // clear keybuffer (discard all pressed keys)
 void clear_keyboard_buffer() {
-
-#ifdef WINDOWS
-	fflush(stdin);
-#else
-	__fpurge(stdin);
-#endif
-
+	FLUSH_KEYBOARD;
 }
 
 // wait for enter
@@ -122,7 +120,9 @@ void wait_for_keypressed() {
 
 // clears the screen
 void clear_screen() {
-	system(CLRSCR);
+	// using namespace System;
+	// Console::SetCursorPosition(0, 0);
+	CLRSCR;
 }
 
 
@@ -138,6 +138,8 @@ Coordinate getCursorPos() {
 		pos.x = conbi.dwCursorPosition.X;
 		pos.y = conbi.dwCursorPosition.Y;
 	}
+	
 #endif
 	return pos;
+
 }

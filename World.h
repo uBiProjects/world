@@ -1,9 +1,9 @@
 #ifndef WORDL_H
 #define WORDL_H
 
-
 #include "Life.h"
 #include "Creature.h"
+#include "Utils.h"
 
 class World {
 
