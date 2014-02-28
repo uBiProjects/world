@@ -13,7 +13,7 @@ class ConsumerII : public Creature {
 		static const int rangeSmellRiechen = 5;
 		static const int speed = 1;
 		static const int maxTimeWithoutFood = maxLifeTime/2;
-
+		static const char cell_char = 'C';
 };
 
 #endif

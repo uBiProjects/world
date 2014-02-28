@@ -21,6 +21,8 @@
  */
 World::World(int nC1, int nC2, int mstep) {
 
+	// log = "";
+
 	//save maximal amount of steps
     maxsteps = mstep;
 
@@ -30,11 +32,13 @@ World::World(int nC1, int nC2, int mstep) {
     //initialize creatures
     initializeCreature(nC1, nC2);
 
+	// print fist screen
+	print();
     //start life of creatures.
     run();
 
     //print the log file.
-    std::cout << log;
+    // std::cout << log;
 }
 
 Coordinate World::getRandomFreePosition(){
@@ -71,12 +75,12 @@ Coordinate World::getRandomFreePosition(){
     }
 #ifdef DEBUG
 	perror ("everything is full");
+	wait_for_keypressed();
 #endif
 	// return false    
     c.x = -1;
     c.y = -1;
     return c;
-
 }
 
 bool World::cell_is_empty(Coordinate c) {
@@ -87,7 +91,7 @@ bool World::cell_is_empty(Coordinate c) {
  * initialize the creatures.
  */
 void World::initializeCreature(int nC1, int nC2) {
-
+	Coordinate c;
 
     //initialize pointer array with value 0
     for (int w = 0; w < width; w++) {
@@ -109,23 +113,37 @@ void World::initializeCreature(int nC1, int nC2) {
      * besetzt: zählt besetzte Felder
      */
     for (int i = 0; i < nV; i++) {
-    	Coordinate c = getRandomFreePosition();
+    	c = getRandomFreePosition();
+		if (!c) {
+			perror("mist");
+			wait_for_keypressed();
+		}
     	std:: cout << "v	" << c.x << ":" << c.y << "\n";
     	map [c.x][c.y] = new Vegetal(c.x, c.y);
     }
     for (int i = 0; i < nC1; i++) {
-    	Coordinate c = getRandomFreePosition();
-    	std:: cout << "c1	" << c.x << ":" << c.y << "\n";
+    	c = getRandomFreePosition();
+		if (!c) {
+			perror("mist");
+			wait_for_keypressed();
+		}
+		std::cout << "c1	" << c.x << ":" << c.y << "\n";
     	map [c.x][c.y] = new ConsumerI(c.x, c.y);
     }
     //Baut ConsumerII:
     for (int i = 0; i < nC2; i++) {
-    	Coordinate c = getRandomFreePosition();
-    	std:: cout << "c2	" << c.x << ":" << c.y << "\n";
+    	c = getRandomFreePosition();
+		if (!c) {
+			perror("mist");
+			wait_for_keypressed();
+		}
+		std::cout << "C 	" << c.x << ":" << c.y << "\n";
     	map [c.x][c.y] = new ConsumerI(c.x, c.y);
     }
-    print();
+    
 }
+
+
 
 /**
  * method run. Inside this method

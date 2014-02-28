@@ -8,7 +8,8 @@ class Life{
 		//positioin on map
 		int x;
 		int y;
-		
+		// char on screen
+		char cell_char;
 		//current life time
 		int currentLifeTime;
 
@@ -37,7 +38,10 @@ class Life{
 		bool isWalkable();
 		void setWalkable(bool);
 
-		Life(int,int,int,int,int);
+		char getCellChar();
+		void setCellChar(char);
+
+		Life(int,int,int,int,int,char);
 		virtual ~Life();
 		
 		
