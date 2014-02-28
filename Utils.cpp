@@ -33,7 +33,11 @@
 #endif
 	}
 
-
+	/*
+	* Checks whether entered file is valid.
+	* If there is a problem, it tells the user what's wrong.
+	* Otherwise, some information about the file is displayed.
+	*/
 	bool is_file(const char* path) {
 
 		struct stat Status;
