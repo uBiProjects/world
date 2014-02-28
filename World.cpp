@@ -22,7 +22,7 @@
 World::World(int nC1, int nC2, int mstep) {
 
 	// log = "";
-
+	
 	//save maximal amount of steps
     maxsteps = mstep;
 
