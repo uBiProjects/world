@@ -23,6 +23,18 @@ private:
 	
 public:
 	Test();
+	
+	//Getter:
+	int getPMLT();
+	int getPSE();
+	int getCIMLT();
+	int getCISE();
+	int getCIMTWF();
+	int getCIS();
+	int getCIIMLT();
+	int getCIISE();
+	int getCIIMTWF();
+	int getCIIS();
  	
 };
 

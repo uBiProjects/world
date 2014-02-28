@@ -134,6 +134,41 @@ void Test::writeCII(int* pointer){
 	CIIS = pointer[6];
 }
 
+//---GETTER---
+
+int Test::getPMLT(){
+	return PMLT;
+}
+int Test::getPSE(){
+	return PSE;
+}
+int Test::getCIMLT(){
+	return CIMLT;
+}
+int Test::getCISE(){
+	return CISE;
+}
+int Test::getCIMTWF(){
+	return CIMTWF;
+}
+int Test::getCIS(){
+	return CIS;
+}
+int Test::getCIIMLT(){
+	return CIIMLT;
+}
+int Test::getCIISE(){
+	return CIISE;
+}
+int Test::getCIIMTWF(){
+	return CIIMTWF;
+}
+int Test::getCIIS(){
+	return CIIS;
+}
+
+//---TEST FUNCTIONS---
+
 /**
 * Prints an array.
 * Method is only used for test purposes.
