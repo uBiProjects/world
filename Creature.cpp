@@ -11,7 +11,7 @@
 #include "ConsumerII.h"
 #include "Vegetal.h"
 
-Creature::Creature(int _coordianteX, int _coordinateY, int _maxLifeTime, int _rangeSmellAbgeben, int _rangeSmell, int _speed, int _maxTimeWithoutFood, char _cell_char) : Life(_coordianteX, _coordinateY, 0, _maxLifeTime, _rangeSmellAbgeben, _cell_char){
+Creature:: Creature(int _coordianteX, int _coordinateY, int _maxLifeTime, int _rangeSmellAbgeben, int _rangeSmell, int _speed, int _maxTimeWithoutFood, char _char) : Life(_coordianteX, _coordinateY, 0, _rangeSmellAbgeben, _maxLifeTime, _char){
 
 	timeWithoutFood = 0;
 	timeLife = 0;

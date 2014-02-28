@@ -6,6 +6,9 @@ World: World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o Utils.o
 World.o: World.cpp World.h Life.h Creature.h ConsumerI.h ConsumerII.h Vegetal.h Utils.h
 	g++ -o World.o -c World.cpp -Wall -pedantic
 
+Map.o: Map.cpp World.h Life.h Creature.h ConsumerI.h ConsumerII.h Vegetal.h Utils.h
+	g++ -o Map.o -c Map.cpp -Wall -pedantic
+
 ConsumerI.o: ConsumerI.cpp ConsumerI.h Life.h Creature.h
 	g++ -o ConsumerI.o -c ConsumerI.cpp -Wall -pedantic
 

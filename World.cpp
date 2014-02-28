@@ -2,11 +2,15 @@
 #include <iostream>
 #include "stdlib.h"
 #include <string>
+#include <limits.h>	//eg. the bounds of integer
 #include <time.h>
 #include <cstddef>
 #include <fstream> //for checking whether file does not exist (in method main).
 
 #include "Utils.h"
+#include "Life.h"
+#include "MapItem.h"
+#include "Map.h"
 #include "World.h"
 #include "Creature.h"
 #include "ConsumerI.h"
@@ -19,12 +23,18 @@
 /*
  * Constructor
  */
-World::World(int nC1, int nC2, int mstep) {
+
+
+World::World(int _width, int _height, int nC1, int nC2, int mstep) {
 
 	// log = "";
-	
+
 	//save maximal amount of steps
     maxsteps = mstep;
+
+    //initialize Map
+    mp = new Map(_width, _height);
+
 
     //tell random to generate random numbers
     srand((unsigned) time(NULL));
@@ -33,7 +43,7 @@ World::World(int nC1, int nC2, int mstep) {
     initializeCreature(nC1, nC2);
 
 	// print fist screen
-	print();
+	mp->print(false);
     //start life of creatures.
     run();
 
@@ -41,77 +51,21 @@ World::World(int nC1, int nC2, int mstep) {
     // std::cout << log;
 }
 
-Coordinate World::getRandomFreePosition(){
-	
-	Coordinate c;											// cell to set the living
-    int worldsize = width*height;		
-    int indexFree = (modulo(rand(), (worldsize)));			// find the indexFreePosition cell 
-
-    // counters
-    int AmountOfPassedFreePos = 0;							// free cells found  
-
-	// find the indexFree empty cell
-	for (c.x = 0; c.x < width; c.x++) {
-		for (c.y = 0; c.y < height; c.y++) {
-			if (cell_is_empty(c)) {
-				if (AmountOfPassedFreePos == indexFree) { 	// is this the indexFree position?
-					return c;
-				}
-				// go on searching for the indexFree empty cell
-				AmountOfPassedFreePos++;
-			}
-		}
-		// we reached the last column and did not find indexFree empty cells
-		if (c.x == width - 1) {
-			// did we find some empty cells 
-			if (AmountOfPassedFreePos > 0) {
-				// yes => restart search at column 0
-				c.x = 0;
-				// and new indexFree = old_indexFree mod NumFree 
-				indexFree = modulo(indexFree, AmountOfPassedFreePos);
-				AmountOfPassedFreePos = 0;
-			}
-		}
-    }
-#ifdef DEBUG
-	perror ("everything is full");
-	wait_for_keypressed();
-#endif
-	// return false    
-    c.x = -1;
-    c.y = -1;
-    return c;
-}
 
 bool World::cell_is_empty(Coordinate c) {
-	return (map[c.x][c.y] == NULL);
+	return (mp->getMapItem(c.x, c.y)->monster == NULL);
 }
 
 /**
  * initialize the creatures.
  */
 void World::initializeCreature(int nC1, int nC2) {
+
 	Coordinate c;
 
-    //initialize pointer array with value 0
-    for (int w = 0; w < width; w++) {
-        for (int h = 0; h < height; h++) {
-            map[w][h] = NULL;
-        }
-    }
-
-
+	//TODO:
     int nV = 5;
-    /*
-     * Create consumer 1
-     * NEU:
-     * Suche x. freies Feld, statt
-     * zufällige Koordinaten.
-     * Random: Zufallswert
-     * z: Zähler (Beim wievielten freien
-     * Feld sind wir?)
-     * besetzt: zählt besetzte Felder
-     */
+
     for (int i = 0; i < nV; i++) {
     	c = getRandomFreePosition();
 		if (!c) {
@@ -119,7 +73,7 @@ void World::initializeCreature(int nC1, int nC2) {
 			wait_for_keypressed();
 		}
     	std:: cout << "v	" << c.x << ":" << c.y << "\n";
-    	map [c.x][c.y] = new Vegetal(c.x, c.y);
+    	mp->insertMonster(new Vegetal(c.x, c.y), c.x, c.y);
     }
     for (int i = 0; i < nC1; i++) {
     	c = getRandomFreePosition();
@@ -128,7 +82,7 @@ void World::initializeCreature(int nC1, int nC2) {
 			wait_for_keypressed();
 		}
 		std::cout << "c1	" << c.x << ":" << c.y << "\n";
-    	map [c.x][c.y] = new ConsumerI(c.x, c.y);
+		mp->insertMonster(new ConsumerI(c.x, c.y),c.x, c.y);
     }
     //Baut ConsumerII:
     for (int i = 0; i < nC2; i++) {
@@ -138,11 +92,52 @@ void World::initializeCreature(int nC1, int nC2) {
 			wait_for_keypressed();
 		}
 		std::cout << "C 	" << c.x << ":" << c.y << "\n";
-    	map [c.x][c.y] = new ConsumerI(c.x, c.y);
+		mp->insertMonster(new ConsumerII(c.x, c.y),c.x, c.y);
     }
     
 }
 
+Coordinate World::getRandomFreePosition(){
+
+	Coordinate c;											// cell to set the living
+    int worldsize = mp->getAmountFreePosition();
+    int indexFree = (modulo(rand(), (worldsize)));			// find the indexFreePosition cell
+
+    // counters
+    int AmountOfPassedFreePos = 0;							// free cells found
+
+	// find the indexFree empty cell
+	for (c.x = 0; c.x < mp->getWidth(); c.x++) {
+		for (c.y = 0; c.y < mp->getHeight(); c.y++) {
+			if (cell_is_empty(c)) {
+				if (AmountOfPassedFreePos == indexFree) { 	// is this the indexFree position?
+					return c;
+				}
+				// go on searching for the indexFree empty cell
+				AmountOfPassedFreePos++;
+			}
+		}
+		// we reached the last column and did not find indexFree empty cells
+		if (c.x == mp->getWidth() - 1) {
+			// did we find some empty cells
+			if (AmountOfPassedFreePos > 0) {
+				// yes => restart search at column 0
+				c.x = 0;
+				// and new indexFree = old_indexFree mod NumFree
+				indexFree = modulo(indexFree, AmountOfPassedFreePos);
+				AmountOfPassedFreePos = 0;
+			}
+		}
+    }
+#ifdef DEBUG
+	perror ("everything is full");
+	wait_for_keypressed();
+#endif
+	// return false
+    c.x = -1;
+    c.y = -1;
+    return c;
+}
 
 
 /**
@@ -163,15 +158,18 @@ void World::run() {
         if (step % 1 == 0) {
 
             int a = 0;
-            int b = width;
+            int b = mp->getWidth();
             int x = a + (modulo(rand(), (b - a + 1)));
-            b = height;
+            b = mp->getHeight();
             int y = a + (modulo(rand(), (b - a + 1)));
 
             //if the map is empty, a new plant is able to grow
             //at the generated position
-            if (map[x][y] == NULL) {
-                map[x][y] = new Vegetal(x, y);
+            Coordinate c;
+            c.x = x;
+            c.y = y;
+            if (!cell_is_empty(c)) {
+                mp->insertMonster(new Vegetal(x, y), x ,y);
             }
         }
     }
@@ -186,40 +184,51 @@ void World::performOneStep() {
 #ifdef DEBUG
         std::cout << "step" << step << "." << noch % 2 << "\n";
 #endif
-        //set everything walkable
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (map[i][j] != 0) {
-                    if (dynamic_cast<ConsumerI*> (map[i][j])
-                            || dynamic_cast<ConsumerII*> (map[i][j])) {
-                        (*map[i][j]).setWalkable(true);
+        //set everything walkable true to ensure that every monster can walk.
+
+        //set walkable false is used later inside the for loops for avoiding
+        //that a monster can move twice.
+        for (int i = 0; i < mp->getWidth(); i++) {
+            for (int j = 0; j < mp->getHeight(); j++) {
+
+            	Coordinate c;
+            	c.x = i;
+            	c.y = j;
+
+                if (!cell_is_empty(c)) {
+                    if (mp->getMapItem(i,j)->monster->getCellChar() == 'c' ||
+                    	mp->getMapItem(i,j)->monster->getCellChar() == 'C') {
+                    	mp->getMapItem(i,j)->monster->setWalkable(true);
                     }
                 }
             }
         }
 
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if ((dynamic_cast<ConsumerI*> (map[i][j])
-                        || (dynamic_cast<ConsumerII*> (map[i][j]) && noch % 2 == 0))
-                        && (*map[i][j]).isWalkable()) {
+        //go through the map and perform an action if the field is occupied by a
+        //Creature.
+        for (int i = 0; i < mp->getWidth(); i++) {
+            for (int j = 0; j < mp->getHeight(); j++) {
 
-                    //save current Life as Creature
-                    Creature* d = (Creature*) (map[i][j]);
+            	//TODO: aendern damit hier auch der vom user definierte speed drin vorkommt
+                if (
+                		(isAConsumerI(i, j) || (isAConsumerII(i, j) && noch % 2 == 0))
+                        && (mp->getMapItem(i,j)->monster->isWalkable())) {
 
+                    //save current Life as Creature and remove monster from old position.
+                    Creature* currentCreature = (Creature*) (mp->getMapItem(i, j)->monster);
+                	mp->removeMonster(i,j);
 
-
-                    /*
-                     * calculate position and save creature
-                     */
-                    int posX = i, posY = j;
+                	//compute new position and delta values.
+                    Coordinate newPosition;
+                    newPosition.x = i;
+                    newPosition.y = j;
                     int plusX = i, plusY = j;
 
-
                     //if Creature smells another creature
-                    if (smell(d, &plusX, &plusY)) {
+                    if (smell(currentCreature, &plusX, &plusY)) {
 
+                    	//fetch the movement out of plusX
                         if (plusX < 0) {
                             plusX = -1;
                         } else if (plusX > 0) {
@@ -231,63 +240,55 @@ void World::performOneStep() {
                         } else if (plusY > 0) {
                             plusY = 1;
                         }
-
-                        posX = modulo(i + plusX, width);
-                        posY = modulo(j + plusY, height);
-
                     } else {
 
-                        //else
+                    	//randomly generate movement
                         plusX = -1 + (modulo(rand(), 3));
                         plusY = -1 + (modulo(rand(), 3));
-
-                        posX = modulo(i + plusX, width);
-                        posY = modulo(j + plusY, height);
-
                     }
 
+                    //calculate the new position modulo map size because creatures can pass the edge.
+                    newPosition.x = modulo(i + plusX, mp->getWidth());
+                    newPosition.y = modulo(j + plusY, mp->getHeight());
 
-                    int index = (*d).interact(d, map[posX][posY]);
+                    int index = -2;
 
                     //not moving
                     if (plusX == plusY && plusY == 0) {
-                        if (noch % 2 == 0) {
-                            timePassed(d, i, j);
-                        }
+
+                    	mp->insertMonster(currentCreature, newPosition.x, newPosition.y);
+                    } else {
+
+                        //index of method interact in Creature. Tells how to
+                        //interact with the new coordinate
+                        index = currentCreature->interact(currentCreature,
+                        		mp->getMapItem(newPosition.x, newPosition.y)->monster);
+
                     }
-                        //not reproducing
+
+
+                    //if index is equal to 1 there is nothing to interact and the creature
+                    //just changes its position
+                    if (index == -1) {
+
+                    	//update position INSIDE the creature
+                    	mp->insertMonster(currentCreature, newPosition.x, newPosition.y);
+
+                    }
+                    //eat something
                     else if (index == 1) {
 
-                        (*d).changePosition(plusX, plusY);
-                        map[i][j] = NULL;
-                        map[posX][posY] = d;
-                        (*map[posX][posY]).setWalkable(false);
+                    	//delete the meal.
+                    	mp->deleteMonster(newPosition.x, newPosition.y);
 
-                        if (noch % 2 == 0) {
-                        }
-                        (*d).setTimeWithoutFood(0);
-                    } else if (map[posX][posY] == NULL) {
-
-                        (*d).changePosition(plusX, plusY);
-                        map[i][j] = NULL;
-                        map[posX][posY] = d;
-                        (*map[posX][posY]).setWalkable(false);
-
-                        if (noch % 2 == 0) {
-                        }
-                    }                        //no interaction
-                    else if (index == -1) {
-
-                        if (noch % 2 == 0) {
-                        }
-                        //j --;
-                    }                        //reproduce
+                    	//go to the new position.
+                    	mp->insertMonster(currentCreature, newPosition.x, newPosition.y);
+                    }
+                    //reproduce
                     else if (index == 0) {
 
-                        if (noch % 2 == 0) {
-                        }
-                        Creature a = *((Creature*) (map[posX][posY]));
-                        Creature b = *((Creature*) (d));
+                        Creature a = *((Creature*) (mp->getMapItem(newPosition.x, newPosition.y)));
+                        Creature b = *currentCreature;
 
 #ifdef DEBUG
                         std::cout << "zeit1" << a.getPregnantTime() << "\n";
@@ -300,244 +301,96 @@ void World::performOneStep() {
 #ifdef DEBUG
                             std::cout << "zeit2: " << a.getPregnantTime() << "\n";
 #endif
-                            (*((Creature*) (d))).setPregnant(true); //TODO::
+                            currentCreature->setPregnant(true);
 #ifdef DEBUG
                             std::cout << "zeit3: " << a.getPregnantTime() << "\n";
 #endif
                         }
-
                     }
-                    timePassed(d, i, j);
+
+                	//set walkable false because this creature should be unable to move once again
+                	//in this step.
+                    currentCreature->setWalkable(false);
+
+                	//TODO: nicht mehr hardcoden, ggt etc.
+                    if (noch % 2 == 0) {
+                        timePassed(currentCreature, i, j);
+                    }
                 } else {
 
                 }
             }
         }
-        print();
+        mp->print(false);
     }
-
 }
 
-bool World::smell(Creature* d, int* plusX, int* plusY) {
 
-    int range = (*d).getRangeOfSmellDetection();
+/**
+ *
+ * @param smellingCreature the creature which smells somenthing
+ * @param plusX plusY the coordinate of the smellingCreature which is also se
+ * @return whether the smellingCreature smells something.
+ */
+bool World::smell(Creature* smellingCreature, int* plusX, int* plusY) {
 
+	//the range of smell detection of the current creature
+    int range = smellingCreature->getRangeOfSmellDetection();
 
-    //the currently smallest distance between the
-    //creature *d and the current Life in range
-    int currentKleinsterAbstandA = range + 1;
-    int currentKleinsterAbstandB = range + 1;
-    int currentKleinsterAbstandC = range + 1;
+    Coordinate bestDestination;
+    int bestScore = INT_MIN;
 
-    //the location in map of the best Life to interact.
-    int posxA, posyA, posxB, posyB, posxC, posyC;
+    //the values for the computation of the index which are independent from the
+    //special fields.
+    int TWF = (*smellingCreature).getTimeWithoutFood();
+    int MTWF = (*smellingCreature).getMaxTimeWithoutFood();
 
-    //the position where to go
-    int plxA = -1, plxB = -1, plxC = -1;
-    int plyA = -1, plyB = -1, plyC = -1;
-
-    int cwidth = *plusX;
-    int cheight = *plusY;
-
-    bool foundA = false;
-    bool foundB = false;
-    bool foundC = false;
-
-    //the maximal distance between the current creature and
-    //another life with which the current creature is interacting
-    int maxStink = MAX(MAX(ConsumerI::rangeSmellAbgeben,
-            ConsumerII::rangeSmellAbgeben), Vegetal::rangeSmellAbgeben);
+    Coordinate oldCoordinate;
+    oldCoordinate.x = *plusX;
+    oldCoordinate.y = *plusY;
 
 
-    //for loop going through the array of Life.
-    for (int i = cwidth - range - maxStink; i < cwidth + range + maxStink; i++) {
-        for (int j = cheight - range - maxStink; j < cheight + range + maxStink; j++) {
+    //go through all field that the current creature is able to detect.
+    for(int x = oldCoordinate.x - range; x <= oldCoordinate.x + range; x ++){
+        for(int y = oldCoordinate.y - range; y <= oldCoordinate.y + range; y ++){
 
-            //do not interact with yourself
-            if (i == cwidth && j == cheight) {
-                j++;
-            }
+        	Coordinate coord;
+        	coord.x = modulo(x, mp->getWidth());
+        	coord.y = modulo(y, mp->getHeight());
 
-            //calculate distance
-            int abstand = abs(*plusX - i) + abs(*plusY - j);
+        	int FE, PE, STE;
 
-            //calculate the 'real' position of the current creature. Here
-            //it is necessary to use the modulo method, because i and
-            //j can be signed integers.
-            int a = modulo(i, width);
-            int b = modulo(j, height);
+        	//compute Food, predator, same type emission depending on type of
+        	//smellingCreature.
+        	if(isAConsumerI(smellingCreature)){
+        		FE = mp->getMapItem(coord.x, coord.y)->vEmission;
+        		PE = mp->getMapItem(coord.x, coord.y)->c2Emission;
+        		STE = mp->getMapItem(coord.x, coord.y)->c1Emission;
+        	} else {
 
+        		FE = mp->getMapItem(coord.x, coord.y)->c1Emission;
+        		PE = 0;
+        		STE = mp->getMapItem(coord.x, coord.y)->c2Emission;
+        	}
 
-            //Interactions of ConsumerI. ConsumerI is able to
-            //	(1) eat a Vegetal
-            //	(2) reproduce with another ConsumerI
-            if (dynamic_cast<ConsumerI*> (d)) {
+        	//compute score
+            int score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
 
-                //CONSUMERI X VEGETAL:
-                //eat a vegetal
-                if (dynamic_cast<Vegetal*> (map[a][b])) {
-
-                    //if the current element is the 'best' food
-                    //and in range
-                    if (abstand < range + (*map[a][b]).getStinkRange()
-                            && abstand <= currentKleinsterAbstandA) {
-
-                        //contains the currently best value for a
-                        currentKleinsterAbstandA = abstand;
-
-                        //save the position othe
-                        posxA = a;
-                        posyA = b;
-                        plxA = i - cwidth;
-                        plyA = j - cheight;
-                        foundA = true;
-                    }
-                }
-                    //CONSUMERI X CONSUMERI:
-                else if (dynamic_cast<ConsumerI*> (map[a][b])) {
-
-                    //if
-                    //	(1) best object in range
-                    //	(2) is in smell range
-                    if (abstand <= currentKleinsterAbstandB
-                            && abstand < range + (*map[a][b]).getStinkRange()) {
-
-                        //save consumer and maximal life time
-                        ConsumerI* ob1 = (ConsumerI*) d;
-                        ConsumerI* ob2 = (ConsumerI*) map[a][b];
-                        int mlt = (*ob1).getMaxLifeTime();
-
-                        //check that both consumer are old enough
-                        //to reproduce.
-                        if (((*ob1).getLifeTime() > mlt / 4)
-                                && ((*ob1).getX() != (*ob2).getX() || (*ob1).getY() != (*ob2).getY())
-                                && ((*ob1).getPregnantTime() >= (*ob1).getMaxPregnantTime() + 1)
-                                && ((*ob2).getPregnantTime() >= (*ob2).getMaxPregnantTime() + 1)
-                                && (*ob2).getLifeTime() > mlt / 4) {
-
-
-                            currentKleinsterAbstandB = abstand;
-                            posxB = a;
-                            posyB = b;
-                            plxB = i - cwidth;
-                            plyB = j - cheight;
-                            foundB = true;
-                        }
-                    }
-
-                    //CONSUMERI X CONSUMERII:
-                } else if (dynamic_cast<ConsumerII*> (map[a][b])) {
-
-                    if (abstand <= currentKleinsterAbstandC
-                            && abstand < range + (*map[a][b]).getStinkRange()) {
-
-                        currentKleinsterAbstandC = abstand;
-                        posxC = a;
-                        posyC = b;
-                        plxC = i - cwidth;
-                        plyC = j - cheight;
-                        foundC = true;
-                    }
-                }
-            }
-                /*
-                 * ConsumerII muss entweder über
-                 * Pflanzen laufen oder um Pflanzen
-                 * herumgehen können...
-                 */
-
-                //CONSUMERII:
-            else if (dynamic_cast<ConsumerII*> (d)) {
-
-                //CONSUMERII X CONSUMERI:
-                if (dynamic_cast<ConsumerI*> (map[a][b])) {
-                    if (abstand <= currentKleinsterAbstandA) {
-                        if ((*map[a][b]).getStinkRange() >= abstand) {
-                            currentKleinsterAbstandA = abstand;
-                            posxA = a;
-                            posyA = b;
-                            plxA = i - cwidth;
-                            plyA = j - cheight;
-                            foundA = true;
-                        }
-                    }
-                }                    
-                //CONSUMERII X CONSUMERII:
-                else if (dynamic_cast<ConsumerII*> (map[a][b])) {
-
-                    //NEU:
-                    if (abstand <= currentKleinsterAbstandB
-                            && abstand < range + (*map[a][b]).getStinkRange()) {
-
-                        //save consumer and maximal life time
-                        ConsumerII* ob1 = (ConsumerII*) d;
-                        ConsumerII* ob2 = (ConsumerII*) map[a][b];
-                        int mlt = (*ob1).getMaxLifeTime();
-
-                        //check that both consumer are old enough
-                        //to reproduce.
-                        if (((*ob1).getLifeTime() > mlt / 4)
-                                && ((*ob1).getX() != (*ob2).getX() || (*ob1).getY() != (*ob2).getY())
-                                && ((*ob1).getPregnantTime() >= (*ob1).getMaxPregnantTime() + 1)
-                                && ((*ob2).getPregnantTime() >= (*ob2).getMaxPregnantTime() + 1)
-                                && (*ob2).getLifeTime() > mlt / 4) {
-
-
-                            currentKleinsterAbstandB = abstand;
-                            posxB = a;
-                            posyB = b;
-                            plxB = i - cwidth;
-                            plyB = j - cheight;
-                            foundB = true;
-                        }
-                    }
-                }
+            //if the current score is better than all scores before
+            if(score > bestScore){
+            	bestScore = score;
+            	bestDestination.x = x;
+            	bestDestination.y = y;
             }
         }
     }
 
-    //entscheide, was machen: fliehen, fressen, vermehren
-    int TWF = (*d).getTimeWithoutFood();
-    int MTWF = (*d).getMaxTimeWithoutFood();
+    //calculate destination and write it into the values posX and posY
+    *plusX = (oldCoordinate.x - bestDestination.x) % 2;
+    *plusY = (oldCoordinate.y - bestDestination.y) % 2;
 
-    //gesamte stink range
-
-    int FE = 0;
-    int PE = 0;
-    int STE = 0;
-    if (foundA)
-        FE = ((*d).getRangeOfSmellDetection() + (map[posxA][posyA])->getStinkRange())
-        - (abs(cwidth - posxA) + abs(cheight - posyA));
-    if (foundB)
-        PE = ((*d).getRangeOfSmellDetection() + (map[posxB][posyB])->getStinkRange())
-        - (abs(cwidth - posxB) + abs(cheight - posyB));
-    if (foundC)
-        STE = ((*d).getRangeOfSmellDetection() + (map[posxC][posyC])->getStinkRange())
-        - (abs(cwidth - posxC) + abs(cheight - posyC));
-
-
-    int score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
-
-#ifdef DEBUG
-    std::cout << "smell(): currents score\n" << score;
-#endif
-
-    //SOLL ALLES IN FUNKTIONEN!!!
-    if (foundA) {
-
-        *plusX = plxA;
-        *plusY = plyA;
-        //std:: cout << "too " << (plx) << "." << (ply) << "\n";
-
-        return foundA;
-    } else if (foundB) {
-
-        *plusX = plxB;
-        *plusY = plyB;
-        return true;
-    }
-
-    return false;
+    //return whether a best destination has been found.
+    return (!(bestDestination.x == INT_MIN && bestDestination.y == INT_MIN));
 }
 
 void World::timePassed(Creature* d, int i, int j) {
@@ -552,18 +405,27 @@ void World::timePassed(Creature* d, int i, int j) {
             for (int y = -1; y <= 1; y++) {
 
                 //TODO: getX und getY refreshen und so.
-                int xPos = modulo((*d).getX() + x, width);
-                int yPos = modulo((*d).getY() + y, height);
-                if (map[xPos][ yPos] == NULL) {
+            	int wid = mp->getWidth();
+            	int hei = mp->getHeight();
+                int xPos = modulo((*d).getX() + x, wid);
+                int yPos = modulo((*d).getY() + y, hei);
 
-                    if (dynamic_cast<ConsumerI*> (map[i][j])) {
-                        map[xPos][ yPos] = new ConsumerI(xPos, yPos);
-                    } else if (dynamic_cast<ConsumerII*> (map[i][j])) {
-                        map[xPos][ yPos] = new ConsumerII(xPos, yPos);
+
+                Coordinate c;
+                c.x = xPos;
+                c.y = yPos;
+                if (cell_is_empty(c)) {
+
+                    if (isAConsumerI(xPos, yPos)) {
+                    	mp->insertMonster(new ConsumerI(xPos, yPos), xPos, yPos);
+                    } else if (isAConsumerII(xPos, yPos)) {
+                    	mp->insertMonster(new ConsumerII(xPos, yPos), xPos, yPos);
 #ifdef DEBUG
                         std::cout << "-----C2 hat ein Kind bekommen---\n";
 #endif
                     }
+
+                    //break.
                     x = 100;
                     y = 100;
                     break;
@@ -575,72 +437,16 @@ void World::timePassed(Creature* d, int i, int j) {
 
     if ((*d).getTimeWithoutFood() >= (*d).getMaxTimeWithoutFood()
             || (*d).getLifeTime() >= (*d).getMaxLifeTime()) {
+
 #ifdef DEBUG
         std::cout << "I died!\n";
         std::cout << "current time without food: " << (*d).getTimeWithoutFood() << "\n" << "current life time: " << (*d).getLifeTime() << "\n";
 #endif
-        map[i][j] = NULL;
+
+        mp->deleteMonster(i, j);
     }
 }
 
-void World::print() {
-    
-#ifdef DEBUG
-	sleepd(50);
-#else
-	sleepd(500);
-#endif
-
-#ifdef CLEAR_SCREEN
-	clear_screen();
-#endif
-
-    
-
-
-    std::cout << "\n +";
-    for (int i = 0; i < width; i++) {
-        std::cout << "---+";
-    }
-
-    std::cout << "\n";
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            if (j == 0) {
-                std::cout << " |";
-            }
-
-
-            if (dynamic_cast<ConsumerI*> (map[j][i])) {
-
-                std::cout << " c |";
-            } else if (dynamic_cast<ConsumerII*> (map[j][i])) {
-                Creature* c = (Creature*) map[j][i];
-                if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-                    std::cout << " P |";
-                } else {
-                    std::cout << " C |";
-                }
-            } else if (dynamic_cast<Vegetal*> (map[j][i])) {
-                std::cout << " v |";
-            } else {
-                std::cout << "   |";
-            }
-
-        }
-
-        std::cout << "\n";
-        for (int j = 0; j < width; j++) {
-            if (j == 0) {
-
-                std::cout << " +";
-            }
-            std::cout << "---+";
-
-        }
-        std::cout << "\n";
-    }
-}
 
 
 
@@ -708,10 +514,36 @@ int main(int _anzParam, char** strings) {
 
     // * test
 	clear_screen();
-    new World(numberConsumer1, numberConsumer2, maxNumberOfSteps);
+    new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps);
 
 exit_out:
+	clear_screen();
+	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps);
+
 	wait_for_keypressed();
     return 0;
+}
+
+bool World::isACreature(int _x, int _y){
+	return isAConsumerI(_x, _y) || isAConsumerII(_x, _y);
+}
+
+bool World::isAConsumerI(int _x, int _y){
+	return isAConsumerI(mp->getMapItem(_x, _y)->monster);
+}
+
+bool World::isAConsumerI(Life* _life){
+	return _life->getCellChar() == 'c';
+}
+
+bool World::isAConsumerII(int _x, int _y){
+	return isAConsumerII(mp->getMapItem(_x, _y)->monster);
+}
+
+bool World::isAConsumerII(Life* _life){
+	return _life->getCellChar() == 'C';
+}
+bool World::isAVegetal(int _x, int _y){
+	return mp->getMapItem(_x, _y)->monster->getCellChar() == 'v';
 }
 

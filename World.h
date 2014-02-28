@@ -8,9 +8,9 @@
 class World {
 
 private:
-	static const int width = 10, height = 10;
-	Life* map[width][height];
-	// std::string log;
+
+	Map* mp;
+	//
 	int step;
 	int maxsteps;
 	int numberConsumer1;
@@ -18,18 +18,25 @@ private:
 	Coordinate getRandomFreePosition();
 	
 public:
-	World(int,int,int);
+	World(int, int, int,int,int);
 	void initializeCreature(int,int);
 	void print();
 	Life getLife(int, int);
 	void setLife(int, int, Life);
-	bool cell_is_empty(Coordinate);
 	void performOneStep();
 	void run();	
 	
 	void timePassed(Creature*,int,int);
  	// int modulo(int, int);
  	bool smell(Creature*, int*, int*);
+
+	bool cell_is_empty(Coordinate);
+ 	bool isAConsumerI(int, int);
+ 	bool isAConsumerI(Life*);
+ 	bool isAConsumerII(int, int);
+ 	bool isAConsumerII(Life*);
+ 	bool isAVegetal(int, int);
+ 	bool isACreature(int, int);
  	
 };
 

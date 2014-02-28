@@ -17,8 +17,7 @@
 using namespace std;
 
 //Main method only for test purposes. Needs to go away...
-int main ()
-{
+int maind () {
 	//Needs to be moved to main in World.cpp...
 	new Test();
 }
