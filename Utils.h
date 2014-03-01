@@ -27,7 +27,7 @@
 	void wait_for_keypressed();
 	void clear_keyboard_buffer();
 	void clear_screen();
-	
+	void exit_error(int);
 
 
 #endif /* UTILS_H_ */

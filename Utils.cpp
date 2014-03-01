@@ -117,7 +117,24 @@ void clear_screen() {
 	CLRSCR;
 }
 
+// exit program and display error message
+void exit_error(int error_number) {
 
+	std::string error_msg;
+	error_msg = "\nProgram Error : ";
+	switch (error_number) {
+		case 1: 
+			error_msg += "No free cells found in getRandomFreePosition";
+			break;
+		default: 
+			error_msg += "Unknown handled error";
+			break;
+	}
+
+	std::cout << error_msg;
+	wait_for_keypressed();
+	exit(error_number);
+}
 
 
 

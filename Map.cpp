@@ -317,8 +317,8 @@ int Map:: getAmountFreePosition(){
 	return amountFreePosition;
 }
 
-MapItem* Map :: getMapItem(int _x, int _y){
-	return cell[_x][_y];
+MapItem* Map :: getMapItem(Coordinate _c){
+	return cell[_c.x][_c.y];
 }
 
 int Map:: getWidth(){

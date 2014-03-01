@@ -15,6 +15,7 @@ private:
 	int maxsteps;
 	int numberConsumer1;
 	int numberConsumer2;
+	int wwidth, wheight;
 	Coordinate getRandomFreePosition();
 	
 public:
@@ -33,12 +34,12 @@ public:
  	bool smell(Creature*, int*, int*);
 
 	bool cell_is_empty(Coordinate);
- 	bool isAConsumerI(int, int);
+	bool isAConsumerI(Coordinate);
  	bool isAConsumerI(Life*);
- 	bool isAConsumerII(int, int);
+	bool isAConsumerII(Coordinate);
  	bool isAConsumerII(Life*);
- 	bool isAVegetal(int, int);
- 	bool isACreature(int, int);
+	bool isAVegetal(Coordinate);
+	bool isACreature(Coordinate);
  	
 };
 

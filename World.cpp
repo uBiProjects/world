@@ -26,35 +26,38 @@
 
 
 World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
+	
+	// set world height and width
+	wwidth  = _width;
+	wheight = _height;
 
+	//tell random to generate random numbers
+	srand((unsigned)time(NULL));
+
+	// 2 DO Logfile
 	// log = "";
 
 	//save maximal amount of steps
     maxsteps = mstep;
 
-    //initialize Map
+    // initialize Map
     mp = new Map(_width, _height);
 
 
-    //tell random to generate random numbers
-    srand((unsigned) time(NULL));
-
-    //initialize creatures
+    // initialize life forms
     initializeCreature(nC1, nC2, nV);
 
 	// print fist screen
 	mp->print(false);
-    //start life of creatures.
+
+    // start life of creatures.
     run();
 
-    //print the log file.
+    // save / print the log file.
     // std::cout << log;
 }
 
 
-bool World::cell_is_empty(Coordinate c) {
-	return (mp->getMapItem(c.x, c.y)->monster == NULL);
-}
 
 /**
  * initialize the creatures.
@@ -103,26 +106,33 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 
 
 Coordinate World::getRandomFreePosition(){
-	
-	Coordinate c;											// cell to set the living
-    int worldsize = mp->getAmountFreePosition();
-    int indexFree = (modulo(rand(), (worldsize)));			// find the indexFreePosition cell
 
-    // counters
-    int AmountOfPassedFreePos = 0;							// free cells found
+	Coordinate c;											// cell to set the living (init value is (-1,-1)
+	
+	int free_cells = mp->getAmountFreePosition();			// only free_cells are empty
+	if (free_cells == 0) {
+		return c;											// return false if no free cell left
+	}
+	
+	int indexFree = 1 + (modulo(rand(), (free_cells)));		// find the indexFree free cell
+
+    // counter
+    int AmountOfPassedFreePos = 0;							// free cells passed
 
 	// find the indexFree empty cell
-	for (c.x = 0; c.x < mp->getWidth(); c.x++) {
-		for (c.y = 0; c.y < mp->getHeight(); c.y++) {
+	for (c.x = 0; c.x < wwidth; c.x++) {
+		for (c.y = 0; c.y < wwidth; c.y++) {
 			if (cell_is_empty(c)) {
+				AmountOfPassedFreePos++;
 				if (AmountOfPassedFreePos == indexFree) { 	// is this the indexFree position?
 					return c;
 				}
-				// go on searching for the indexFree empty cell
-				AmountOfPassedFreePos++;
 			}
 		}
 		// we reached the last column and did not find indexFree empty cells
+		// this should never happen
+		exit_error(1);
+
 		if (c.x == mp->getWidth() - 1) {
 			// did we find some empty cells
 			if (AmountOfPassedFreePos > 0) {
@@ -184,17 +194,13 @@ void World::performOneStep() {
 
         //set walkable false is used later inside the for loops for avoiding
         //that a monster can move twice.
-        for (int i = 0; i < mp->getWidth(); i++) {
-            for (int j = 0; j < mp->getHeight(); j++) {
-
-            	Coordinate c;
-            	c.x = i;
-            	c.y = j;
-
+		Coordinate c;
+        for (c.x = 0; c.x < mp->getWidth(); c.x++) {
+            for (c.y = 0; c.y < mp->getHeight(); c.y++) {
                 if (!cell_is_empty(c)) {
-                    if (mp->getMapItem(i,j)->monster->getCellChar() == 'c' ||
-                    	mp->getMapItem(i,j)->monster->getCellChar() == 'C') {
-                    	mp->getMapItem(i,j)->monster->setWalkable(true);
+                    if (mp->getMapItem(c)->monster->getCellChar() == 'c' ||
+                    	mp->getMapItem(c)->monster->getCellChar() == 'C') {
+                    	mp->getMapItem(c)->monster->setWalkable(true);
                     }
                 }
             }
@@ -203,49 +209,36 @@ void World::performOneStep() {
 
         //go through the map and perform an action if the field is occupied by a
         //Creature.
-        for (int i = 0; i < mp->getWidth(); i++) {
-            for (int j = 0; j < mp->getHeight(); j++) {
+        for (c.x = 0; c.x < mp->getWidth(); c.x++) {
+            for (c.y = 0; c.y < mp->getHeight(); c.y++) {
 
             	//TODO: aendern damit hier auch der vom user definierte speed drin vorkommt
                 if (
-                		(isAConsumerI(i, j) || (isAConsumerII(i, j) && noch % 2 == 0))
-                        && (mp->getMapItem(i,j)->monster->isWalkable())) {
+                		(isAConsumerI(c) || (isAConsumerII(c) && noch % 2 == 0))
+                        && (mp->getMapItem(c)->monster->isWalkable())) {
 
                     //save current Life as Creature and remove monster from old position.
-                    Creature* currentCreature = (Creature*) (mp->getMapItem(i, j)->monster);
-                	mp->removeMonster(i,j);
+                    Creature* currentCreature = (Creature*) (mp->getMapItem(c)->monster);
+                	mp->removeMonster(c.x,c.y);
 
                 	//compute new position and delta values.
                     Coordinate newPosition;
-                    newPosition.x = i;
-                    newPosition.y = j;
-                    int plusX = i, plusY = j;
+					newPosition = c;
+                    
+					int plusX = c.x, plusY = c.y;
 
-                    //if Creature smells another creature
+                    // if Creature smells another creature (returns, 0,1,-1 for plusX,plusY)
                     if (smell(currentCreature, &plusX, &plusY)) {
-
                     	//fetch the movement out of plusX
-                        if (plusX < 0) {
-                            plusX = -1;
-                        } else if (plusX > 0) {
-                            plusX = 1;
-                        }
-
-                        if (plusY < 0) {
-                            plusY = -1;
-                        } else if (plusY > 0) {
-                            plusY = 1;
-                        }
                     } else {
-
                     	//randomly generate movement
                         plusX = -1 + (modulo(rand(), 3));
                         plusY = -1 + (modulo(rand(), 3));
                     }
 
                     //calculate the new position modulo map size because creatures can pass the edge.
-                    newPosition.x = modulo(i + plusX, mp->getWidth());
-                    newPosition.y = modulo(j + plusY, mp->getHeight());
+                    newPosition.x = modulo(c.x + plusX, mp->getWidth());
+                    newPosition.y = modulo(c.y + plusY, mp->getHeight());
 
                     int index = -2;
 
@@ -258,7 +251,7 @@ void World::performOneStep() {
                         //index of method interact in Creature. Tells how to
                         //interact with the new coordinate
                         index = currentCreature->interact(currentCreature,
-                        		mp->getMapItem(newPosition.x, newPosition.y)->monster);
+                        		mp->getMapItem(newPosition)->monster);
 
                     }
 
@@ -283,7 +276,7 @@ void World::performOneStep() {
                     //reproduce
                     else if (index == 0) {
 
-                        Creature a = *((Creature*) (mp->getMapItem(newPosition.x, newPosition.y)));
+                        Creature a = *((Creature*) (mp->getMapItem(newPosition)));
                         Creature b = *currentCreature;
 
 #ifdef DEBUG
@@ -310,7 +303,7 @@ void World::performOneStep() {
 
                 	//TODO: nicht mehr hardcoden, ggt etc.
                     if (noch % 2 == 0) {
-                        timePassed(currentCreature, i, j);
+                        timePassed(currentCreature, c.x, c.y);
                     }
                 } else {
 
@@ -359,14 +352,14 @@ bool World::smell(Creature* smellingCreature, int* plusX, int* plusY) {
         	//compute Food, predator, same type emission depending on type of
         	//smellingCreature.
         	if(isAConsumerI(smellingCreature)){
-        		FE = mp->getMapItem(coord.x, coord.y)->vEmission;
-        		PE = mp->getMapItem(coord.x, coord.y)->c2Emission;
-        		STE = mp->getMapItem(coord.x, coord.y)->c1Emission;
+        		FE = mp->getMapItem(coord)->vEmission;
+        		PE = mp->getMapItem(coord)->c2Emission;
+        		STE = mp->getMapItem(coord)->c1Emission;
         	} else {
 
-        		FE = mp->getMapItem(coord.x, coord.y)->c1Emission;
+        		FE = mp->getMapItem(coord)->c1Emission;
         		PE = 0;
-        		STE = mp->getMapItem(coord.x, coord.y)->c2Emission;
+        		STE = mp->getMapItem(coord)->c2Emission;
         	}
 
         	//compute score
@@ -411,10 +404,9 @@ void World::timePassed(Creature* d, int i, int j) {
                 c.x = xPos;
                 c.y = yPos;
                 if (cell_is_empty(c)) {
-
-                    if (isAConsumerI(xPos, yPos)) {
+                    if (isAConsumerI(c)) {
                     	mp->insertMonster(new ConsumerI(xPos, yPos), xPos, yPos);
-                    } else if (isAConsumerII(xPos, yPos)) {
+                    } else if (isAConsumerII(c)) {
                     	mp->insertMonster(new ConsumerII(xPos, yPos), xPos, yPos);
 #ifdef DEBUG
                         std::cout << "-----C2 hat ein Kind bekommen---\n";
@@ -455,7 +447,7 @@ int main(int _anzParam, char** strings) {
 	int numberConsumer2;
 	// to do
 	int numberVegetal = 5;
-
+	exit_error(1);
     //strain("bla");
     //	strain("Vegetal.o");
     //strain("Debug");
@@ -522,14 +514,21 @@ exit_out:
     return 0;
 }
 
-bool World::isACreature(int _x, int _y){
-	return isAConsumerI(_x, _y) || isAConsumerII(_x, _y);
+
+// check if cell is empty
+bool World::cell_is_empty(Coordinate c) {
+	return (mp->getMapItem(c)->monster == NULL);
 }
 
-bool World::isAConsumerI(int _x, int _y){
-	Coordinate pos = Coordinate(_x, _y);
-	if (cell_is_empty(pos)) return false;
-	return isAConsumerI(mp->getMapItem(_x, _y)->monster);
+
+bool World::isACreature(Coordinate _pos){
+	if (cell_is_empty(_pos)) return false;
+	return isAConsumerI(_pos) || isAConsumerII(_pos);
+}
+
+bool World::isAConsumerI(Coordinate _pos){
+	if (cell_is_empty(_pos)) return false;
+	return isAConsumerI(mp->getMapItem(_pos)->monster);
 }
 
 bool World::isAConsumerI(Life* _life){
@@ -537,17 +536,17 @@ bool World::isAConsumerI(Life* _life){
 	return _life->getCellChar() == 'c';
 }
 
-bool World::isAConsumerII(int _x, int _y){
-	Coordinate pos = Coordinate(_x, _y);
-	if (cell_is_empty(pos)) return false;
-	return isAConsumerII(mp->getMapItem(_x, _y)->monster);
+bool World::isAConsumerII(Coordinate _pos){
+	if (cell_is_empty(_pos)) return false;
+	return isAConsumerII(mp->getMapItem(_pos)->monster);
 }
 
 bool World::isAConsumerII(Life* _life){
 	if (_life == NULL) return false;
 	return _life->getCellChar() == 'C';
 }
-bool World::isAVegetal(int _x, int _y){
-	return mp->getMapItem(_x, _y)->monster->getCellChar() == 'v';
+bool World::isAVegetal(Coordinate _pos){
+	if (cell_is_empty(_pos)) return false;
+	return mp->getMapItem(_pos)->monster->getCellChar() == 'v';
 }
 

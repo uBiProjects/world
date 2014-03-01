@@ -23,7 +23,7 @@ class Map {
 		int getWidth();
 		int getHeight();
 		
-		MapItem* getMapItem(int, int);
+		MapItem* getMapItem(Coordinate);
 
 
 		int getAmountFreePosition();
