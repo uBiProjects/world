@@ -18,7 +18,7 @@ private:
 	int maxPregnantTime;
 	
 public:
-	Creature(int, int, int, int, int,int, int, char);
+	Creature(Coordinate, int, int, int,int, int, char);
 	virtual ~Creature();
 	
 	//getter and setter methods

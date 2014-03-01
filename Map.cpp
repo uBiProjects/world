@@ -25,6 +25,7 @@ Map :: Map(int _width, int _height){
 	//save width and height
 	width = _width;
 	height = _height;
+	
 
 	//initialize the array
 	cell = (MapItem***) malloc(width * sizeof(MapItem**));
@@ -94,7 +95,7 @@ void Map:: removeMonster(int _x, int _y){
 	cell[_x][_y]->monster = NULL;
 
 	//update the current amount of free position
-	amountFreePosition --;
+	amountFreePosition ++;
 	
 }
 
@@ -103,7 +104,7 @@ void Map:: removeMonster(int _x, int _y){
  * @param _life the life which is added
  * @param _x, _y the coordinates where to insert the Life.
  */
-void Map::insertMonster(Life* _life, int _x, int _y){
+void Map::insertMonster(Life* _life, Coordinate _c){
 
 	//check whether at position (_x, _y) there is already a monster
 	//if(emission[_x][_y].monster != NULL){
@@ -112,17 +113,17 @@ void Map::insertMonster(Life* _life, int _x, int _y){
 	//}
 
 	//insert monster
-	cell[_x][_y]->monster = _life;
+	cell[_c.x][_c.y]->monster = _life;
 
 	//insert emission
-	updateEmission(*(cell[_x][_y]->monster), _x, _y, 1);
+	updateEmission(*(cell[_c.x][_c.y]->monster), _c.x, _c.y, 1);
 
 	//update the intern representation of the current position of the life.
-	_life->setX(_x);
-	_life->setY(_y);
+	_life->setX(_c.x);
+	_life->setY(_c.y);
 
 	//update the current amount of free position
-	amountFreePosition ++;
+	amountFreePosition --;
 }
 
 /**
@@ -331,9 +332,9 @@ int Map:: getHeight(){
 void Map:: test(){
 
 	Map* map = new Map(10,10);
-	map->insertMonster(new ConsumerI(2,2), 2, 2);
+	map->insertMonster(new ConsumerI(Coordinate(2, 2)), Coordinate(2, 2));
 	map->print(true);
-	map->insertMonster(new ConsumerI(2,3), 2, 3);
+	map->insertMonster(new ConsumerI(Coordinate(2, 3)), Coordinate(2, 3));
 	map->print(true);
 	map->removeMonster(2,2);
 	map->removeMonster(2,3);

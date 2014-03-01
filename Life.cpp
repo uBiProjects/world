@@ -1,10 +1,11 @@
-#include "Life.h"
 #include <iostream>
 
+#include "Life.h"
+#include "utils.h"
 
-	Life::Life(int x_position, int y_position, int curr_lifetime, int emission_range, int max_lifetime, char print_char){
-		x=  x_position;
-		y = y_position;
+
+	Life::Life(Coordinate _pos, int curr_lifetime, int emission_range, int max_lifetime, char print_char){
+		pos = _pos;
 		currentLifeTime = curr_lifetime;
 		maxLifeTime = max_lifetime;
 		stinkRange = emission_range;
@@ -24,12 +25,16 @@
 		cell_char = new_cell_char;
 	}
 
+	Coordinate Life::getPos(){
+		return pos;
+	}
+
 	int Life::getX(){
-		return x;
+		return pos.x;
 	}
 	
 	int Life::getY(){
-		return y;
+		return pos.y;
 	}
 	
 	int Life::getMaxLifeTime(){
@@ -55,12 +60,16 @@
 		walkable = a;
 	}
 	
+	void Life::setPos(Coordinate _pos){
+		pos = _pos;
+	}
+
 	void Life::setX(int a){
-		x=a;
+		pos.x=a;
 	}
 	
 	void Life::setY(int a){
-		y=a;
+		pos.y=a;
 	}
 	
 	

@@ -1,13 +1,14 @@
 #ifndef LIFE_H
 #define LIFE_H
 
+#include "Utils.h"
+
 class Life{
 
 	protected:
 		
 		//positioin on map
-		int x;
-		int y;
+		Coordinate pos;
 		// char on screen
 		char cell_char;
 		//current life time
@@ -25,6 +26,7 @@ class Life{
 	public:
 		int getX();
 		int getY();
+		Coordinate getPos();
 		int getCurrentLifeTime();
 		
 		int getMaxLifeTime();
@@ -32,7 +34,8 @@ class Life{
 		
 		void setX(int);
 		void setY(int);
-		
+		void setPos(Coordinate);
+
 		void setCurrentLifeTime(int);
 		
 		bool isWalkable();
@@ -41,7 +44,7 @@ class Life{
 		char getCellChar();
 		void setCellChar(char);
 
-		Life(int,int,int,int,int,char);
+		Life(Coordinate,int,int,int,char);
 		virtual ~Life();
 		
 		

@@ -4,8 +4,9 @@
 
 #include "Life.h"
 #include "Vegetal.h"
+#include "Utils.h"
 
-	Vegetal :: Vegetal (int _posX, int _posY) : Life(_posX, _posY, 0, rangeSmellAbgeben, maxLifeTime, cell_char) {
+	Vegetal :: Vegetal (Coordinate _c) : Life(_c, 0, rangeSmellAbgeben, maxLifeTime, cell_char) {
 		
 	}
 	

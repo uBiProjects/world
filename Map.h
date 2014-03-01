@@ -14,7 +14,7 @@ class Map {
 		void removeMonster(int, int);
 
 		//insert monster at int int. update smell.
-		void insertMonster(Life*, int, int);
+		void insertMonster(Life*, Coordinate);
 
 		//caa removeMonster and free monster.
 		void deleteMonster(int, int);

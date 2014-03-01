@@ -72,7 +72,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 		if (!c) {							// no more empty cells
 			return false;
 		}
-    	mp->insertMonster(new Vegetal(c.x, c.y), c.x, c.y);
+    	mp->insertMonster(new Vegetal(c), c);
     }
 	// create consumerI
     for (int i = 0; i < nC1; i++) {
@@ -80,7 +80,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 		if (!c) {							// no more empty cells
 			return false;
 		}
-		mp->insertMonster(new ConsumerI(c.x, c.y),c.x, c.y);
+		mp->insertMonster(new ConsumerI(c),c);
     }
     //create ConsumerII:
     for (int i = 0; i < nC2; i++) {
@@ -88,7 +88,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 		if (!c) {							// no more empty cells
 			return false;
 		}
-		mp->insertMonster(new ConsumerII(c.x, c.y),c.x, c.y);
+		mp->insertMonster(new ConsumerII(c),c);
     }
 	return true;
 }
@@ -123,35 +123,16 @@ Coordinate World::getRandomFreePosition(){
 	for (c.x = 0; c.x < wwidth; c.x++) {
 		for (c.y = 0; c.y < wwidth; c.y++) {
 			if (cell_is_empty(c)) {
-				AmountOfPassedFreePos++;
-				if (AmountOfPassedFreePos == indexFree) { 	// is this the indexFree position?
+				if (++AmountOfPassedFreePos == indexFree) { 	// is this the indexFree position?
 					return c;
 				}
 			}
 		}
-		// we reached the last column and did not find indexFree empty cells
-		// this should never happen
-		exit_error(1);
-
-		if (c.x == mp->getWidth() - 1) {
-			// did we find some empty cells
-			if (AmountOfPassedFreePos > 0) {
-				// yes => restart search at column 0
-				c.x = 0;
-				// and new indexFree = old_indexFree mod NumFree
-				indexFree = modulo(indexFree, AmountOfPassedFreePos);
-				AmountOfPassedFreePos = 0;
-			}
-		}
     }
-#ifdef DEBUG
-	perror ("everything is full");
-//	wait_for_keypressed();
-#endif
-	// return false
-    c.x = -1;
-    c.y = -1;
-    return c;
+
+	// we reached the end of the world did not find indexFree empty cells
+	// this should never happen
+	exit_error(1);
 }
 
 
@@ -174,7 +155,7 @@ void World::run() {
             //at the generated position
 			Coordinate c = getRandomFreePosition();
             if (c && !cell_is_empty(c)) {
-                mp->insertMonster(new Vegetal(c.x, c.y), c.x ,c.y);
+                mp->insertMonster(new Vegetal(c), c);
             }
         }
     }
@@ -245,7 +226,7 @@ void World::performOneStep() {
                     //not moving
                     if (plusX == plusY && plusY == 0) {
 
-                    	mp->insertMonster(currentCreature, newPosition.x, newPosition.y);
+                    	mp->insertMonster(currentCreature, newPosition);
                     } else {
 
                         //index of method interact in Creature. Tells how to
@@ -261,7 +242,7 @@ void World::performOneStep() {
                     if (index == -1) {
 
                     	//update position INSIDE the creature
-                    	mp->insertMonster(currentCreature, newPosition.x, newPosition.y);
+                    	mp->insertMonster(currentCreature, newPosition);
 
                     }
                     //eat something
@@ -271,7 +252,7 @@ void World::performOneStep() {
                     	mp->deleteMonster(newPosition.x, newPosition.y);
 
                     	//go to the new position.
-                    	mp->insertMonster(currentCreature, newPosition.x, newPosition.y);
+                    	mp->insertMonster(currentCreature, newPosition);
                     }
                     //reproduce
                     else if (index == 0) {
@@ -405,9 +386,9 @@ void World::timePassed(Creature* d, int i, int j) {
                 c.y = yPos;
                 if (cell_is_empty(c)) {
                     if (isAConsumerI(c)) {
-                    	mp->insertMonster(new ConsumerI(xPos, yPos), xPos, yPos);
+                    	mp->insertMonster(new ConsumerI(c), c);
                     } else if (isAConsumerII(c)) {
-                    	mp->insertMonster(new ConsumerII(xPos, yPos), xPos, yPos);
+                    	mp->insertMonster(new ConsumerII(c), c);
 #ifdef DEBUG
                         std::cout << "-----C2 hat ein Kind bekommen---\n";
 #endif
@@ -447,7 +428,7 @@ int main(int _anzParam, char** strings) {
 	int numberConsumer2;
 	// to do
 	int numberVegetal = 5;
-	exit_error(1);
+	
     //strain("bla");
     //	strain("Vegetal.o");
     //strain("Debug");

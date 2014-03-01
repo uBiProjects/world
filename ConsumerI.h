@@ -6,7 +6,7 @@ class ConsumerI : public Creature {
 
 
 	public:
-		ConsumerI(int, int);
+		ConsumerI(Coordinate);
 		virtual ~ConsumerI();
 		static const int maxLifeTime = 30;
 		static const int rangeSmellAbgeben = 7;

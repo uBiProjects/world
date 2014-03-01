@@ -1,17 +1,17 @@
 #ifndef Creature_CPP
 #define Creature_CPP
 
-
-
 #include <iostream>
 #include <typeinfo>
+
+#include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
 #include "ConsumerI.h"
 #include "ConsumerII.h"
 #include "Vegetal.h"
 
-Creature:: Creature(int _coordianteX, int _coordinateY, int _maxLifeTime, int _rangeSmellAbgeben, int _rangeSmell, int _speed, int _maxTimeWithoutFood, char _char) : Life(_coordianteX, _coordinateY, 0, _rangeSmellAbgeben, _maxLifeTime, _char){
+Creature:: Creature(Coordinate _pos, int _maxLifeTime, int _rangeSmellAbgeben, int _rangeSmell, int _speed, int _maxTimeWithoutFood, char _char) : Life(_pos, 0, _rangeSmellAbgeben, _maxLifeTime, _char){
 
 	timeWithoutFood = 0;
 	timeLife = 0;
@@ -81,10 +81,10 @@ void Creature::setMaxTimeWithoutFood(int _maxTimeWithoutFood){
 	maxTimeWithoutFood = _maxTimeWithoutFood;
 }
 
-void Creature::computeNewCoordinates(int _xChangement, int _yChangement){
+/*void Creature::computeNewCoordinates(int _xChangement, int _yChangement){
 	x += _xChangement;
 	y += _yChangement;
-}	
+}*/	
 
 int Creature:: interact(Creature* _a, Life* _b){
 	

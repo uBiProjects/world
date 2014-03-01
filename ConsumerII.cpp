@@ -2,12 +2,12 @@
 #define ConsumerII_CPP
 
 
-
+#include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
 #include "ConsumerII.h"
 
-ConsumerII:: ConsumerII(int x, int y): Creature(x,y,(int)maxLifeTime,(int)rangeSmellAbgeben, (int) rangeSmellRiechen, (int) speed, (int) maxTimeWithoutFood, (char) cell_char){
+ConsumerII::ConsumerII(Coordinate _pos) : Creature(_pos, (int)maxLifeTime, (int)rangeSmellAbgeben, (int)rangeSmellRiechen, (int)speed, (int)maxTimeWithoutFood, (char)cell_char){
 }
 
 ConsumerII:: ~ConsumerII(){
