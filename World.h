@@ -18,8 +18,10 @@ private:
 	Coordinate getRandomFreePosition();
 	
 public:
-	World(int, int, int,int,int);
-	void initializeCreature(int,int);
+	World(int, int, int,int,int,int);
+	bool initializeCreature(int,int,int);
+	// bool initializeLife(int, typename) {
+
 	void print();
 	Life getLife(int, int);
 	void setLife(int, int, Life);

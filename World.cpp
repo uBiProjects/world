@@ -25,7 +25,7 @@
  */
 
 
-World::World(int _width, int _height, int nC1, int nC2, int mstep) {
+World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 
 	// log = "";
 
@@ -40,7 +40,7 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep) {
     srand((unsigned) time(NULL));
 
     //initialize creatures
-    initializeCreature(nC1, nC2);
+    initializeCreature(nC1, nC2, nV);
 
 	// print fist screen
 	mp->print(false);
@@ -59,46 +59,51 @@ bool World::cell_is_empty(Coordinate c) {
 /**
  * initialize the creatures.
  */
-void World::initializeCreature(int nC1, int nC2) {
+bool World::initializeCreature(int nC1, int nC2, int nV) {
 
 	Coordinate c;
 
-	//TODO:
-    int nV = 5;
-
+	// create nV Vegetals
     for (int i = 0; i < nV; i++) {
     	c = getRandomFreePosition();
-		if (!c) {
-			perror("mist");
-			wait_for_keypressed();
+		if (!c) {							// no more empty cells
+			return false;
 		}
-    	std:: cout << "v	" << c.x << ":" << c.y << "\n";
     	mp->insertMonster(new Vegetal(c.x, c.y), c.x, c.y);
     }
+	// create consumerI
     for (int i = 0; i < nC1; i++) {
     	c = getRandomFreePosition();
-		if (!c) {
-			perror("mist");
-			wait_for_keypressed();
+		if (!c) {							// no more empty cells
+			return false;
 		}
-		std::cout << "c1	" << c.x << ":" << c.y << "\n";
 		mp->insertMonster(new ConsumerI(c.x, c.y),c.x, c.y);
     }
-    //Baut ConsumerII:
+    //create ConsumerII:
     for (int i = 0; i < nC2; i++) {
     	c = getRandomFreePosition();
-		if (!c) {
-			perror("mist");
-			wait_for_keypressed();
+		if (!c) {							// no more empty cells
+			return false;
 		}
-		std::cout << "C 	" << c.x << ":" << c.y << "\n";
 		mp->insertMonster(new ConsumerII(c.x, c.y),c.x, c.y);
     }
-    
+	return true;
 }
 
-Coordinate World::getRandomFreePosition(){
+//bool World::initializeLife(int number, typename typeL) {
+//	for (int i = 0; i < number; i++) {
+//		Coordinate c = getRandomFreePosition();
+//		// no more empty cells
+//		if (!c) { return false; }
+//		mp->insertMonster(new typeL(c.x, c.y), c.x, c.y);
+//	}
+//	return true;
+//}
 
+
+
+Coordinate World::getRandomFreePosition(){
+	
 	Coordinate c;											// cell to set the living
     int worldsize = mp->getAmountFreePosition();
     int indexFree = (modulo(rand(), (worldsize)));			// find the indexFreePosition cell
@@ -131,7 +136,7 @@ Coordinate World::getRandomFreePosition(){
     }
 #ifdef DEBUG
 	perror ("everything is full");
-	wait_for_keypressed();
+//	wait_for_keypressed();
 #endif
 	// return false
     c.x = -1;
@@ -140,40 +145,31 @@ Coordinate World::getRandomFreePosition(){
 }
 
 
+
 /**
- * method run. Inside this method
+ * start the simulation 
  */
 void World::run() {
 
-    //inside this loop each step is gone
+    // inside this loop each step is gone
     for (step = 0; step < maxsteps; step++) {
 
 
-        //
-        //std:: cout << "hi\n";
         performOneStep();
-        //std:: cout << "hi\n";
 
         //every X rounds a new plant grows in a random place 
         if (step % 1 == 0) {
 
-            int a = 0;
-            int b = mp->getWidth();
-            int x = a + (modulo(rand(), (b - a + 1)));
-            b = mp->getHeight();
-            int y = a + (modulo(rand(), (b - a + 1)));
-
-            //if the map is empty, a new plant is able to grow
+			//if the map is empty, a new plant is able to grow
             //at the generated position
-            Coordinate c;
-            c.x = x;
-            c.y = y;
-            if (!cell_is_empty(c)) {
-                mp->insertMonster(new Vegetal(x, y), x ,y);
+			Coordinate c = getRandomFreePosition();
+            if (c && !cell_is_empty(c)) {
+                mp->insertMonster(new Vegetal(c.x, c.y), c.x ,c.y);
             }
         }
     }
 }
+
 
 void World::performOneStep() {
 
@@ -457,6 +453,8 @@ int main(int _anzParam, char** strings) {
 	int maxNumberOfSteps;
 	int numberConsumer1;
 	int numberConsumer2;
+	// to do
+	int numberVegetal = 5;
 
     //strain("bla");
     //	strain("Vegetal.o");
@@ -514,11 +512,11 @@ int main(int _anzParam, char** strings) {
 
     // * test
 	clear_screen();
-    new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps);
+	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 
 exit_out:
 	clear_screen();
-	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps);
+	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 
 	wait_for_keypressed();
     return 0;
@@ -529,18 +527,24 @@ bool World::isACreature(int _x, int _y){
 }
 
 bool World::isAConsumerI(int _x, int _y){
+	Coordinate pos = Coordinate(_x, _y);
+	if (cell_is_empty(pos)) return false;
 	return isAConsumerI(mp->getMapItem(_x, _y)->monster);
 }
 
 bool World::isAConsumerI(Life* _life){
+	if (_life == NULL) return false;
 	return _life->getCellChar() == 'c';
 }
 
 bool World::isAConsumerII(int _x, int _y){
+	Coordinate pos = Coordinate(_x, _y);
+	if (cell_is_empty(pos)) return false;
 	return isAConsumerII(mp->getMapItem(_x, _y)->monster);
 }
 
 bool World::isAConsumerII(Life* _life){
+	if (_life == NULL) return false;
 	return _life->getCellChar() == 'C';
 }
 bool World::isAVegetal(int _x, int _y){

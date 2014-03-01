@@ -13,6 +13,7 @@
 
 
 	struct Coordinate {
+		Coordinate(int _x, int _y){ x = _x; y = _y; }
 		Coordinate() :x(-1), y(-1){}		//** int empty cur-pos
 		int x;
 		int y;
