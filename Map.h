@@ -11,13 +11,13 @@ class Map {
 		virtual ~Map();
 
 		//remove monster from space. update smell. called before smelling so.
-		void removeMonster(int, int);
+		void removeMonster(Coordinate);
 
 		//insert monster at int int. update smell.
 		void insertMonster(Life*, Coordinate);
 
 		//caa removeMonster and free monster.
-		void deleteMonster(int, int);
+		void deleteMonster(Coordinate);
 
 		//getter methods for width, height and special mapItem.
 		int getWidth();

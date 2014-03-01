@@ -51,12 +51,13 @@ Map :: Map(int _width, int _height){
  * frees the array.
  */
 Map :: ~Map() {
-
+	Coordinate c;
 	//destroy existing monster if they exist
 	for(int x = 0; x < width; x ++){
 		for(int y = 0; y < height; y ++){
 			if(cell[x][y]->monster != NULL){
-				deleteMonster(x, y);
+				c.x = x; c.y = y;
+				deleteMonster(c);
 //				free(cell[x][y]->monster);
 			}
 		}
@@ -77,7 +78,7 @@ Map :: ~Map() {
  * completely delete the monster, but it only removes the
  * pointer to the special monster out of the map
  */
-void Map:: removeMonster(int _x, int _y){
+void Map:: removeMonster(Coordinate _c){
 
 	//check whether at position (_x, _y) there is a monster to be removed
 //	if(emission[_x][_y].monster == NULL) {
@@ -89,10 +90,10 @@ void Map:: removeMonster(int _x, int _y){
 //	}
 
 	//go through the stinking fields
-	updateEmission(*((cell[_x][_y]->monster)), _x, _y, -1);
+	updateEmission(*((cell[_c.x][_c.y]->monster)), _c.x, _c.y, -1);
 
 	//remove monster pointer
-	cell[_x][_y]->monster = NULL;
+	cell[_c.x][_c.y]->monster = NULL;
 
 	//update the current amount of free position
 	amountFreePosition ++;
@@ -129,10 +130,10 @@ void Map::insertMonster(Life* _life, Coordinate _c){
 /**
  * remove monster from list and emission array and then free the pointer to life.
  */
-void Map::deleteMonster(int _x, int _y){
+void Map::deleteMonster(Coordinate _c){
 
-	Life* life = cell[_x][_y]->monster;
-	removeMonster(_x, _y);
+	Life* life = cell[_c.x][_c.y]->monster;
+	removeMonster(_c);
 	free(life);
 }
 
@@ -262,8 +263,9 @@ void Map::print(bool _detailed) {
             	if(!_detailed) {
 
                     std::cout << art;
-                	for(int cchar = 0; cchar < sizeCell - 1 && _detailed; cchar ++) {
-                		std::cout << " ";
+//                	for(int cchar = 0; cchar < sizeCell - 1 && _detailed; cchar ++) {           geändert Thomas
+					for (int cchar = 0; cchar < sizeCell - 1; cchar++) {
+						std::cout << " ";
                 	}
                     std::cout << "|";
             	}
@@ -336,8 +338,8 @@ void Map:: test(){
 	map->print(true);
 	map->insertMonster(new ConsumerI(Coordinate(2, 3)), Coordinate(2, 3));
 	map->print(true);
-	map->removeMonster(2,2);
-	map->removeMonster(2,3);
+	map->removeMonster(Coordinate(2, 2));
+	map->removeMonster(Coordinate(2, 3));
 	map->print(true);
 }
 

@@ -66,42 +66,33 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 
 	Coordinate c;
 
-	// create nV Vegetals
+	// create nV Vegetals 
     for (int i = 0; i < nV; i++) {
     	c = getRandomFreePosition();
-		if (!c) {							// no more empty cells
-			return false;
+		if (!createNewVegetal(c)) {							
+			exit_error(2);
 		}
-    	mp->insertMonster(new Vegetal(c), c);
     }
+
 	// create consumerI
     for (int i = 0; i < nC1; i++) {
     	c = getRandomFreePosition();
-		if (!c) {							// no more empty cells
-			return false;
+		if (!createNewConsumerI(c)) {
+			exit_error(3);
 		}
-		mp->insertMonster(new ConsumerI(c),c);
-    }
+	}
+
     //create ConsumerII:
     for (int i = 0; i < nC2; i++) {
     	c = getRandomFreePosition();
-		if (!c) {							// no more empty cells
-			return false;
+		if (!createNewConsumerII(c)) {
+			exit_error(4);
 		}
-		mp->insertMonster(new ConsumerII(c),c);
     }
 	return true;
 }
 
-//bool World::initializeLife(int number, typename typeL) {
-//	for (int i = 0; i < number; i++) {
-//		Coordinate c = getRandomFreePosition();
-//		// no more empty cells
-//		if (!c) { return false; }
-//		mp->insertMonster(new typeL(c.x, c.y), c.x, c.y);
-//	}
-//	return true;
-//}
+
 
 
 
@@ -111,7 +102,7 @@ Coordinate World::getRandomFreePosition(){
 	
 	int free_cells = mp->getAmountFreePosition();			// only free_cells are empty
 	if (free_cells == 0) {
-		return c;											// return false if no free cell left
+		return c;											// return false if no free cells left 
 	}
 	
 	int indexFree = 1 + (modulo(rand(), (free_cells)));		// find the indexFree free cell
@@ -141,69 +132,112 @@ Coordinate World::getRandomFreePosition(){
  * start the simulation 
  */
 void World::run() {
+	Coordinate c;
 
-    // inside this loop each step is gone
     for (step = 0; step < maxsteps; step++) {
-
 
         performOneStep();
 
-        //every X rounds a new plant grows in a random place 
-        if (step % 1 == 0) {
+        // every X rounds a new plant grows in a random place
+		// if amound of free cells > 0
+		if (mp->getAmountFreePosition()>0) {
+			if (step % (stepsForNewVegetal - 1) == 0) {
+				c = getRandomFreePosition();
+				createNewVegetal(c);
+			}
+		}
+		// update the map
+		mp->print(false);
 
-			//if the map is empty, a new plant is able to grow
-            //at the generated position
-			Coordinate c = getRandomFreePosition();
-            if (c && !cell_is_empty(c)) {
-                mp->insertMonster(new Vegetal(c), c);
-            }
-        }
     }
 }
 
 
+// create a new Vegetal at the position _c
+// return true on success
+bool World::createNewVegetal(Coordinate _c) {
+	if (_c && cell_is_empty(_c)) {
+		mp->insertMonster(new Vegetal(_c), _c);
+		return true;
+	}
+	return false;
+}
+
+
+// create a new ConsumerI at the position _c
+// return true on success
+bool World::createNewConsumerI(Coordinate _c) {
+	if (_c && cell_is_empty(_c)) {
+		mp->insertMonster(new ConsumerI(_c), _c);
+		return true;
+	}
+	return false;
+}
+
+// create a new ConsumerII at the position _c
+// return true on success
+bool World::createNewConsumerII(Coordinate _c) {
+	if (_c && cell_is_empty(_c)) {
+		mp->insertMonster(new ConsumerII(_c), _c);
+		return true;
+	}
+	return false;
+}
+
+// reset consumers to "walkable true" to ensure it can walk/interact.
+void World::setAllConsumersWalkable() {
+	Coordinate c;
+
+	for (c.x = 0; c.x < mp->getWidth(); c.x++) {
+		for (c.y = 0; c.y < mp->getHeight(); c.y++) {
+			if (!cell_is_empty(c)) {
+				if (isACreature(c)) {
+					mp->getMapItem(c)->monster->setWalkable(true);
+				}
+			}
+		}
+	}
+}
+
+
+
 void World::performOneStep() {
+	
+	Coordinate c, newPosition;
 
     //kgv berechenen, aktuelles level modulo kgv rechnen		
     int kgv = 2;
+
     for (int noch = 0; noch < kgv; noch++) {
 
 #ifdef DEBUG
         std::cout << "step" << step << "." << noch % 2 << "\n";
 #endif
-        //set everything walkable true to ensure that every monster can walk.
 
-        //set walkable false is used later inside the for loops for avoiding
-        //that a monster can move twice.
-		Coordinate c;
-        for (c.x = 0; c.x < mp->getWidth(); c.x++) {
-            for (c.y = 0; c.y < mp->getHeight(); c.y++) {
-                if (!cell_is_empty(c)) {
-                    if (mp->getMapItem(c)->monster->getCellChar() == 'c' ||
-                    	mp->getMapItem(c)->monster->getCellChar() == 'C') {
-                    	mp->getMapItem(c)->monster->setWalkable(true);
-                    }
-                }
-            }
-        }
+        // reset consumers to "walkable true" to ensure it can walk.
+        // set walkable false is used later inside the loops to avoid that
+        // a monster can move twice.
+		setAllConsumersWalkable();
 
 
-        //go through the map and perform an action if the field is occupied by a
-        //Creature.
-        for (c.x = 0; c.x < mp->getWidth(); c.x++) {
-            for (c.y = 0; c.y < mp->getHeight(); c.y++) {
+        // go through the map and perform an action if a cell is occupied by a
+        // Creature.
+        for (c.x = 0; c.x < wwidth; c.x++) {
+            for (c.y = 0; c.y < wheight; c.y++) {
 
             	//TODO: aendern damit hier auch der vom user definierte speed drin vorkommt
                 if (
-                		(isAConsumerI(c) || (isAConsumerII(c) && noch % 2 == 0))
+					(isAConsumerI(c) || (isAConsumerII(c) && noch % kgv == 0))
                         && (mp->getMapItem(c)->monster->isWalkable())) {
 
                     //save current Life as Creature and remove monster from old position.
                     Creature* currentCreature = (Creature*) (mp->getMapItem(c)->monster);
-                	mp->removeMonster(c.x,c.y);
+
+					// to ensure all emisions are form other livings, the current consumer
+					// has to be temorary removed from the map
+                	mp->removeMonster(c);
 
                 	//compute new position and delta values.
-                    Coordinate newPosition;
 					newPosition = c;
                     
 					int plusX = c.x, plusY = c.y;
@@ -249,7 +283,7 @@ void World::performOneStep() {
                     else if (index == 1) {
 
                     	//delete the meal.
-                    	mp->deleteMonster(newPosition.x, newPosition.y);
+                    	mp->deleteMonster(newPosition);
 
                     	//go to the new position.
                     	mp->insertMonster(currentCreature, newPosition);
@@ -278,20 +312,19 @@ void World::performOneStep() {
                         }
                     }
 
-                	//set walkable false because this creature should be unable to move once again
+                	//set walkable false because this creature should be unable to move/interact once again
                 	//in this step.
                     currentCreature->setWalkable(false);
 
                 	//TODO: nicht mehr hardcoden, ggt etc.
                     if (noch % 2 == 0) {
-                        timePassed(currentCreature, c.x, c.y);
+                        timePassed(currentCreature);
                     }
                 } else {
 
                 }
             }
         }
-        mp->print(false);
     }
 }
 
@@ -304,20 +337,23 @@ void World::performOneStep() {
  */
 bool World::smell(Creature* smellingCreature, int* plusX, int* plusY) {
 
+	Coordinate bestDestination;
+	Coordinate oldCoordinate;
+
+	oldCoordinate.x = *plusX;
+	oldCoordinate.y = *plusY;
+
+	int bestScore = INT_MIN;
+
 	//the range of smell detection of the current creature
     int range = smellingCreature->getRangeOfSmellDetection();
 
-    Coordinate bestDestination;
-    int bestScore = INT_MIN;
 
     //the values for the computation of the index which are independent from the
     //special fields.
-    int TWF = (*smellingCreature).getTimeWithoutFood();
+    int TWF  = (*smellingCreature).getTimeWithoutFood();
     int MTWF = (*smellingCreature).getMaxTimeWithoutFood();
 
-    Coordinate oldCoordinate;
-    oldCoordinate.x = *plusX;
-    oldCoordinate.y = *plusY;
 
 
     //go through all field that the current creature is able to detect.
@@ -325,29 +361,29 @@ bool World::smell(Creature* smellingCreature, int* plusX, int* plusY) {
         for(int y = oldCoordinate.y - range; y <= oldCoordinate.y + range; y ++){
 
         	Coordinate coord;
-        	coord.x = modulo(x, mp->getWidth());
-        	coord.y = modulo(y, mp->getHeight());
+        	coord.x = modulo(x, wwidth);
+        	coord.y = modulo(y, wheight);
 
         	int FE, PE, STE;
 
         	//compute Food, predator, same type emission depending on type of
         	//smellingCreature.
         	if(isAConsumerI(smellingCreature)){
-        		FE = mp->getMapItem(coord)->vEmission;
-        		PE = mp->getMapItem(coord)->c2Emission;
+        		FE  = mp->getMapItem(coord)->vEmission;
+        		PE  = mp->getMapItem(coord)->c2Emission;
         		STE = mp->getMapItem(coord)->c1Emission;
         	} else {
-
-        		FE = mp->getMapItem(coord)->c1Emission;
-        		PE = 0;
+        		FE  = mp->getMapItem(coord)->c1Emission;
+        		PE  = 0;
         		STE = mp->getMapItem(coord)->c2Emission;
         	}
 
         	//compute score
             int score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
 
-            //if the current score is better than all scores before
-            if(score > bestScore){
+            // if the current score is better than all scores before
+			// TODO wenn zwei scores = sind, zufall ob neu oder alt
+            if(score >= bestScore){
             	bestScore = score;
             	bestDestination.x = x;
             	bestDestination.y = y;
@@ -363,11 +399,14 @@ bool World::smell(Creature* smellingCreature, int* plusX, int* plusY) {
     return (!(bestDestination.x == INT_MIN && bestDestination.y == INT_MIN));
 }
 
-void World::timePassed(Creature* d, int i, int j) {
+void World::timePassed(Creature* d) {
+	
+	Coordinate c;
 
-    //increase values 
+    //increment values 
     (*d).setTimeWithoutFood((*d).getTimeWithoutFood() + 1);
     (*d).setLifeTime((*d).getLifeTime() + 1);
+
     //birth
     if ((*d).increasePregnantTime()) {
 
@@ -381,7 +420,7 @@ void World::timePassed(Creature* d, int i, int j) {
                 int yPos = modulo((*d).getY() + y, hei);
 
 
-                Coordinate c;
+                
                 c.x = xPos;
                 c.y = yPos;
                 if (cell_is_empty(c)) {
@@ -404,15 +443,14 @@ void World::timePassed(Creature* d, int i, int j) {
     }
 
 
-    if ((*d).getTimeWithoutFood() >= (*d).getMaxTimeWithoutFood()
-            || (*d).getLifeTime() >= (*d).getMaxLifeTime()) {
+    if ((*d).getTimeWithoutFood() > (*d).getMaxTimeWithoutFood()
+            || (*d).getLifeTime() > (*d).getMaxLifeTime()) {
 
 #ifdef DEBUG
         std::cout << "I died!\n";
         std::cout << "current time without food: " << (*d).getTimeWithoutFood() << "\n" << "current life time: " << (*d).getLifeTime() << "\n";
 #endif
-
-        mp->deleteMonster(i, j);
+		mp->deleteMonster((*d).getPos());
     }
 }
 

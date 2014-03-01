@@ -126,7 +126,16 @@ void exit_error(int error_number) {
 		case 1: 
 			error_msg += "No free cells found in getRandomFreePosition";
 			break;
-		default: 
+		case 2:
+			error_msg += "Too many vegetals for this world";
+			break;
+		case 3:
+			error_msg += "Too many consumerI for this world";
+			break;
+		case 4:
+			error_msg += "Too many consumerII for this world";
+			break;
+		default:
 			error_msg += "Unknown handled error";
 			break;
 	}

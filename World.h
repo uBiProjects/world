@@ -1,9 +1,9 @@
 #ifndef WORDL_H
 #define WORDL_H
 
+#include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
-#include "Utils.h"
 
 class World {
 
@@ -13,6 +13,7 @@ private:
 	//
 	int step;
 	int maxsteps;
+	int stepsForNewVegetal=2;		// new vegetal each 2. step.
 	int numberConsumer1;
 	int numberConsumer2;
 	int wwidth, wheight;
@@ -29,7 +30,7 @@ public:
 	void performOneStep();
 	void run();	
 	
-	void timePassed(Creature*,int,int);
+	void timePassed(Creature*);
  	// int modulo(int, int);
  	bool smell(Creature*, int*, int*);
 
@@ -40,7 +41,10 @@ public:
  	bool isAConsumerII(Life*);
 	bool isAVegetal(Coordinate);
 	bool isACreature(Coordinate);
- 	
+	bool createNewVegetal(Coordinate);
+	bool createNewConsumerI(Coordinate);
+	bool createNewConsumerII(Coordinate);
+	void setAllConsumersWalkable();
 };
 
 #endif
