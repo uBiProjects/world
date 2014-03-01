@@ -2,6 +2,10 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+// #define DEBUG
+// #define DEBUG1
+#define CLEAR_SCREEN
+
 #if (defined _WIN32) || (defined _WIN64)
 	#define	WINDOWS
 #else

@@ -113,7 +113,7 @@ void clear_keyboard_buffer() {
 void wait_for_keypressed() {
 	printf("\nPress Enter to continue...");
 	clear_keyboard_buffer();
-	getchar();
+	char c = getchar();
 }
 
 // clears the screen

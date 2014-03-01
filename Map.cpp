@@ -3,9 +3,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
+
 #include "Utils.h"
-
-
 #include "Life.h"		//used in MapItem
 #include "MapItem.h"	//used in Map.h
 #include "Map.h"
@@ -96,7 +95,7 @@ void Map:: removeMonster(Coordinate _c){
 	cell[_c.x][_c.y]->monster = NULL;
 
 	//update the current amount of free position
-	amountFreePosition --;
+	amountFreePosition ++;
 	
 }
 
@@ -124,7 +123,7 @@ void Map::insertMonster(Life* _life, Coordinate _c){
 	_life->setY(_c.y);
 
 	//update the current amount of free position
-	amountFreePosition ++;
+	amountFreePosition --;
 }
 
 /**
@@ -184,12 +183,19 @@ void Map:: updateEmission(Life l, int _x, int _y, int _multiplicator){
  * @param _detailed if detailed, also print stink value
  */
 void Map::print(bool _detailed) {
-	sleepd(50);
+
+	
 
 #ifndef DEBUG
-	clear_screen();
+	sleepd(5);
+#else
+	sleepd(800);
 #endif
 
+#ifdef CLEAR_SCREEN
+	clear_screen();
+#endif
+	std::cout << amountFreePosition<< "\n";
 
 	//size of cells in chars
 	int sizeCell = 3;

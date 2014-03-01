@@ -17,8 +17,6 @@
 #include "ConsumerII.h"
 #include "Vegetal.h"
 
-// #define DEBUG
-#define CLEAR_SCREEN
 
 /*
  * Constructor
@@ -124,6 +122,8 @@ Coordinate World::getRandomFreePosition(){
 	// we reached the end of the world did not find indexFree empty cells
 	// this should never happen
 	exit_error(1);
+	// not needed just to disable complier waring message
+	return c;
 }
 
 
@@ -257,7 +257,7 @@ void World::performOneStep() {
 
                     int index = -2;
 
-                    //not moving
+                    //not moving no interaktion
                     if (plusX == plusY && plusY == 0) {
 
                     	mp->insertMonster(currentCreature, newPosition);
@@ -271,7 +271,7 @@ void World::performOneStep() {
                     }
 
 
-                    //if index is equal to 1 there is nothing to interact and the creature
+                    //if index is equal to -1 there is nothing to interact and the creature
                     //just changes its position
                     if (index == -1) {
 
@@ -279,7 +279,7 @@ void World::performOneStep() {
                     	mp->insertMonster(currentCreature, newPosition);
 
                     }
-                    //eat something
+                    //eat something and walk
                     else if (index == 1) {
 
                     	//delete the meal.
@@ -288,8 +288,9 @@ void World::performOneStep() {
                     	//go to the new position.
                     	mp->insertMonster(currentCreature, newPosition);
                     }
-                    //reproduce
+                    //reproduce don'walk
                     else if (index == 0) {
+						mp->insertMonster(currentCreature, c);
 
                         Creature a = *((Creature*) (mp->getMapItem(newPosition)));
                         Creature b = *currentCreature;
@@ -320,10 +321,15 @@ void World::performOneStep() {
                     if (noch % 2 == 0) {
                         timePassed(currentCreature);
                     }
+#ifdef DEBUG1
+					mp->print(false);
+#endif
                 } else {
 
                 }
+				
             }
+
         }
     }
 }
