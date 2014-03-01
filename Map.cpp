@@ -96,7 +96,7 @@ void Map:: removeMonster(Coordinate _c){
 	cell[_c.x][_c.y]->monster = NULL;
 
 	//update the current amount of free position
-	amountFreePosition ++;
+	amountFreePosition --;
 	
 }
 
@@ -124,7 +124,7 @@ void Map::insertMonster(Life* _life, Coordinate _c){
 	_life->setY(_c.y);
 
 	//update the current amount of free position
-	amountFreePosition --;
+	amountFreePosition ++;
 }
 
 /**

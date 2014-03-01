@@ -17,7 +17,7 @@
 #include "ConsumerII.h"
 #include "Vegetal.h"
 
-#define DEBUG
+// #define DEBUG
 #define CLEAR_SCREEN
 
 /*
@@ -105,8 +105,8 @@ Coordinate World::getRandomFreePosition(){
 		return c;											// return false if no free cells left 
 	}
 	
-	int indexFree = 1 + (modulo(rand(), (free_cells)));		// find the indexFree free cell
-
+	int indexFree = getRandomNumber(1, free_cells);		// find the indexFree free cell
+	
     // counter
     int AmountOfPassedFreePos = 0;							// free cells passed
 
@@ -247,8 +247,8 @@ void World::performOneStep() {
                     	//fetch the movement out of plusX
                     } else {
                     	//randomly generate movement
-                        plusX = -1 + (modulo(rand(), 3));
-                        plusY = -1 + (modulo(rand(), 3));
+						plusX = -1 + getRandomNumber(0, 2);
+						plusY = -1 + getRandomNumber(0, 2);
                     }
 
                     //calculate the new position modulo map size because creatures can pass the edge.

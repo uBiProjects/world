@@ -28,6 +28,7 @@
 	void clear_keyboard_buffer();
 	void clear_screen();
 	void exit_error(int);
+	int getRandomNumber(int, int);
 
 
 #endif /* UTILS_H_ */

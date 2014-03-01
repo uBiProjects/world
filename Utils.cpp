@@ -11,7 +11,8 @@
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <windows.system.h>
-	#define CLRSCR system("cls")
+//	#define CLRSCR system("cls")
+    #define CLRSCR System::Console::SetCursorPosition(0, 0);
 	#define FLUSH_KEYBOARD fflush(stdin)
 	#define SLEEP  Sleep(milliseconds)
 #else
@@ -65,13 +66,19 @@
 			Dateityp = Status.st_mode & S_IFMT;
 			switch (Dateityp) {
 				case S_IFREG:
+#ifdef DEBUG
 					puts("is a file");
+#endif
 					return true;
 				case S_IFDIR:
+#ifdef DEBUG
 					puts("is a folder");
+#endif
 					break;
 				default:
+#ifdef DEBUG
 					puts("is somting elese");
+#endif
 					break;
 			}
 		}
@@ -111,9 +118,6 @@ void wait_for_keypressed() {
 
 // clears the screen
 void clear_screen() {
-	// using namespace System;
-	// Console::SetCursorPosition(0, 0);
-	// std::cout << "\033[0;0H";
 	CLRSCR;
 }
 
@@ -160,4 +164,11 @@ void strain(char *argv)
 		std::cout << cstring << std::endl;
 	}
 	f.close();
+}
+
+
+// get a random number in intervall [range_min, range_max]
+int getRandomNumber(int range_min,int range_max) {
+	int u = (double)rand() / (RAND_MAX + 1) * (range_max + 1 - range_min) + range_min;
+	return u;
 }
