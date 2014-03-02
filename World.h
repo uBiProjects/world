@@ -33,7 +33,7 @@ public:
 
 	void timePassed(Creature*);
  	// int modulo(int, int);
- 	bool smell(Creature*, int*, int*);
+ 	bool smell(Creature*, Coordinate*);
 
 	bool cell_is_empty(Coordinate);
 	bool isAConsumerI(Coordinate);

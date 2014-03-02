@@ -11,6 +11,7 @@
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <windows.system.h>
+// TODO 1. clr screen immer
 //	#define CLRSCR system("cls")
     #define CLRSCR System::Console::SetCursorPosition(0, 0);
 	#define FLUSH_KEYBOARD fflush(stdin)
@@ -140,7 +141,10 @@ void exit_error(int error_number) {
 			error_msg += "Too many consumerII for this world";
 			break;
 		case 5:
-			error_msg += "in Creature:: interact call of routine with invalid creature";
+			error_msg += "in Creature: interact call of routine with invalid creature";
+			break;
+		case 6:
+			error_msg += "in performOneStep: Bad index in switch case";
 			break;
 		default:
 			error_msg += "Unknown handled error";

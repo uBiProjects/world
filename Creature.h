@@ -39,10 +39,12 @@ public:
 	bool increasePregnantTime();
 	
 	void setTimeWithoutFood(int);
+	void incrementTimeWithoutFood();
 	void setRangeOfSmellDetection(int);
 	void setSpeed(int);
 	void setMaxTimeWithoutFood(int);
 	void setLifeTime(int);
+	void incrementLifeTime();
 	void setMaxLifeTime(int);
 	void setPregnant(bool);
 	

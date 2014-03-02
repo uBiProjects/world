@@ -50,6 +50,10 @@ void Creature::setLifeTime(int _timeLife){
 	timeLife = _timeLife;
 }
 
+void Creature::incrementLifeTime(){
+	timeLife++;
+}
+
 int Creature::getRangeOfSmellDetection(){
 	return rangeOfSmellDetection;
 }
@@ -68,6 +72,10 @@ int Creature::getMaxTimeWithoutFood(){
 void Creature::setTimeWithoutFood(int _timeWithoutFood){
 	timeWithoutFood = _timeWithoutFood;
 }
+void Creature::incrementTimeWithoutFood(){
+	timeWithoutFood++;
+}
+
 
 void Creature::setRangeOfSmellDetection(int _rangeOfSmellDetection){
 	rangeOfSmellDetection = _rangeOfSmellDetection;
@@ -90,6 +98,7 @@ void Creature::setMaxTimeWithoutFood(int _maxTimeWithoutFood){
 // returns 1 = i can eat that
 // return -1 = i can walk
 // return -2 = nothing to do 
+// TODO only try to reproduce if not already Pregnant
 int Creature:: interact(Creature* _a, Life* _b){
 	
 	// actions for consumerI
