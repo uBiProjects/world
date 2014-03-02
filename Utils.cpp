@@ -139,6 +139,9 @@ void exit_error(int error_number) {
 		case 4:
 			error_msg += "Too many consumerII for this world";
 			break;
+		case 5:
+			error_msg += "in Creature:: interact call of routine with invalid creature";
+			break;
 		default:
 			error_msg += "Unknown handled error";
 			break;
@@ -149,8 +152,14 @@ void exit_error(int error_number) {
 	exit(error_number);
 }
 
-
-
+// returns the signum of x
+// or 0 if x = 0
+int sign(int x) {
+	// x > 0 => (x>0) = 1 und (x<0)=0 =>1
+	// x = 0 => (x>0) = 0 und (x<0)=0 =>0
+	// x <0  => (x>0) = 0 und (x<0)=1 =>-1
+	return (x > 0) - (x < 0);
+}
 
 // 
 void strain(char *argv)

@@ -175,7 +175,6 @@ void World::run() {
 // return true on success
 bool World::createNewVegetal(Coordinate _c) {
 	if (_c && cell_is_empty(_c)) {
-
 		mp->insertMonster(new Vegetal(_c), _c);
 		return true;
 	}
@@ -187,9 +186,7 @@ bool World::createNewVegetal(Coordinate _c) {
 // return true on success
 bool World::createNewConsumerI(Coordinate _c) {
 	if (_c && cell_is_empty(_c)) {
-		Creature* currentCreature = new ConsumerI(_c);
-		mp->insertMonster(currentCreature, _c);
-		// mp->insertMonster(new ConsumerI(_c), _c);
+		mp->insertMonster(new ConsumerI(_c), _c);
 		return true;
 	}
 	return false;
@@ -199,9 +196,7 @@ bool World::createNewConsumerI(Coordinate _c) {
 // return true on success
 bool World::createNewConsumerII(Coordinate _c) {
 	if (_c && cell_is_empty(_c)) {
-		Creature* currentCreature = new ConsumerII(_c);
-		mp->insertMonster(currentCreature, _c);
-		// mp->insertMonster(new ConsumerII(_c), _c);
+		mp->insertMonster(new ConsumerII(_c), _c);
 		return true;
 	}
 	return false;
@@ -274,36 +269,37 @@ void World::performOneStep() {
                     	//fetch the movement out of plusX
                     } else {
                     	//randomly generate movement
-						plusX = -1 + getRandomNumber(0, 2);
-						plusY = -1 + getRandomNumber(0, 2);
+						/*plusX = -1 + getRandomNumber(0, 2);
+						plusY = -1 + getRandomNumber(0, 2);*/
                     }
 
                     //calculate the new position modulo map size because creatures can pass the edge.
-                    newPosition.x = modulo(c.x + plusX, mp->getWidth());
-                    newPosition.y = modulo(c.y + plusY, mp->getHeight());
+                    newPosition.x = modulo(c.x + plusX, wwidth);
+                    newPosition.y = modulo(c.y + plusY, wheight);
 
                     int index = -2;
 
                     //not moving no interaktion
                     if (plusX == plusY && plusY == 0) {
-
-                    	mp->insertMonster(currentCreature, newPosition);
+                    	mp->insertMonster(currentCreature, c);
                     } else {
 
                         //index of method interact in Creature. Tells how to
                         //interact with the new coordinate
-                        index = currentCreature->interact(currentCreature,
-                        		mp->getMapItem(newPosition)->monster);
+                        index = currentCreature->interact(currentCreature, mp->getMapItem(newPosition)->monster);
 
                     }
+					// -2 = nichts
+					// -1 = wandern
+					//  0 = verm
+					//  1 = essen + gehen
 
-
-                    //if index is equal to -1 there is nothing to interact and the creature
-                    //just changes its position
+                    // if index is equal to -1 there is nothing to interact and the creature
+                    // just changes its position
                     if (index == -1) {
 						// DEBUG
 						testfree();
-                    	//update position INSIDE the creature
+                    	// update position INSIDE the creature
                     	mp->insertMonster(currentCreature, newPosition);
 						// DEBUG
 						testfree();
@@ -402,8 +398,8 @@ bool World::smell(Creature* smellingCreature, int* plusX, int* plusY) {
 
         	int FE, PE, STE;
 
-        	//compute Food, predator, same type emission depending on type of
-        	//smellingCreature.
+        	// compute Food, predator, same type emission depending on type of
+        	// smellingCreature.
         	if(isAConsumerI(smellingCreature)){
         		FE  = mp->getMapItem(coord)->vEmission;
         		PE  = mp->getMapItem(coord)->c2Emission;
@@ -414,7 +410,7 @@ bool World::smell(Creature* smellingCreature, int* plusX, int* plusY) {
         		STE = mp->getMapItem(coord)->c2Emission;
         	}
 
-        	//compute score
+        	// compute score
             int score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
 
             // if the current score is better than all scores before
@@ -426,13 +422,20 @@ bool World::smell(Creature* smellingCreature, int* plusX, int* plusY) {
             }
         }
     }
+	if (bestScore == 0) {
+		*plusX = -1 + getRandomNumber(0, 2);
+		*plusY = -1 + getRandomNumber(0, 2);
+		return (false);
+	} 
 
     //calculate destination and write it into the values posX and posY
-    *plusX = (oldCoordinate.x - bestDestination.x) % 2;
-    *plusY = (oldCoordinate.y - bestDestination.y) % 2;
+	
 
+	*plusX = sign((bestDestination.x - oldCoordinate.x));
+	*plusY = sign((bestDestination.y - oldCoordinate.y));
+	
     //return whether a best destination has been found.
-    return (!(bestDestination.x == INT_MIN && bestDestination.y == INT_MIN));
+	return (true);
 }
 
 void World::timePassed(Creature* d) {

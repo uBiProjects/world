@@ -86,36 +86,40 @@ void Creature::setMaxTimeWithoutFood(int _maxTimeWithoutFood){
 	y += _yChangement;
 }*/	
 
+// returns 0 = reproduce
+// returns 1 = i can eat that
+// return -1 = i can walk
+// return -2 = nothing to do 
 int Creature:: interact(Creature* _a, Life* _b){
 	
+	// actions for consumerI
 	if(dynamic_cast<ConsumerI*>( _a ) ){
-	
-		
-		if(dynamic_cast<ConsumerI*>( _b ) ){
-			
-//			std::cout << "ConsumerI reproduces.\n";
+		if(dynamic_cast<ConsumerI*>( _b ) ){		// i can reproduce
 			return 0;
-		} else if(dynamic_cast<Vegetal*>( _b ) ){
-//			std::cout <std< "ConsumerI eats a delicious plant.\n";
+		}
+		else if (dynamic_cast<Vegetal*>(_b)){		// i can eat that
 			return 1;
 		}
+		else if (dynamic_cast<ConsumerII*>(_b)) {	// i can not do anything
+			return -2;								
+		}											// i can walk cell is empty
 		return -1;
-		
 	}
 	else if(dynamic_cast<ConsumerII*>( _a ) ){
-
-		if(dynamic_cast<ConsumerI*>( _b ) ){
-//			std::cout << "ConsumerII eats a creature.\n";
+		if(dynamic_cast<ConsumerI*>( _b ) ){		// i can eat that
 			return 1;
-		
-		} else if(dynamic_cast<ConsumerII*>( _b ) ){
-//			std::cout << "ConsumerII reproduces.\n";
+		} else if(dynamic_cast<ConsumerII*>( _b ) ){ // i can reproduce
 			return 0;
-		}
+		} else if (dynamic_cast<Vegetal*>(_b)){		// cell is bocked
+			return -2;
+		}											// i can walk cell is empty
 		return -1;
 	}
-	return -1;
+	// this should never happen
+	exit_error(5);
 }
+
+
 
 void Creature:: changePosition(int _plusX, int _plusY){
 	setX(getX() + _plusX);

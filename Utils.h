@@ -29,7 +29,8 @@
 		operator bool() const { return x >= 0 && y >= 0; }
 	};
 
-    void sleepd(unsigned);
+	int sign(int);
+	void sleepd(unsigned);
     bool is_file(const char* );
     void strain(char*);
 	int modulo(int, int);
