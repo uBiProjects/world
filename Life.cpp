@@ -1,7 +1,7 @@
 #include <iostream>
 
+#include "Utils.h"
 #include "Life.h"
-#include "utils.h"
 
 
 	Life::Life(Coordinate _pos, int curr_lifetime, int emission_range, int max_lifetime, char print_char){
@@ -10,11 +10,14 @@
 		maxLifeTime = max_lifetime;
 		stinkRange = emission_range;
 		cell_char = print_char;
+		// number_of_living_lifes++;
+		int i = 0;
 	}
 	
 	
 	Life::~Life(){
-	
+		int i = 0;
+		// number_of_living_lifes--;
 	}
 	
 	char Life::getCellChar(){

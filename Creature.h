@@ -5,6 +5,8 @@
 class Creature : public Life {
 
 private:
+	
+
 	int timeWithoutFood;
 	int timeLife;
 	
@@ -18,6 +20,7 @@ private:
 	int maxPregnantTime;
 	
 public:
+
 	Creature(Coordinate, int, int, int,int, int, char);
 	virtual ~Creature();
 	

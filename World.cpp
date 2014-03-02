@@ -91,13 +91,28 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 }
 
 
-
+int World::testfree() {
+	Coordinate d;											// cell to set the living (init value is (-1,-1)
+	int testam = 0;
+	for (d.x = 0; d.x < wwidth; d.x++) {
+		for (d.y = 0; d.y < wwidth; d.y++) {
+			if (cell_is_empty(d)) {
+				testam++;
+			}
+		}
+	}
+	int free_cells = mp->getAmountFreePosition();			// only free_cells are empty
+	if (free_cells != testam) {
+		int i = 0;
+	}
+	return testam;
+}
 
 
 Coordinate World::getRandomFreePosition(){
 
 	Coordinate c;											// cell to set the living (init value is (-1,-1)
-	
+	testfree();
 	int free_cells = mp->getAmountFreePosition();			// only free_cells are empty
 	if (free_cells == 0) {
 		return c;											// return false if no free cells left 
@@ -138,6 +153,9 @@ void World::run() {
 
         performOneStep();
 
+		// DEBUG
+		testfree();
+
         // every X rounds a new plant grows in a random place
 		// if amound of free cells > 0
 		if (mp->getAmountFreePosition()>0) {
@@ -157,6 +175,7 @@ void World::run() {
 // return true on success
 bool World::createNewVegetal(Coordinate _c) {
 	if (_c && cell_is_empty(_c)) {
+
 		mp->insertMonster(new Vegetal(_c), _c);
 		return true;
 	}
@@ -168,7 +187,9 @@ bool World::createNewVegetal(Coordinate _c) {
 // return true on success
 bool World::createNewConsumerI(Coordinate _c) {
 	if (_c && cell_is_empty(_c)) {
-		mp->insertMonster(new ConsumerI(_c), _c);
+		Creature* currentCreature = new ConsumerI(_c);
+		mp->insertMonster(currentCreature, _c);
+		// mp->insertMonster(new ConsumerI(_c), _c);
 		return true;
 	}
 	return false;
@@ -178,7 +199,9 @@ bool World::createNewConsumerI(Coordinate _c) {
 // return true on success
 bool World::createNewConsumerII(Coordinate _c) {
 	if (_c && cell_is_empty(_c)) {
-		mp->insertMonster(new ConsumerII(_c), _c);
+		Creature* currentCreature = new ConsumerII(_c);
+		mp->insertMonster(currentCreature, _c);
+		// mp->insertMonster(new ConsumerII(_c), _c);
 		return true;
 	}
 	return false;
@@ -225,6 +248,7 @@ void World::performOneStep() {
         for (c.x = 0; c.x < wwidth; c.x++) {
             for (c.y = 0; c.y < wheight; c.y++) {
 
+				
             	//TODO: aendern damit hier auch der vom user definierte speed drin vorkommt
                 if (
 					(isAConsumerI(c) || (isAConsumerII(c) && noch % kgv == 0))
@@ -232,11 +256,14 @@ void World::performOneStep() {
 
                     //save current Life as Creature and remove monster from old position.
                     Creature* currentCreature = (Creature*) (mp->getMapItem(c)->monster);
+					// DEBUG
+					testfree();
 
 					// to ensure all emisions are form other livings, the current consumer
 					// has to be temorary removed from the map
                 	mp->removeMonster(c);
-
+					// DEBUG
+					testfree();
                 	//compute new position and delta values.
 					newPosition = c;
                     
@@ -274,10 +301,12 @@ void World::performOneStep() {
                     //if index is equal to -1 there is nothing to interact and the creature
                     //just changes its position
                     if (index == -1) {
-
+						// DEBUG
+						testfree();
                     	//update position INSIDE the creature
                     	mp->insertMonster(currentCreature, newPosition);
-
+						// DEBUG
+						testfree();
                     }
                     //eat something and walk
                     else if (index == 1) {
@@ -321,6 +350,7 @@ void World::performOneStep() {
                     if (noch % 2 == 0) {
                         timePassed(currentCreature);
                     }
+					
 #ifdef DEBUG1
 					mp->print(false);
 #endif

@@ -11,6 +11,6 @@ class Vegetal : public Life {
 	public:
 		Vegetal(Coordinate);
 		virtual ~Vegetal();
-
+		
 };
 #endif

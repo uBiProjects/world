@@ -29,7 +29,8 @@ public:
 	void setLife(int, int, Life);
 	void performOneStep();
 	void run();	
-	
+	int World::testfree();
+
 	void timePassed(Creature*);
  	// int modulo(int, int);
  	bool smell(Creature*, int*, int*);

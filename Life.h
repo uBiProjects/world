@@ -7,6 +7,7 @@ class Life{
 
 	protected:
 		
+
 		//positioin on map
 		Coordinate pos;
 		// char on screen
@@ -24,6 +25,9 @@ class Life{
 		
 		
 	public:
+		
+
+
 		int getX();
 		int getY();
 		Coordinate getPos();
@@ -46,8 +50,7 @@ class Life{
 
 		Life(Coordinate,int,int,int,char);
 		virtual ~Life();
-		
-		
+				
 
 };
 

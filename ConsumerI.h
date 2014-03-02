@@ -3,9 +3,10 @@
 
 
 class ConsumerI : public Creature {
-
-
+	
+	
 	public:
+		
 		ConsumerI(Coordinate);
 		virtual ~ConsumerI();
 		static const int maxLifeTime = 30;

@@ -6,6 +6,7 @@ class ConsumerII : public Creature {
 
 
 	public:
+		
 		ConsumerII(Coordinate);
 		virtual ~ConsumerII();
 		static const int maxLifeTime = 100;

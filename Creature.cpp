@@ -22,11 +22,11 @@ Creature:: Creature(Coordinate _pos, int _maxLifeTime, int _rangeSmellAbgeben, i
 	
 	maxPregnantTime = 5;
 	pregnantTime = maxPregnantTime + 1;
-	
+	// number_of_living_creatures++;
 }
 
 Creature:: ~Creature(){
-
+	// number_of_living_creatures--;
 }
 
 //_coordianteX, _coordinateY, _lifeTime, _maxLifeTime, _rangeSmellAbgeben
