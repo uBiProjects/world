@@ -1,7 +1,7 @@
 all: World
 
 World: World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o Utils.o MapItem.o Map.o
-	g++ -o World World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o Utils.o
+	g++ -o World World.o ConsumerI.o ConsumerII.o Creature.o Vegetal.o Life.o Utils.o MapItem.o Map.o
 
 World.o: World.cpp World.h Life.h Creature.h ConsumerI.h ConsumerII.h Vegetal.h Utils.h MapItem.h Map.h
 	g++ -o World.o -c World.cpp -Wall -pedantic
