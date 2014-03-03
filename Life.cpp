@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "Life.h"
 
+	static int mist = 0;
 
 	Life::Life(Coordinate _pos, int curr_lifetime, int emission_range, int max_lifetime, char print_char){
 		pos = _pos;
@@ -11,7 +12,7 @@
 		maxLifeTime = max_lifetime;
 		stinkRange = emission_range;
 		cell_char = print_char;
-		// number_of_living_lifes++;
+		mist++;
 	}
 	
 	

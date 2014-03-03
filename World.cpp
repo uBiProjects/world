@@ -563,7 +563,7 @@ int main(int _anzParam, char** strings) {
         std::cout << "file does not exist or is a directory" << strings[6];
 		goto exit_out;
     }
-
+	
     // * test
 	clear_screen();
 	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
