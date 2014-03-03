@@ -13,7 +13,7 @@ private:
 	//
 	int step;
 	int maxsteps;
-	int stepsForNewVegetal=3;		// new vegetal each 2. step.
+	const static int stepsForNewVegetal=3;		// new vegetal each 2. step.
 	int numberConsumer1;
 	int numberConsumer2;
 	int wwidth, wheight;
@@ -29,7 +29,7 @@ public:
 	void setLife(int, int, Life);
 	void performOneStep();
 	void run();	
-	int World::testfree();
+	int testfree();
 
 	void timePassed(Creature*);
  	// int modulo(int, int);

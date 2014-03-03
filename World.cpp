@@ -18,7 +18,7 @@
 #include "Vegetal.h"
 
 
-// TODO wenn welt voll mit nur einer Art => "spiel"-ende
+// TODO wenn Welt voll mit nur einer Art => "spiel"-ende
 
 /*
  * Constructor
