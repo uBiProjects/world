@@ -11,12 +11,10 @@
 		stinkRange = emission_range;
 		cell_char = print_char;
 		// number_of_living_lifes++;
-		int i = 0;
 	}
 	
 	
 	Life::~Life(){
-		int i = 0;
 		// number_of_living_lifes--;
 	}
 	
