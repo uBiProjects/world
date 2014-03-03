@@ -29,7 +29,7 @@ public:
 	void setLife(int, int, Life);
 	void performOneStep();
 	void run();	
-	int World::testfree();
+	int testfree();
 
 	void timePassed(Creature*);
  	// int modulo(int, int);

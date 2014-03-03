@@ -1,7 +1,7 @@
 #ifndef LIFE_H
 #define LIFE_H
 
-// #include "Utils.h"
+#include "Utils.h"
 
 class Life{
 
