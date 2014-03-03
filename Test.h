@@ -21,7 +21,8 @@ private:
 	void writeCII(int*);
 	void testAllValues();
 	
-	static Test instance;
+//	static Test* instance;
+//	static bool created;
 	Test();
 
 public:
@@ -39,7 +40,7 @@ public:
 	int getCIIS();
 
 
-	static Test getInstance();
+//	static Test* getInstance();
  	
 };
 

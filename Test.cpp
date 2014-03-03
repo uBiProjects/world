@@ -34,9 +34,6 @@ Test::Test(){
 	pointer=Test::readFile((char*)"Consumer2.txt");
 	print(pointer);
 	writeCII(pointer);
-	
-	testAllValues();
-	
 }
 
 /**
@@ -202,6 +199,14 @@ void Test::testAllValues(){
 }
 
 
-Test Test :: getInstance(){
+/*Test* Test :: getInstance(){
 
-}
+
+	//std:: cout << created << "hier";
+	if(!created){
+		instance = new Test();
+		created = true;
+	}
+
+	return instance;
+}*/
