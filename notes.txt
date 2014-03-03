@@ -1,10 +1,9 @@
-Formelnutzung
 C2 müssen Pflanzen umgehen
-Auslesen aus Dateien
-Umsetzen von eingegebenen Startangaben (Vor allem Map-Dimensionen)
+Mehrere Tiere auf einem Feld(?) Dadurch wird 1 gelöst..
+Tiere werden auf dem Feld geboren, wo die Mutter steht.
+Simulation endet wenn alle C tot sind.
+Pflanzen wachsen in jeder Zelle. Sie können entweder anwesend oder abgefressen worden sein
 
-
-Code aufräumen
 
 
 http://www.gnu.org/software/libc/manual/index.html#dir
