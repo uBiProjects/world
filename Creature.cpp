@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <typeinfo>
-
 #include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
@@ -124,8 +123,10 @@ int Creature:: interact(Creature* _a, Life* _b){
 		}											// i can walk cell is empty
 		return -1;
 	}
+
 	// this should never happen
 	exit_error(5);
+	return -3;
 }
 
 
