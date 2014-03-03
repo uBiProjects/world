@@ -407,7 +407,7 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
         }
     }
 	// nothing to smell take a random value
-	if (!semllSomeThing) {
+	if (!semllSomeThing && bestScore==0) {
 		bestDestination.x = -1 + getRandomNumber(0, 2);
 		bestDestination.y = -1 + getRandomNumber(0, 2);
 		*plusXY = bestDestination;
@@ -418,8 +418,8 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
 	bestDestination.x = sign((bestDestination.x - oldCoordinate.x));
 	bestDestination.y = sign((bestDestination.y - oldCoordinate.y));
 	*plusXY = bestDestination;
-    // a best destination has been found.
-	return (true);
+    
+	return (semllSomeThing);
 }
 
 // TODO trenn in Pregnant
@@ -507,13 +507,16 @@ int main(int _anzParam, char** strings) {
      *	8	[char*]	path to consumer2.txt
      */
     std::string errorMessage =
-            (std::string)"Recall World with 8 parameters like \n" +
-            (std::string)"World [int] [int] [int] [int] [int] [char*] [char*] [char*]" +
-            (std::string) "\n\n1st Param	[height]\n2nd param	[width]\n" +
-            (std::string) "3rd param	[maxNumberOfStepsInSimulation]\n4th param	" +
-            (std::string) "[NumberOfC1AtTheBeginning]\n5th param	" +
-            (std::string) "[NumberOfC2AtTheBeginning]<<\n6th param	[pathToVegetal.txt]" +
-            (std::string) "\n7th param	[pathToConsumerI]\n8th param	[consumer2]\n";
+            (std::string) "Recall World with 8 parameters like \n" +
+            (std::string) "World [int] [int] [int] [int] [int] [char*] [char*] [char*]\n\n" +
+            (std::string) "1st Param	[height]\n" +
+			(std::string) "2nd param	[width]\n" +
+            (std::string) "3rd param	[maxNumberOfStepsInSimulation]\n" +
+			(std::string) "4th param	[NumberOfC1AtTheBeginning]\n" +
+            (std::string) "5th param	[NumberOfC2AtTheBeginning]\n" +
+            (std::string) "6th param	[pathToVegetal.txt]\n" +
+			(std::string) "7th param	[pathToConsumerI]\n"+
+            (std::string) "8th param	[consumer2]\n";
 
 
     //if the amount of parameters is not equal to 8 + 1.
@@ -550,8 +553,7 @@ int main(int _anzParam, char** strings) {
 	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 
 exit_out:
-	clear_screen();
-	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
+	
 
 	wait_for_keypressed();
     return 0;

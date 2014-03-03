@@ -9,7 +9,7 @@ class ConsumerII : public Creature {
 		
 		ConsumerII(Coordinate);
 		virtual ~ConsumerII();
-		static const int maxLifeTime = 100;
+		static const int maxLifeTime = 70;
 		static const int rangeSmellAbgeben = 4;
 		static const int rangeSmellRiechen = 5;
 		static const int speed = 1;
