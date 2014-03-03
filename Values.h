@@ -42,10 +42,15 @@ public:
 	int getCITWF();
 	int getCIS();
 
+	int getCIILT();
 	int getCIIMLT();
 	int getCIISE();
+	int getCIISD();
 	int getCIIMTWF();
+	int getCIITWF();
 	int getCIIS();
+
+	int getPLT();
 
 	static Values* getInstance();
 };

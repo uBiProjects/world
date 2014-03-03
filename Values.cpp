@@ -155,14 +155,28 @@ int Values::getCITWF(){
 int Values::getCIS(){
 	return CIS;
 }
+int Values::getPLT(){
+	return PLT;
+}
+
+
+
 int Values::getCIIMLT(){
 	return CIIMLT;
+}int Values::getCIILT(){
+	return CIILT;
 }
 int Values::getCIISE(){
 	return CIISE;
 }
+int Values::getCIISD(){
+	return CIISD;
+}
 int Values::getCIIMTWF(){
 	return CIIMTWF;
+}
+int Values::getCIITWF(){
+	return CIITWF;
 }
 int Values::getCIIS(){
 	return CIIS;
