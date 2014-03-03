@@ -93,8 +93,8 @@
 /**
  * calc positive modulo 
  *              _x (mod _y)
- * toReturn: Rückgabewert immer positiv
- * else: Erhöhen bis Wert positiv
+ * toReturn: Rï¿½ckgabewert immer positiv
+ * else: Erhï¿½hen bis Wert positiv
 **/
 int modulo(int _x, int _y){
 
@@ -115,7 +115,7 @@ void clear_keyboard_buffer() {
 void wait_for_keypressed() {
 	printf("\nPress Enter to continue...");
 	clear_keyboard_buffer();
-	char c = getchar();
+	getchar();
 }
 
 // clears the screen
