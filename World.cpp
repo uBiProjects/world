@@ -349,7 +349,7 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 	bool c1ready, c2ready;
 
 #ifdef DEBUG
-	std::cout << "zeit1" << a.getPregnantTime() << "\n";
+		std::cout << "zeit1: " << _c1->getMaxPregnantTime() << "\n";
 #endif
 
 	// test if creature1/2 are ready for pregnant
@@ -362,7 +362,7 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 	if (c1ready && c2ready) {
 		_c1->setPregnant(true);
 #ifdef DEBUG
-		std::cout << "zeit2: " << a.getPregnantTime() << "\n";
+		std::cout << "zeit2: " << _c1->getMaxPregnantTime() << "\n";
 #endif
 	}
 }
@@ -429,7 +429,7 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
 			}
 			
             // if the current score is better than all scores before
-            if(score > bestScore){
+            if(score >= bestScore){
             	bestScore = score;
             	bestDestination.x = c.x;
             	bestDestination.y = c.y;
@@ -513,7 +513,7 @@ void World::giveBirthToABaby(Creature* d) {
 		// the child can not be born=dies and 
 		// the creature is not pragnant any more.
 #ifdef DEBUG
-	std : cout << "baby dies"
+		std::cout << "baby dies";
 #endif
 	}
 }
@@ -532,8 +532,10 @@ bool World::creaturMustDie(Creature* d) {
 		idie = true;
 	}
 #ifdef DEBUG
-	std::cout << "I died!\n";
-	std::cout << "current time without food: " << (*d).getTimeWithoutFood() << "\n" << "current life time: " << (*d).getLifeTime() << "\n";
+	if (idie) {
+		std::cout << "I died!\n";
+		std::cout << "current time without food: " << (*d).getTimeWithoutFood() << "\n" << "current life time: " << (*d).getCurrentLifeTime() << "\n";
+	}
 #endif
 	return false;
 }

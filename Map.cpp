@@ -183,8 +183,10 @@ void Map::print(bool _detailed) {
 
 	
 
-#ifndef DEBUG
-	sleepd(5);
+#ifdef FASTRUN
+	#ifndef DEBUG1
+		sleepd(5);
+	#endif
 #else
 	sleepd(800);
 #endif

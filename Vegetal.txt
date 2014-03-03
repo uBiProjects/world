@@ -1,3 +1,3 @@
 Life Time	0
-Max Life Time	10
-Smell Emission	3
+Max Life Time	50
+Smell Emission	5

@@ -9,11 +9,11 @@ class ConsumerI : public Creature {
 		
 		ConsumerI(Coordinate);
 		virtual ~ConsumerI();
-		static const int maxLifeTime = 50;
-		static const int rangeSmellAbgeben = 4;
-		static const int rangeSmellRiechen = 3;
-		static const int speed = 2;
-		static const int maxTimeWithoutFood = maxLifeTime/3;
+		//static const int maxLifeTime = 50;
+		//static const int rangeSmellAbgeben = 4;
+		//static const int rangeSmellRiechen = 3;
+		//static const int speed = 2;
+		//static const int maxTimeWithoutFood = maxLifeTime/3;
 		static const char cell_char = 'c';
 
 };
