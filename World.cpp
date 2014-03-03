@@ -495,8 +495,20 @@ bool World::creaturMustDie(Creature* d) {
 }
 
 
+
+/*
+* parameter syntax (8):
+*	1	[int]	height
+*	2	[int]	width
+*	3	[int]	maximal number of steps in one simulation
+*	4	[int]	number of consumer 1 at the beginning
+*	5	[int]	number of consumer 2 at the beginning
+*	6	[char*]	path to vegetal.txt
+*	7	[char*]	path to consumer1.txt
+*	8	[char*]	path to consumer2.txt
+*/
+
 // TO DO einlesen einbinden
-// TO DO Fehlermeldungen nach util auslagern
 
 int main(int _anzParam, char** strings) {
 
@@ -507,72 +519,40 @@ int main(int _anzParam, char** strings) {
 	int numberConsumer2;
 	// to do
 	int numberVegetal = 5;
-	
-    //strain("bla");
-    //	strain("Vegetal.o");
-    //strain("Debug");
-
-    //	return 0;
-    /*
-     * parameter syntax (8):
-     *	1	[int]	height
-     *	2	[int]	width
-     *	3	[int]	maximal number of steps in one simulation
-     *	4	[int]	number of consumer 1 at the beginning
-     *	5	[int]	number of consumer 2 at the beginning
-     *	6	[char*]	path to vegetal.txt
-     *	7	[char*]	path to consumer1.txt
-     *	8	[char*]	path to consumer2.txt
-     */
-    std::string errorMessage =
-            (std::string) "Recall World with 8 parameters like \n" +
-            (std::string) "World [int] [int] [int] [int] [int] [char*] [char*] [char*]\n\n" +
-            (std::string) "1st Param	[height]\n" +
-			(std::string) "2nd param	[width]\n" +
-            (std::string) "3rd param	[maxNumberOfStepsInSimulation]\n" +
-			(std::string) "4th param	[NumberOfC1AtTheBeginning]\n" +
-            (std::string) "5th param	[NumberOfC2AtTheBeginning]\n" +
-            (std::string) "6th param	[pathToVegetal.txt]\n" +
-			(std::string) "7th param	[pathToConsumerI]\n"+
-            (std::string) "8th param	[consumer2]\n";
-
-
+ 
+   
     //if the amount of parameters is not equal to 8 + 1.
     if (_anzParam != 9) {
-        //print error message
-        std::cout << "Missing arguments.\n" << errorMessage;
-//		goto exit_out;
+		exit_error(7);
     }
 
     //save integer values
 	//TO DO geht das nicht einfacher ?
-    height = atoi(((std::string)strings[1]).c_str());
-    width = atoi(((std::string)strings[2]).c_str());
-    maxNumberOfSteps = atoi(((std::string)strings[3]).c_str());
-    numberConsumer1 = atoi(((std::string)strings[4]).c_str());
-    numberConsumer2 = atoi(((std::string)strings[5]).c_str());
+
+    height				= atoi(((std::string)strings[1]).c_str());
+    width				= atoi(((std::string)strings[2]).c_str());
+    maxNumberOfSteps	= atoi(((std::string)strings[3]).c_str());
+    numberConsumer1		= atoi(((std::string)strings[4]).c_str());
+    numberConsumer2		= atoi(((std::string)strings[5]).c_str());
 
 
     //check whether integer values are correct (greater than 0)
-    if (height <= 0 || width <= 0 || maxNumberOfSteps <= 0
-            || numberConsumer1 < 0 || numberConsumer2 < 0) {
-        //print error message
-        std::cout << "Wrong arguments.\n" << errorMessage;
-//		goto exit_out;
+	if (maxNumberOfSteps <= 0 || height <= 0 || width <= 0 ||
+		numberConsumer1 < 0   || numberConsumer2 < 0) {
+		exit_error(8);
 	}
 
-    if (!is_file(strings[6]) || !is_file(strings[8]) || !is_file(strings[7])) {
-        std::cout << "file does not exist or is a directory" << strings[6];
-//		goto exit_out;
+
+	std::string errorMessage;
+	if (!is_file(strings[6]) || !is_file(strings[8]) || !is_file(strings[7])) {
+		exit_error(9);
     }
-	
-    // * test
+
+    // allways clear the screen at the beginning
 	clear_screen();
 
 	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 
-//exit_out:
-	
 
 	wait_for_keypressed();
     return 0;

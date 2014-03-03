@@ -127,25 +127,50 @@ void clear_screen() {
 void exit_error(int error_number) {
 
 	std::string error_msg;
-	error_msg = "\nProgram Error : ";
+	
 	switch (error_number) {
 		case 1: 
-			error_msg += "No free cells found in getRandomFreePosition";
+			error_msg = "\nProgram Error : ";
+			error_msg += "No free cells found in getRandomFreePosition\n\n";
 			break;
 		case 2:
-			error_msg += "Too many vegetals for this world";
+			error_msg = "\nProgram Error : ";
+			error_msg += "Too many vegetals for this world\n\n";
 			break;
 		case 3:
-			error_msg += "Too many consumerI for this world";
+			error_msg = "\nProgram Error : ";
+			error_msg += "Too many consumerI for this world\n\n";
 			break;
 		case 4:
-			error_msg += "Too many consumerII for this world";
+			error_msg = "\nProgram Error : ";
+			error_msg += "Too many consumerII for this world\n\n";
 			break;
 		case 5:
-			error_msg += "in Creature: interact call of routine with invalid creature";
+			error_msg = "\nProgram Error : ";
+			error_msg += "in Creature: interact call of routine with invalid creature\n\n";
 			break;
 		case 6:
-			error_msg += "in performOneStep: Bad index in switch case";
+			error_msg = "\nProgram Error : ";
+			error_msg += "in performOneStep: Bad index in switch case\n\n";
+			break;
+		case 7:
+			error_msg = "Wrong number of arguments!\n\n";
+			error_msg += "Recall World with 8 parameters like \n";
+			error_msg += "World [int] [int] [int] [int] [int] [char*] [char*] [char*]\n\n";
+			error_msg += "1st Param	[height]\n";
+			error_msg += "2nd param	[width]\n";
+			error_msg += "3rd param	[maxNumberOfStepsInSimulation]\n";
+			error_msg += "4th param	[NumberOfC1AtTheBeginning]\n";
+			error_msg += "5th param	[NumberOfC2AtTheBeginning]\n";
+			error_msg += "6th param	[pathToVegetal.txt]\n";
+			error_msg += "7th param	[pathToConsumerI]\n";
+			error_msg += "8th param	[consumer2]\n\n";
+			break;
+		case 8:
+			error_msg = "Bad value of one or more arguments!\n\n";
+			break;
+		case 9:
+			error_msg = "One or more of the input files do not exist!\n\n";
 			break;
 		default:
 			error_msg += "Unknown handled error";
@@ -183,7 +208,7 @@ void strain(char *argv)
 
 // get a random number in intervall [range_min, range_max]
 int getRandomNumber(int range_min,int range_max) {
-	
-    return (double)rand()/(RAND_MAX + 1.0) * (range_max + 1.0 - range_min) + range_min;
+	double u = (double)rand() / (RAND_MAX + 1.0) * (range_max + 1.0 - range_min) + range_min;
+    return (int) u;
 
 }
