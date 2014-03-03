@@ -13,7 +13,7 @@ private:
 	//
 	int step;
 	int maxsteps;
-	int stepsForNewVegetal=2;		// new vegetal each 2. step.
+	int stepsForNewVegetal=3;		// new vegetal each 2. step.
 	int numberConsumer1;
 	int numberConsumer2;
 	int wwidth, wheight;

@@ -195,7 +195,7 @@ void Map::print(bool _detailed) {
 #ifdef CLEAR_SCREEN
 	clear_screen();
 #endif
-	std::cout << amountFreePosition << "\n";
+	//std::cout << amountFreePosition << "\n";
 	//std::cout << Life::number_of_living_lifes << "\n";
 	//std::cout << ConsumerI::number_of_living_creaturesI << "\n";
 	//std::cout << ConsumerII::number_of_living_creaturesII << "\n";

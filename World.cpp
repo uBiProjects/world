@@ -352,9 +352,11 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
 
 	Coordinate bestDestination;
 	Coordinate oldCoordinate = smellingCreature->getPos();
+
 	
 	
 	int bestScore = INT_MIN;
+	bool semllSomeThing = false;
 
 	//the range of smell detection of the current creature
     int range = smellingCreature->getRangeOfSmellDetection();
@@ -379,9 +381,9 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
         	// compute Food, predator, same type emission depending on type of
         	// smellingCreature.
         	if(isAConsumerI(smellingCreature)){
-        		FE  = mp->getMapItem(coord)->vEmission;
-        		PE  = mp->getMapItem(coord)->c2Emission;
-        		STE = mp->getMapItem(coord)->c1Emission;
+        		FE  = mp->getMapItem(coord)->vEmission;				// food emission
+        		PE  = mp->getMapItem(coord)->c2Emission;			// predator emission
+        		STE = mp->getMapItem(coord)->c1Emission;			// same typ emission
         	} else {
         		FE  = mp->getMapItem(coord)->c1Emission;
         		PE  = 0;
@@ -400,11 +402,12 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
             	bestScore = score;
             	bestDestination.x = x;
             	bestDestination.y = y;
-            }
+				semllSomeThing = !((FE == 0) && (STE == 0) && (PE == 0));
+			}
         }
     }
 	// nothing to smell take a random value
-	if (bestScore == 0) {
+	if (!semllSomeThing) {
 		bestDestination.x = -1 + getRandomNumber(0, 2);
 		bestDestination.y = -1 + getRandomNumber(0, 2);
 		*plusXY = bestDestination;
