@@ -183,6 +183,7 @@ void strain(char *argv)
 
 // get a random number in intervall [range_min, range_max]
 int getRandomNumber(int range_min,int range_max) {
-	int u = (double)rand() / (RAND_MAX + 1) * (range_max + 1 - range_min) + range_min;
-	return u;
+	
+    return (double)rand()/RAND_MAX * (range_max - range_min) + range_min;
+
 }

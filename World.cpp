@@ -65,6 +65,7 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 bool World::initializeCreature(int nC1, int nC2, int nV) {
 
 	Coordinate c;
+	
 
 	// create nV Vegetals 
     for (int i = 0; i < nV; i++) {
@@ -120,6 +121,8 @@ Coordinate World::getRandomFreePosition(){
 		return c;											// return false if no free cells left 
 	}
 	
+	
+        std::cout << "freecells: " << free_cells << "\n";
 	int indexFree = getRandomNumber(1, free_cells);		// find the indexFree free cell
 	
     // counter
@@ -127,7 +130,7 @@ Coordinate World::getRandomFreePosition(){
 
 	// find the indexFree empty cell
 	for (c.x = 0; c.x < wwidth; c.x++) {
-		for (c.y = 0; c.y < wwidth; c.y++) {
+		for (c.y = 0; c.y < wheight; c.y++) {
 			if (cell_is_empty(c)) {
 				if (++AmountOfPassedFreePos == indexFree) { 	// is this the indexFree position?
 					return c;
