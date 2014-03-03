@@ -121,8 +121,6 @@ Coordinate World::getRandomFreePosition(){
 		return c;											// return false if no free cells left 
 	}
 	
-	
-        std::cout << "freecells: " << free_cells << "\n";
 	int indexFree = getRandomNumber(1, free_cells);		// find the indexFree free cell
 	
     // counter
