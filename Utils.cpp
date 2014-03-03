@@ -12,7 +12,7 @@
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <windows.system.h>
-// TODO 1. clr screen immer
+// TODO 1. clr screen immer<
 //	#define CLRSCR system("cls")
     #define CLRSCR System::Console::SetCursorPosition(0, 0);
 	#define FLUSH_KEYBOARD fflush(stdin)

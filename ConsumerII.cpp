@@ -6,8 +6,16 @@
 #include "Life.h"
 #include "Creature.h"
 #include "ConsumerII.h"
+#include "Values.h"
 
-ConsumerII::ConsumerII(Coordinate _pos) : Creature(_pos, (int)maxLifeTime, (int)rangeSmellAbgeben, (int)rangeSmellRiechen, (int)speed, (int)maxTimeWithoutFood, (char)cell_char){
+ConsumerII::ConsumerII(Coordinate _pos) : Creature(_pos,
+		Values::getInstance()->getCIIMLT(),
+		Values::getInstance()->getCIISE(),
+		Values::getInstance()->getCIISD(),
+		Values::getInstance()->getCIIS(),
+		Values::getInstance()->getCIIMTWF(),
+		(char)cell_char,
+		Values::getInstance()->getCIILT()){
 	// number_of_living_creaturesII++;
 }
 

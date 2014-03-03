@@ -21,7 +21,7 @@ private:
 	
 public:
 
-	Creature(Coordinate, int, int, int,int, int, char);
+	Creature(Coordinate, int, int, int,int, int, char, int);
 	virtual ~Creature();
 	
 	//getter and setter methods

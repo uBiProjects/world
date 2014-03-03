@@ -10,10 +10,10 @@
 #include "ConsumerII.h"
 #include "Vegetal.h"
 
-Creature:: Creature(Coordinate _pos, int _maxLifeTime, int _rangeSmellAbgeben, int _rangeSmell, int _speed, int _maxTimeWithoutFood, char _char) : Life(_pos, 0, _rangeSmellAbgeben, _maxLifeTime, _char){
+Creature:: Creature(Coordinate _pos, int _maxLifeTime, int _rangeSmellAbgeben, int _rangeSmell, int _speed, int _maxTimeWithoutFood, char _char, int _currentLifeTime) : Life(_pos, 0, _rangeSmellAbgeben, _maxLifeTime, _char){
 
 	timeWithoutFood = 0;
-	timeLife = 0;
+	timeLife = _currentLifeTime;
 	maxTimeLife = _maxLifeTime;
 	rangeOfSmellDetection = _rangeSmell;
 	speed = _speed;

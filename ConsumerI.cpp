@@ -14,7 +14,8 @@ ConsumerI:: ConsumerI(Coordinate _pos) : Creature(_pos,
 		(int) Values::getInstance()->getCISD(),//smell detection
 		(int) Values::getInstance()->getCIS(),
 		(int) Values::getInstance()->getCIMTWF(),
-		(char)cell_char){
+		(char)cell_char,
+		Values::getInstance()->getCILT()){
 
 	// number_of_living_creaturesI++;
 }
