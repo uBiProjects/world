@@ -16,6 +16,7 @@
 #include "ConsumerI.h"
 #include "ConsumerII.h"
 #include "Vegetal.h"
+#include "Values.h"
 
 
 // TODO wenn Welt voll mit nur einer Art => "spiel"-ende
@@ -567,6 +568,7 @@ int main(int _anzParam, char** strings) {
     // * test
 	clear_screen();
 
+	Values::getInstance();
 	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 
 //exit_out:

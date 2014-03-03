@@ -1,7 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
 
-class Test {
+class Values {
 
 private:
 	//Variables:
@@ -21,9 +21,9 @@ private:
 	void writeCII(int*);
 	void testAllValues();
 	
-	static Test *instance;
+	static Values *instance;
 //	static bool created;
-	Test();
+	Values();
 
 public:
 	
@@ -39,10 +39,9 @@ public:
 	int getCIIMTWF();
 	int getCIIS();
 
-	static Test* getInstance();
- 	
+	static Values* getInstance();
 };
 
-Test* Test::instance = 0;
+Values* Values::instance = 0;
 
 #endif
