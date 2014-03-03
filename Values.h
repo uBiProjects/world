@@ -1,3 +1,5 @@
+
+
 #ifndef TEST_H
 #define TEST_H
 
@@ -42,6 +44,5 @@ public:
 	static Values* getInstance();
 };
 
-Values* Values::instance = 0;
 
 #endif
