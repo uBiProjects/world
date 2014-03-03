@@ -63,7 +63,7 @@
 		}
 		else {
 			/* out some file info*/
-			printf("File size     : %ld\n", Status.st_size);
+		//	printf("File size     : %ld\n", Status.st_size);
 		//	printf("Drive         : %c:\n", Status.st_dev + 'A');
 			Dateityp = Status.st_mode & S_IFMT;
 			switch (Dateityp) {
@@ -184,6 +184,6 @@ void strain(char *argv)
 // get a random number in intervall [range_min, range_max]
 int getRandomNumber(int range_min,int range_max) {
 	
-    return (double)rand()/(RAND_MAX + 1.0) * (range_max+1.0 - range_min) + range_min;
+    return (double)rand()/(RAND_MAX + 1.0) * (range_max + 1.0 - range_min) + range_min;
 
 }
