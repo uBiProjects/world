@@ -16,11 +16,6 @@
 
 using namespace std;
 
-//Main method only for test purposes. Needs to go away...
-int maind () {
-	//Needs to be moved to main in World.cpp...
-	new Test();
-}
 
 /**
 * Constructor for Test.
@@ -204,4 +199,9 @@ void Test::testAllValues(){
 	cout<<CIIMTWF<<endl;
 	cout<<CIITWF<<endl;
 	cout<<CIIS<<endl;
+}
+
+
+Test Test :: getInstance(){
+
 }
