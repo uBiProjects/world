@@ -21,7 +21,7 @@ private:
 	void writeCII(int*);
 	void testAllValues();
 	
-//	static Test* instance;
+	static Test *instance;
 //	static bool created;
 	Test();
 
@@ -39,9 +39,10 @@ public:
 	int getCIIMTWF();
 	int getCIIS();
 
-
-//	static Test* getInstance();
+	static Test* getInstance();
  	
 };
+
+Test* Test::instance = 0;
 
 #endif

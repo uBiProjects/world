@@ -16,7 +16,6 @@
 
 using namespace std;
 
-
 /**
 * Constructor for Test.
 * Reads and stores the the files.
@@ -73,7 +72,7 @@ int* Test::readFile(char* filename){
     //Extract values from STRING to temp
     for(int j=0; !infile.eof();j++){
 	  	getline(infile,STRING);
-	  	for(int i=0;i<STRING.length();i++){
+	  	for(unsigned int i=0;i<STRING.length();i++){
 	  		if(STRING.at(i)=='\t'){
 	  			for(i++;i<STRING.length();i++){
 	  				temp+=STRING.at(i);
@@ -199,14 +198,9 @@ void Test::testAllValues(){
 }
 
 
-/*Test* Test :: getInstance(){
+Test* Test :: getInstance(){
 
-
-	//std:: cout << created << "hier";
-	if(!created){
-		instance = new Test();
-		created = true;
-	}
-
-	return instance;
-}*/
+  if( instance == 0 )
+	  instance = new Test();
+  return instance;
+}
