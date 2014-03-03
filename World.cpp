@@ -356,7 +356,7 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
 
 	Coordinate bestDestination;
 	Coordinate oldCoordinate = smellingCreature->getPos();
-
+	int FE, PE, STE;
 	
 	
 	int bestScore = INT_MIN;
@@ -368,7 +368,7 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
 
     //the values for the computation of the index which are independent from the
     //special fields.
-    int TWF  = (*smellingCreature).getTimeWithoutFood();
+    int TWF  = (*smellingCreature).getTimeWithoutFood();		
     int MTWF = (*smellingCreature).getMaxTimeWithoutFood();
 
 
@@ -379,8 +379,7 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
         	Coordinate coord;
         	coord.x = modulo(x, wwidth);
         	coord.y = modulo(y, wheight);
-
-        	int FE, PE, STE;
+        	
 
         	// compute Food, predator, same type emission depending on type of
         	// smellingCreature.
@@ -468,6 +467,9 @@ void World::timePassed(Creature* d) {
         }
     }
 
+	if creaturMustDie(*d) {
+
+	}
 
     if ((*d).getTimeWithoutFood() > (*d).getMaxTimeWithoutFood()
             || (*d).getLifeTime() > (*d).getMaxLifeTime()) {
