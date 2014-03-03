@@ -4,7 +4,7 @@
 #include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
-#include "vegetal.h"
+#include "Vegetal.h"
 
 class World {
 
