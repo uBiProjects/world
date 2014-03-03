@@ -21,8 +21,10 @@ private:
 	void writeCII(int*);
 	void testAllValues();
 	
-public:
+	static Test instance;
 	Test();
+
+public:
 	
 	//Getter:
 	int getPMLT();
@@ -35,6 +37,9 @@ public:
 	int getCIISE();
 	int getCIIMTWF();
 	int getCIIS();
+
+
+	static Test getInstance();
  	
 };
 

@@ -40,7 +40,7 @@ Map :: Map(int _width, int _height){
 			cell[x][y] = new MapItem();
 		}
 	}
-
+	
 	//initialize amountFreePosition
 	amountFreePosition = _width * _height;
 }
