@@ -495,6 +495,19 @@ bool World::creaturMustDie(Creature* d) {
 }
 
 
+
+/*
+* parameter syntax (8):
+*	1	[int]	height
+*	2	[int]	width
+*	3	[int]	maximal number of steps in one simulation
+*	4	[int]	number of consumer 1 at the beginning
+*	5	[int]	number of consumer 2 at the beginning
+*	6	[char*]	path to vegetal.txt
+*	7	[char*]	path to consumer1.txt
+*	8	[char*]	path to consumer2.txt
+*/
+
 // TO DO einlesen einbinden
 // TO DO Fehlermeldungen nach util auslagern
 
@@ -506,23 +519,7 @@ int main(int _anzParam, char** strings) {
 	int numberConsumer2;
 	// to do
 	int numberVegetal = 5;
-	
-    //strain("bla");
-    //	strain("Vegetal.o");
-    //strain("Debug");
-
-    //	return 0;
-    /*
-     * parameter syntax (8):
-     *	1	[int]	height
-     *	2	[int]	width
-     *	3	[int]	maximal number of steps in one simulation
-     *	4	[int]	number of consumer 1 at the beginning
-     *	5	[int]	number of consumer 2 at the beginning
-     *	6	[char*]	path to vegetal.txt
-     *	7	[char*]	path to consumer1.txt
-     *	8	[char*]	path to consumer2.txt
-     */
+ 
     std::string errorMessage =
             (std::string) "Recall World with 8 parameters like \n" +
             (std::string) "World [int] [int] [int] [int] [int] [char*] [char*] [char*]\n\n" +

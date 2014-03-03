@@ -23,7 +23,7 @@ private:
 	void writeCII(int*);
 	void testAllValues();
 	
-	static Values *instance;
+//	static Values *instance;
 //	static bool created;
 	Values();
 
