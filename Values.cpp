@@ -16,6 +16,8 @@
 
 using namespace std;
 
+Values* Values::instance = 0;
+
 /**
 * Constructor for Values.
 * Reads and stores the the files.
