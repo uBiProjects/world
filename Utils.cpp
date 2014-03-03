@@ -54,7 +54,7 @@
 					printf("File %s not found.\n", path);
 					break;
 				case EINVAL:
-					printf("Invalid parameter to stat.\n");
+					printf("Invalid parameter to stat:%s\n", path);
 					break;
 				default: /* Should never be reached*/
 					printf("Unexpected error in is_file.\n");
