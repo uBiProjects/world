@@ -147,6 +147,19 @@ void exit_error(int error_number) {
 		case 6:
 			error_msg += "in performOneStep: Bad index in switch case";
 			break;
+		case 7:
+			error_msg = "Wrong number of arguments!\n\n";
+			error_msg += "Recall World with 8 parameters like \n";
+			error_msg += "World [int] [int] [int] [int] [int] [char*] [char*] [char*]\n\n";
+			error_msg += "1st Param	[height]\n";
+			error_msg += "2nd param	[width]\n";
+			error_msg += "3rd param	[maxNumberOfStepsInSimulation]\n";
+			error_msg += "4th param	[NumberOfC1AtTheBeginning]\n";
+			error_msg += "5th param	[NumberOfC2AtTheBeginning]\n";
+			error_msg += "6th param	[pathToVegetal.txt]\n";
+			error_msg += "7th param	[pathToConsumerI]\n";
+			error_msg += "8th param	[consumer2]\n";
+			break;
 		default:
 			error_msg += "Unknown handled error";
 			break;
