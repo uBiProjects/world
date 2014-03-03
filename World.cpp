@@ -16,6 +16,7 @@
 #include "ConsumerI.h"
 #include "ConsumerII.h"
 #include "Vegetal.h"
+#include "Values.h"
 
 
 // TODO wenn Welt voll mit nur einer Art => "spiel"-ende
@@ -106,7 +107,7 @@ int World::testfree() {
 	}
 	int free_cells = mp->getAmountFreePosition();			// only free_cells are empty
 	if (free_cells != testam) {
-		int i = 0;
+
 	}
 	return testam;
 }
@@ -303,7 +304,7 @@ void World::performOneStep() {
 #ifdef DEBUG
 						std::cout << "zeit1" << a.getPregnantTime() << "\n";
 #endif
-						// TODO noch prüfen formel
+						// TODO noch prï¿½fen formel
 						if (a.getLifeTime() > a.getMaxLifeTime() / 4
 							&& b.getLifeTime() > b.getMaxLifeTime() / 4
 							&& a.getPregnantTime() >= a.getMaxPregnantTime() + 1
@@ -348,8 +349,8 @@ void World::performOneStep() {
  * @return true if the smellingCreature smells something.
  *         deltaValue for movement in plusXY
  */
-// TODO wenn creatur nicht in die gewünscht richtung laufen kann
-//      sollte ein anderer wert für plusxy zurückgegeben werden
+// TODO wenn creatur nicht in die gewï¿½nscht richtung laufen kann
+//      sollte ein anderer wert fï¿½r plusxy zurï¿½ckgegeben werden
 //      2.bester, 3. bester etc. 
 bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
 
@@ -398,9 +399,9 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
 
             // if the current score is better than all scores before
 			// TODO wenn zwei scores = sind, zufall ob neu oder alt
-			// TODO >=, >, ????  (>= liefert immer die höchstern werte für x,y
+			// TODO >=, >, ????  (>= liefert immer die hï¿½chstern werte fï¿½r x,y
 			//                    >          immer die kleinsten werte 
-			//                               radom ? oder alg. überlegen
+			//                               radom ? oder alg. ï¿½berlegen
             if(score >= bestScore){
             	bestScore = score;
             	bestDestination.x = x;
@@ -539,7 +540,7 @@ int main(int _anzParam, char** strings) {
     if (_anzParam != 9) {
         //print error message
         std::cout << "Missing arguments.\n" << errorMessage;
-		goto exit_out;
+//		goto exit_out;
     }
 
     //save integer values
@@ -556,19 +557,21 @@ int main(int _anzParam, char** strings) {
             || numberConsumer1 < 0 || numberConsumer2 < 0) {
         //print error message
         std::cout << "Wrong arguments.\n" << errorMessage;
-		goto exit_out;
+//		goto exit_out;
 	}
 
     if (!is_file(strings[6]) || !is_file(strings[8]) || !is_file(strings[7])) {
         std::cout << "file does not exist or is a directory" << strings[6];
-		goto exit_out;
+//		goto exit_out;
     }
 
     // * test
 	clear_screen();
+
+	Values::getInstance();
 	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 
-exit_out:
+//exit_out:
 	
 
 	wait_for_keypressed();

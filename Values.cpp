@@ -12,31 +12,27 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
-#include "Test.h"
+#include "Values.h"
 
 using namespace std;
 
-
 /**
-* Constructor for Test.
+* Constructor for Values.
 * Reads and stores the the files.
 */
-Test::Test(){
+Values::Values(){
 
- 	int* pointer=Test::readFile((char*)"Vegetal.txt");
+ 	int* pointer=Values::readFile((char*)"Vegetal.txt");
 	print(pointer);
 	writeV(pointer);
 	
-	pointer=Test::readFile((char*)"Consumer1.txt");
+	pointer=Values::readFile((char*)"Consumer1.txt");
 	print(pointer);
 	writeCI(pointer);
 	
-	pointer=Test::readFile((char*)"Consumer2.txt");
+	pointer=Values::readFile((char*)"Consumer2.txt");
 	print(pointer);
 	writeCII(pointer);
-	
-	testAllValues();
-	
 }
 
 /**
@@ -50,7 +46,7 @@ Test::Test(){
 * p: array where the values from temp are stored
 *	after they are converted to int
 */
-int* Test::readFile(char* filename){
+int* Values::readFile(char* filename){
 
 	//Declare some variables and assign values:
 	string STRING;
@@ -76,7 +72,7 @@ int* Test::readFile(char* filename){
     //Extract values from STRING to temp
     for(int j=0; !infile.eof();j++){
 	  	getline(infile,STRING);
-	  	for(int i=0;i<STRING.length();i++){
+	  	for(unsigned int i=0;i<STRING.length();i++){
 	  		if(STRING.at(i)=='\t'){
 	  			for(i++;i<STRING.length();i++){
 	  				temp+=STRING.at(i);
@@ -96,7 +92,7 @@ int* Test::readFile(char* filename){
 /**
 * Writes plant-values.
 */
-void Test::writeV(int* pointer){
+void Values::writeV(int* pointer){
 	PLT = pointer[0];
 	PMLT = pointer[1];
 	PSE = pointer[2];
@@ -105,7 +101,7 @@ void Test::writeV(int* pointer){
 /**
 * Writes consumer1-values.
 */
-void Test::writeCI(int* pointer){
+void Values::writeCI(int* pointer){
 	CILT = pointer[0];
 	CIMLT = pointer[1];
 	CISE = pointer[2];
@@ -118,7 +114,7 @@ void Test::writeCI(int* pointer){
 /**
 * Writes consumer2-values.
 */
-void Test::writeCII(int* pointer){
+void Values::writeCII(int* pointer){
 	CIILT = pointer[0];
 	CIIMLT = pointer[1];
 	CIISE = pointer[2];
@@ -130,34 +126,34 @@ void Test::writeCII(int* pointer){
 
 //---GETTER---
 
-int Test::getPMLT(){
+int Values::getPMLT(){
 	return PMLT;
 }
-int Test::getPSE(){
+int Values::getPSE(){
 	return PSE;
 }
-int Test::getCIMLT(){
+int Values::getCIMLT(){
 	return CIMLT;
 }
-int Test::getCISE(){
+int Values::getCISE(){
 	return CISE;
 }
-int Test::getCIMTWF(){
+int Values::getCIMTWF(){
 	return CIMTWF;
 }
-int Test::getCIS(){
+int Values::getCIS(){
 	return CIS;
 }
-int Test::getCIIMLT(){
+int Values::getCIIMLT(){
 	return CIIMLT;
 }
-int Test::getCIISE(){
+int Values::getCIISE(){
 	return CIISE;
 }
-int Test::getCIIMTWF(){
+int Values::getCIIMTWF(){
 	return CIIMTWF;
 }
-int Test::getCIIS(){
+int Values::getCIIS(){
 	return CIIS;
 }
 
@@ -167,7 +163,7 @@ int Test::getCIIS(){
 * Prints an array.
 * Method is only used for test purposes.
 */
-void Test::print(int* pointer){
+void Values::print(int* pointer){
 
 	for(int i=0;i<filerows-1;i++){
 		cout<<pointer[i]<<endl;
@@ -178,7 +174,7 @@ void Test::print(int* pointer){
 /**
 * Prints all values for test purposes.
 */
-void Test::testAllValues(){
+void Values::testAllValues(){
 	//Print plant values
 	cout<<PLT<<endl;
 	cout<<PMLT<<endl;
@@ -202,6 +198,9 @@ void Test::testAllValues(){
 }
 
 
-Test Test :: getInstance(){
+Values* Values :: getInstance(){
 
+  if( instance == 0 )
+	  instance = new Values();
+  return instance;
 }
