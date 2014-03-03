@@ -157,7 +157,9 @@ void World::run() {
         performOneStep();
 
 		// DEBUG
+#ifdef DEBUG
 		testfree();
+#endif
 
         // every X rounds a new plant grows in a random place
 		// if amound of free cells > 0
@@ -414,7 +416,7 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
 		*plusXY = bestDestination;
 		return (false);
 	} 
-
+	
     //calculate destination and write it into the values posX and posY
 	bestDestination.x = sign((bestDestination.x - oldCoordinate.x));
 	bestDestination.y = sign((bestDestination.y - oldCoordinate.y));
@@ -477,6 +479,19 @@ void World::timePassed(Creature* d) {
     }
 }
 
+/**
+ *	tests if a creatue reaches it's maximum LifeTime
+ *	or starve due to lack of food
+ */
+bool World::creaturMustDie(Creature* d) {
+	if ((*d).getTimeWithoutFood() > (*d).getMaxTimeWithoutFood()) {
+		return true;
+	}
+	if ((*d).getLifeTime() > (*d).getMaxLifeTime()) {
+		return true;
+	}
+	return false;
+}
 
 
 // TO DO einlesen einbinden

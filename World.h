@@ -34,7 +34,7 @@ public:
 	void timePassed(Creature*);
  	// int modulo(int, int);
  	bool smell(Creature*, Coordinate*);
-
+	bool creaturMustDie(Creature*);
 	bool cell_is_empty(Coordinate);
 	bool isAConsumerI(Coordinate);
  	bool isAConsumerI(Life*);
