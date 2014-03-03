@@ -499,6 +499,7 @@ bool World::creaturMustDie(Creature* d) {
 // TO DO Fehlermeldungen nach util auslagern
 
 int main(int _anzParam, char** strings) {
+
 	int height;
 	int width;
 	int maxNumberOfSteps;
@@ -568,7 +569,6 @@ int main(int _anzParam, char** strings) {
     // * test
 	clear_screen();
 
-	Values::getInstance();
 	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 
 //exit_out:
