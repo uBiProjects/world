@@ -137,11 +137,20 @@ int Values::getPSE(){
 int Values::getCIMLT(){
 	return CIMLT;
 }
+int Values::getCILT(){
+	return CILT;
+}
+int Values::getCISD(){
+	return CIISD;
+}
 int Values::getCISE(){
 	return CISE;
 }
 int Values::getCIMTWF(){
 	return CIMTWF;
+}
+int Values::getCITWF(){
+	return CITWF;
 }
 int Values::getCIS(){
 	return CIS;

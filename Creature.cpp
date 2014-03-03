@@ -124,7 +124,7 @@ int Creature:: interact(Creature* _a, Life* _b){
 		return -1;
 	}
 
-	// this should never happen
+	// this should never happen(int) Values::getInstance()->getCIMLT()
 	exit_error(5);
 	return -3;
 }

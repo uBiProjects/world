@@ -32,10 +32,16 @@ public:
 	//Getter:
 	int getPMLT();
 	int getPSE();
+
+	//getter for
+	int getCILT();
 	int getCIMLT();
 	int getCISE();
+	int getCISD();
 	int getCIMTWF();
+	int getCITWF();
 	int getCIS();
+
 	int getCIIMLT();
 	int getCIISE();
 	int getCIIMTWF();
