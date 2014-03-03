@@ -1,4 +1,4 @@
-#include "Utils.h"
+// std includes
 #include <stdio.h>
 #include <iostream>
 #include <errno.h>		//for getting error number in method is_file
@@ -7,6 +7,10 @@
 #include <fstream>
 #include <string>
 
+// program includes
+#include "Utils.h"
+
+
 
 
 #ifdef WINDOWS
@@ -14,10 +18,10 @@
 	#include <windows.system.h>
 // TODO 1. clr screen immer<
 //	#define CLRSCR system("cls")
-    #define CLRSCR System::Console::SetCursorPosition(0, 0);
+    #define CLRSCR System::Console::SetCursorPosition(0, 0);			
 	#define FLUSH_KEYBOARD fflush(stdin)
 	#define SLEEP  Sleep(milliseconds)
-#else
+#else															// LINUX
 	#include <unistd.h>
 	#include <stdlib.h>
 	#include <stdio_ext.h>
@@ -25,8 +29,6 @@
     #define FLUSH_KEYBOARD __fpurge(stdin)
     #define SLEEP usleep(milliseconds * 1000)
 #endif
-
-
 
 
 
@@ -45,7 +47,7 @@
 	bool is_file(const char* path) {
 
 		struct stat Status;
-		int Dateityp, result;
+		int result;
 		result = stat(path, &Status);
 		if (result != 0) {
 			perror("Problem getting information");
@@ -61,29 +63,33 @@
 					break;
 			}
 		}
+#ifdef DEBUG
 		else {
-			/* out some file info*/
+			int Dateityp;
+		/* out some file info*/
 		//	printf("File size     : %ld\n", Status.st_size);
 		//	printf("Drive         : %c:\n", Status.st_dev + 'A');
 			Dateityp = Status.st_mode & S_IFMT;
 			switch (Dateityp) {
 				case S_IFREG:
-#ifdef DEBUG
+
 					puts("is a file");
-#endif
+
 					return true;
 				case S_IFDIR:
-#ifdef DEBUG
+
 					puts("is a folder");
-#endif
+
 					break;
 				default:
-#ifdef DEBUG
+
 					puts("is somting elese");
-#endif
+
 					break;
 			}
+
 		}
+#endif
 		return false;
 	}
 
@@ -106,10 +112,12 @@ int modulo(int _x, int _y){
 }
 
 
+
 // clear keybuffer (discard all pressed keys)
 void clear_keyboard_buffer() {
 	FLUSH_KEYBOARD;
 }
+
 
 // wait for enter
 void wait_for_keypressed() {
@@ -122,6 +130,31 @@ void wait_for_keypressed() {
 void clear_screen() {
 	CLRSCR;
 }
+
+
+// returns the signum of x
+// or 0 if x = 0
+int sign(int x) {
+	// x > 0 => (x>0) = 1 und (x<0)=0 =>1
+	// x = 0 => (x>0) = 0 und (x<0)=0 =>0
+	// x <0  => (x>0) = 0 und (x<0)=1 =>-1
+	return (x > 0) - (x < 0);
+}
+
+
+// add 2 vectors
+Coordinate addCoordinates(Coordinate _c1, Coordinate _c2) {
+	return Coordinate((_c1.x + _c2.x), (_c1.y + _c2.y));
+}
+
+
+// get a random number in intervall [range_min, range_max]
+int getRandomNumber(int range_min, int range_max) {
+	double u = (double)rand() / (RAND_MAX + 1.0) * (range_max + 1.0 - range_min) + range_min;
+	return (int)u;
+
+}
+
 
 // exit program and display error message
 void exit_error(int error_number) {
@@ -180,35 +213,4 @@ void exit_error(int error_number) {
 	std::cout << error_msg;
 	wait_for_keypressed();
 	exit(error_number);
-}
-
-// returns the signum of x
-// or 0 if x = 0
-int sign(int x) {
-	// x > 0 => (x>0) = 1 und (x<0)=0 =>1
-	// x = 0 => (x>0) = 0 und (x<0)=0 =>0
-	// x <0  => (x>0) = 0 und (x<0)=1 =>-1
-	return (x > 0) - (x < 0);
-}
-
-// 
-void strain(char *argv)
-{
-	std::fstream f;
-	char cstring[256];
-	f.open(argv, std::ios::in);
-	while (!f.eof())
-	{
-		f.getline(cstring, sizeof(cstring));
-		std::cout << cstring << std::endl;
-	}
-	f.close();
-}
-
-
-// get a random number in intervall [range_min, range_max]
-int getRandomNumber(int range_min,int range_max) {
-	double u = (double)rand() / (RAND_MAX + 1.0) * (range_max + 1.0 - range_min) + range_min;
-    return (int) u;
-
 }

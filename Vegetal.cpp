@@ -1,5 +1,3 @@
-#ifndef VEGETAL_CPP
-#define VEGETAL_CPP
 
 #include "Utils.h"
 #include "Life.h"
@@ -12,12 +10,7 @@
 			Values::getInstance()->getPSE(),
 			Values::getInstance()->getPMLT(),
 			cell_char) {
-		// number_of_living_vegetal++;
 	}
 	
 	Vegetal :: ~Vegetal(){
-		// number_of_living_vegetal--;
 	}
-	
-#endif
-

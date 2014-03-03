@@ -5,13 +5,11 @@
 * The programm can access those values.
 */
 
-/**
-* Imports
-*/
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+
 #include "Values.h"
 
 using namespace std;

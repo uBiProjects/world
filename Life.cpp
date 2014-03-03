@@ -1,9 +1,8 @@
-#include <iostream>
 
+#include <iostream>
 
 #include "Utils.h"
 #include "Life.h"
-
 	
 
 	Life::Life(Coordinate _pos, int curr_lifetime, int emission_range, int max_lifetime, char print_char){
@@ -16,7 +15,7 @@
 	
 	
 	Life::~Life(){
-		// number_of_living_lifes--;
+		
 	}
 	
 	char Life::getCellChar(){
@@ -39,6 +38,7 @@
 		return pos.y;
 	}
 	
+
 	int Life::getMaxLifeTime(){
 		return maxLifeTime;
 	}
@@ -73,6 +73,6 @@
 	void Life::setY(int a){
 		pos.y=a;
 	}
-	
-	
-	
+	void Life::incrementLifeTime(){
+		currentLifeTime++;
+	}

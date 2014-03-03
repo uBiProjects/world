@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
+#include "vegetal.h"
 
 class World {
 
@@ -32,6 +33,7 @@ public:
 	int testfree();
 
 	void timePassed(Creature*);
+	void timePassed(Vegetal*);
  	// int modulo(int, int);
  	bool smell(Creature*, Coordinate*);
 	bool creaturMustDie(Creature*);
@@ -46,6 +48,10 @@ public:
 	bool createNewConsumerI(Coordinate);
 	bool createNewConsumerII(Coordinate);
 	void setAllConsumersWalkable();
+	Coordinate normCoordinateToWorld(Coordinate);
+	Coordinate getAFreePositionAroundme(Coordinate);
+	void impregnate(Creature*, Creature*);
+	void giveBirthToABaby(Creature*);
 };
 
 #endif

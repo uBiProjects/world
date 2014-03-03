@@ -8,15 +8,17 @@ private:
 	
 
 	int timeWithoutFood;
-	int timeLife;
+//	int timeLife;
 	
 	int maxTimeWithoutFood;
-	int maxTimeLife;
+//	int maxTimeLife;
 	
 	int rangeOfSmellDetection;
 	int speed;
 	
-	int pregnantTime;
+	int pregnantTime;					// if pregnatTime >maxPregnantTime => can become Pregnant
+										// if pregnatTime <maxPregnantTime => is pregnant
+										// if pregnatTime =maxPregnantTime => a child will be born in this step
 	int maxPregnantTime;
 	
 public:
@@ -26,26 +28,26 @@ public:
 	
 	//getter and setter methods
 	int getTimeWithoutFood();
-	int getLifeTime();
+//	int getLifeTime();
 	int getRangeOfSmellDetection();
 	int getSpeed();
 	int getMaxTimeWithoutFood();
-	int getMaxLifeTime();
+//	int getMaxLifeTime();
 	
 	
 
 	int getPregnantTime();
 	int getMaxPregnantTime();
-	bool increasePregnantTime();
+	bool incrementPregnantTime();
 	
 	void setTimeWithoutFood(int);
 	void incrementTimeWithoutFood();
 	void setRangeOfSmellDetection(int);
 	void setSpeed(int);
 	void setMaxTimeWithoutFood(int);
-	void setLifeTime(int);
-	void incrementLifeTime();
-	void setMaxLifeTime(int);
+//	void setLifeTime(int);
+//	void incrementLifeTime();
+//	void setMaxLifeTime(int);
 	void setPregnant(bool);
 	
 	void changePosition(int, int);

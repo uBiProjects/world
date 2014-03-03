@@ -1,5 +1,4 @@
 
-//utility includes
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
@@ -8,11 +7,9 @@
 #include "Life.h"		//used in MapItem
 #include "MapItem.h"	//used in Map.h
 #include "Map.h"
-
 #include "Creature.h"
 #include "ConsumerI.h"
 #include "ConsumerII.h"
-#include "Map.h"
 #include "Vegetal.h"
 
 /**

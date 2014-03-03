@@ -1,6 +1,3 @@
-#ifndef ConsumerI_CPP
-#define ConsumerI_CPP
-
 
 #include "Utils.h"
 #include "Life.h"
@@ -16,13 +13,8 @@ ConsumerI:: ConsumerI(Coordinate _pos) : Creature(_pos,
 		(int) Values::getInstance()->getCIMTWF(),
 		(char)cell_char,
 		Values::getInstance()->getCILT()){
-
-	// number_of_living_creaturesI++;
 }
 
 ConsumerI:: ~ConsumerI(){
-	
-	// number_of_living_creaturesI--;
-}
 
-#endif
+}

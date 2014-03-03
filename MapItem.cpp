@@ -1,6 +1,9 @@
 
-#include "MapItem.h"
 #include <stdlib.h>
+
+#include "MapItem.h"
+
+
 
 MapItem :: MapItem(){
 
@@ -12,7 +15,6 @@ MapItem :: MapItem(){
 }
 
 MapItem :: ~MapItem(){
-
 
 	if(monster != NULL){
 

@@ -3,26 +3,25 @@
 #define UTILS_H_
 
 
-// #define DEBUG
-#define DEBUG1
-#define CLEAR_SCREEN
+// #define DEBUG		// shows debug info							(comment out for normal run)
+// #define DEBUG1		// updates the screen afer every crature	(comment out for normal run)
+// #define TESTFREE		// calls the testfree routine				(comment out for normal run)
+#define CLEAR_SCREEN	// clears the scree after each round		(include     for normal run)
 
-
+// check os system
 #if (defined _WIN32) || (defined _WIN64)
 	#define	WINDOWS
 #else
 	#define	LINUX
 #endif
 
+// a min/max template
 #define MAX(a,b) (((a)<(b))?(a):(b))
 #define MIN(a,b) (((a)>(b))?(a):(b))
 
-	
-	
-	
-	
-	
 
+	
+// the coordinates of one cell on the map
 	struct Coordinate {
 		Coordinate(int _x, int _y){ x = _x; y = _y; }
 		Coordinate() :x(-1), y(-1){}		//** int empty cur-pos
@@ -32,16 +31,15 @@
 	};
 
 	
-	int sign(int);
-	void sleepd(unsigned);
-    bool is_file(const char* );
-    void strain(char*);
-	int modulo(int, int);
-	void wait_for_keypressed();
-	void clear_keyboard_buffer();
-	void clear_screen();
-	void exit_error(int);
-	int getRandomNumber(int, int);
-
+	int sign(int);											// signum
+	void sleepd(unsigned);									// slepp routine
+    bool is_file(const char* );								// test if it is a file
+	int modulo(int, int);									// special modulo 
+	void wait_for_keypressed();								// wait for enter
+	void clear_keyboard_buffer();							// fush keybord buffer
+	void clear_screen();									// clear screen
+	void exit_error(int);									// exit routine for all error
+	int getRandomNumber(int, int);							// get a random int in a range
+	Coordinate addCoordinates(Coordinate, Coordinate);		// add 2 coordinates
 
 #endif /* UTILS_H_ */

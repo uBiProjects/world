@@ -29,13 +29,14 @@ class Life{
 	public:
 		
 
-
+		
 		int getX();
 		int getY();
 		Coordinate getPos();
 		int getCurrentLifeTime();
-		
 		int getMaxLifeTime();
+		void incrementLifeTime();
+
 		int getStinkRange();
 		
 		void setX(int);
