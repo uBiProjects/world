@@ -1,4 +1,6 @@
 
+#include <iostream>
+#include "stdlib.h"
 #include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
@@ -15,6 +17,13 @@ ConsumerI:: ConsumerI(Coordinate _pos) : Creature(_pos,
 		Values::getInstance()->getCILT()){
 }
 
+
+
 ConsumerI:: ~ConsumerI(){
 
 }
+/*
+void ConsumerI:: setSource(char* SOURCE){
+		static const char* source = SOURCE;
+}
+*/
