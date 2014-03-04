@@ -12,10 +12,10 @@ private:
 
 	Map* mp;
 
-	int step;
+	// int step;
 	int maxsteps;
-	int numberConsumer1;
-	int numberConsumer2;
+	// int numberConsumer1;
+	// int numberConsumer2;
 	int wwidth, wheight;
 	Coordinate getRandomFreePosition();
 	

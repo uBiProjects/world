@@ -46,7 +46,7 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 
 	// print fist screen
 	mp->print(false);
-
+	
 
     // start life of creatures.
     run(nV);
@@ -161,7 +161,7 @@ Coordinate World::getRandomFreePosition(){
 void World::run(int fixedNumberOfVegetal) {
 	Coordinate c;
 
-    for (step = 0; step < maxsteps; step++) {
+    for (int step = 0; step < maxsteps; step++) {
 
         performOneStep();
 
@@ -171,6 +171,7 @@ void World::run(int fixedNumberOfVegetal) {
 #endif
 		// update the map and number of Vegetal
 		mp->print(false);
+		std::cout << "Step " << step + 1 << "\n";
 
 		// simulation ends if # of creatures =0
 		if (mp->getnumberOfCreature() == 0) {
@@ -266,7 +267,7 @@ void World::performOneStep() {
 
 
 
-        std::cout << "Step " << step+1 << "\n";
+        
 
 
         // reset consumers to "walkable true" to ensure it can walk.

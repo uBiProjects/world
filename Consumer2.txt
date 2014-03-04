@@ -4,4 +4,4 @@ Smell Emission	4
 Smell detection	6
 Max time without food	30
 Time without food	0
-Speed	4
+Speed	6
