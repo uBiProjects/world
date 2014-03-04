@@ -467,6 +467,7 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 			  
 	if ((_c1->isReadyForPregnant()) && (_c2->isReadyForPregnant())) {
 		_c1->setPregnant(true);
+		
 		// Creature 2 is now inactive for this step
 		_c2->setWalkable(false);
 #ifdef DEBUG
@@ -777,6 +778,9 @@ int main(int _anzParam, char *strings[]) {
 	if (!is_file(strings[6]) || !is_file(strings[8]) || !is_file(strings[7])) {
 		exit_error(9);
 	}
+	
+	//Set sources in lifeforms
+	//ConsumerI::setSource((char*)strings[7]);
 
 	// allways clear the screen at the beginning
 	clear_screen();
