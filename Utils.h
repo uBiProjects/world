@@ -3,21 +3,18 @@
 #define UTILS_H_
 
 
-#define DEBUG			// shows debug info							(comment out for normal run)
+// #define DEBUG		// shows debug info							(comment out for normal run)
 // #define DEBUG1		// updates the screen afer every crature	(comment out for normal run)
 #define DEBUG2			// print steps								(comment out/include for normal run)
-#define TESTFREE		// calls the testfree routine				(comment out for normal run)
+// #define TESTFREE		// calls the testfree routine				(comment out for normal run)
 #define FASTRUN         // wait only 5 millisecons after a step     (comment out for normal run)
 #define CLEAR_SCREEN	// clears the scree after each round		(include     for normal run)
 
 // check os system
 #if (defined _WIN32) || (defined _WIN64)
 	#define	WINDOWS
-#define _CRTDBG_MAP_ALLOC
-#define _CRTDBG_MAP_ALLOC_NEW
-#define _DEBUG
-#include <crtdbg.h>  // detect memory leak
-
+	#define _CRTDBG_MAP_ALLOC
+	#include <crtdbg.h>  // detect memory leaks
 #else
 	#define	LINUX
 #endif

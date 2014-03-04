@@ -47,8 +47,9 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 	// print fist screen
 	mp->print(false);
 
+
     // start life of creatures.
-    run();
+    run(nV);
 
 }
 
@@ -157,7 +158,7 @@ Coordinate World::getRandomFreePosition(){
 /**
  * start the simulation 
  */
-void World::run() {
+void World::run(int fixedNumberOfVegetal) {
 	Coordinate c;
 
     for (step = 0; step < maxsteps; step++) {
@@ -168,19 +169,25 @@ void World::run() {
 #ifdef TESTFREE
 		testfree();
 #endif
-
-        // every X rounds a new plant grows in a random place
-		// if amound of free cells > 0
-		if (mp->getAmountFreePosition()>0) {
-
-			if (step % (stepsForNewVegetal - 1) == 0) {
-				c = getRandomFreePosition();
-				createNewVegetal(c);
-			}
-
-		}
-		// update the map
+		// update the map and number of Vegetal
 		mp->print(false);
+
+		// simulation ends if # of creatures =0
+		if (mp->getnumberOfCreature() == 0) {
+			return;
+		}
+
+        // amount of Vegetal is fixed
+		int acutalVegetal = mp->getnumberOfVegetal();
+		int missingVegetal = fixedNumberOfVegetal - acutalVegetal;
+		if (missingVegetal > 0) {
+			for (int i = 0; i<missingVegetal; i++) {
+				if (mp->getAmountFreePosition()>0) {
+					c = getRandomFreePosition();
+					createNewVegetal(c);
+				}
+			}
+		}
 
     }
 }
@@ -755,7 +762,7 @@ int main(int _anzParam, char *strings[]) {
 	maxNumberOfSteps = atoi(strings[3]);
 	numberConsumer1  = atoi(strings[4]);
 	numberConsumer2  = atoi(strings[5]);
-	numberVegetal	 = numberConsumer1*2/3;				// something to eat for consumer1
+	numberVegetal	 = numberConsumer1*2;				// something to eat for consumer1
 
 	//check whether integer values are correct (greater than 0)
 	if (maxNumberOfSteps <= 0 || height <= 0 || width <= 0 ||
@@ -775,16 +782,20 @@ int main(int _anzParam, char *strings[]) {
 	clear_screen();
 
 #ifdef WINDOWS
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+	#ifdef DEBUG
+		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+		_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+	#endif
 #endif
+
 	World* w = new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 	w->~World();
 
-	// free(w);
-#ifdef WINDOWS
 
-	_CrtDumpMemoryLeaks();
+#ifdef WINDOWS 
+	#ifdef DEBUG
+		_CrtDumpMemoryLeaks();
+	#endif
 #endif
 	
 	wait_for_keypressed();

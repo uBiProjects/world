@@ -14,7 +14,6 @@ private:
 
 	int step;
 	int maxsteps;
-	const static int stepsForNewVegetal=3;		// new vegetal each 2. step.
 	int numberConsumer1;
 	int numberConsumer2;
 	int wwidth, wheight;
@@ -27,7 +26,7 @@ public:
 
 	void print();
 	void performOneStep();
-	void run();	
+	void run(int);	
 	int testfree();
 
 	void timePassed(Creature*);

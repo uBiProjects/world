@@ -24,8 +24,8 @@ class Map {
 		int getHeight();
 		
 		MapItem* getMapItem(Coordinate);
-
-		
+		int getnumberOfVegetal();
+		int getnumberOfCreature();
 		int getAmountFreePosition();
 		void print(bool);
 
@@ -35,6 +35,8 @@ class Map {
 		MapItem*** cell;
 		void updateEmission(int, int, int);
 		void test();
+		int numberOfCreature;
+		int numberOfVegetal;
 		int numberOfCI, numberOfCII, numberOfVeg;
 
 };

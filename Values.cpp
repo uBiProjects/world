@@ -42,7 +42,7 @@ Values::~Values(){
 	// free(instance);
 	// free(values);
 	// free(readFile);
-
+	// free(values);
 }
 
 /**

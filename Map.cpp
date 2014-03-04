@@ -43,6 +43,15 @@ Map :: Map(int _width, int _height){
 	amountFreePosition = _width * _height;
 }
 
+// return Creature #
+int Map::getnumberOfCreature(){
+	return numberOfCreature;
+}
+// return Vegetals #
+int Map::getnumberOfVegetal(){
+	return numberOfVegetal;
+}
+
 /**
  * Destructor:
  * frees the array.
@@ -310,6 +319,8 @@ void Map::print(bool _detailed) {
 	printf("Nr of Consumer1: %4i\n", numberOfCI);
 	printf("Nr of Consumer2: %4i\n", numberOfCII);
 	printf("Nr of Vegetals:  %4i\n", numberOfVeg);
+	numberOfCreature = numberOfCI + numberOfCII;
+	numberOfVegetal = numberOfVeg;
 }
 
 /**
