@@ -33,8 +33,6 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 	//tell random to generate random numbers
 	srand((unsigned)time(NULL));
 
-	// TODO Logfile
-	// log = "";
 
 	//save maximal amount of steps
     maxsteps = mstep;
@@ -52,8 +50,6 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
     // start life of creatures.
     run();
 
-    // save / print the log file.
-    // std::cout << log;
 }
 
 
@@ -353,11 +349,11 @@ void World::performOneStep() {
 					} // end switch
 					
 
-					//set walkable false because this creature should be unable to move/interact once again
-					//in this step.
+					// set walkable false because this creature should be unable to move/interact once again
+					// in this step.
 					currentCreature->setWalkable(false);
 
-					//TODO: nicht mehr hardcoden, ggt etc.
+					// TODO: nicht mehr hardcoden, ggt etc.
 					if (noch % kgv == 0) {
 						timePassed(currentCreature);
 					}
@@ -457,6 +453,8 @@ int World::interact(Creature* _a, Coordinate testpos){
 
 
 // impregnate if both creatues are ready
+// if c1 get pregnant c2 is also set intaktiv for the step.
+
 void World::impregnate(Creature* _c1, Creature* _c2) {
 
 #ifdef DEBUG
@@ -469,6 +467,8 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 			  
 	if ((_c1->isReadyForPregnant()) && (_c2->isReadyForPregnant())) {
 		_c1->setPregnant(true);
+		// Creature 2 is now inactive for this step
+		_c2->setWalkable = false;
 #ifdef DEBUG
 		std::cout << "zeit2: " << _c1->getMaxPregnantTime() << "\n";
 #endif
@@ -730,7 +730,7 @@ bool World::isAVegetal(Coordinate _pos){
 *	8	[char*]	path to consumer2.txt
 */
 
-// TODO einlesen einbinden
+
 
 int main(int _anzParam, char *strings[]) {
 
