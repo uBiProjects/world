@@ -250,7 +250,7 @@ void World::performOneStep() {
 
     //kgv berechenen, aktuelles level modulo kgv rechnen	TODO!!!	
 
-	int speedCI	= (int)Values::getInstance()->getCIS();
+	int speedCI	 = (int)Values::getInstance()->getCIS();
 	int speedCII = (int)Values::getInstance()->getCIS();
 
 	int kgv = getkgV(speedCII, speedCI);
@@ -468,7 +468,7 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 	if ((_c1->isReadyForPregnant()) && (_c2->isReadyForPregnant())) {
 		_c1->setPregnant(true);
 		// Creature 2 is now inactive for this step
-		_c2->setWalkable = false;
+		_c2->setWalkable(false);
 #ifdef DEBUG
 		std::cout << "zeit2: " << _c1->getMaxPregnantTime() << "\n";
 #endif
