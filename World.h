@@ -45,13 +45,15 @@ public:
 	bool isAVegetal(Coordinate);
 	bool isACreature(Coordinate);
 	bool createNewVegetal(Coordinate);
-	bool createNewConsumerI(Coordinate);
-	bool createNewConsumerII(Coordinate);
-	void setAllConsumersWalkable();
+	bool createNewConsumerI(Coordinate,int);
+	bool createNewConsumerII(Coordinate,int);
+	void setAllConsumersWalkableAndInteractable();
 	Coordinate normCoordinateToWorld(Coordinate);
 	Coordinate getAFreePositionAroundme(Coordinate);
 	void impregnate(Creature*, Creature*);
 	void giveBirthToABaby(Creature*);
+	int interact(Creature*, Coordinate);
+	bool findPregnantReadyCreatureNearby(Creature*, Coordinate*);
 };
 
 #endif

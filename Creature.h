@@ -54,8 +54,9 @@ public:
 	
 	void computeNewCoordinates(int, int);
 	void checkWeatherFoodFound();
-
-	int interact(Creature*, Life*);
+	bool isPregnant();
+	bool isReadyForPregnant();
+//	int interact(Creature*, Life*);
 	
 	
 	

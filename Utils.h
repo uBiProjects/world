@@ -43,5 +43,7 @@
 	void exit_error(int);									// exit routine for all error
 	int getRandomNumber(int, int);							// get a random int in a range
 	Coordinate addCoordinates(Coordinate, Coordinate);		// add 2 coordinates
+	int getggT(int, int);									// compute greates common divisor of 2 ints
+	int getkgV(int, int);									// compute least common multiple of 2 ints
 
 #endif /* UTILS_H_ */

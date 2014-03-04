@@ -94,46 +94,7 @@ void Creature::setSpeed(int _speed){
 }
 
 
-/*void Creature::computeNewCoordinates(int _xChangement, int _yChangement){
-	x += _xChangement;
-	y += _yChangement;
-}*/	
 
-// returns 0 = reproduce
-// returns 1 = i can eat that
-// return -1 = i can walk
-// return -2 = nothing to do 
-// TODO only try to reproduce if not already Pregnant
-int Creature:: interact(Creature* _a, Life* _b){
-	
-	// actions for consumerI
-	if(dynamic_cast<ConsumerI*>( _a ) ){
-		if(dynamic_cast<ConsumerI*>( _b ) ){		// i can reproduce
-			return 0;
-		}
-		else if (dynamic_cast<Vegetal*>(_b)){		// i can eat that
-			return 1;
-		}
-		else if (dynamic_cast<ConsumerII*>(_b)) {	// i can not do anything
-			return -2;								
-		}											// i can walk cell is empty
-		return -1;
-	}
-	else if(dynamic_cast<ConsumerII*>( _a ) ){
-		if(dynamic_cast<ConsumerI*>( _b ) ){		// i can eat that
-			return 1;
-		} else if(dynamic_cast<ConsumerII*>( _b ) ){ // i can reproduce
-			return 0;
-		} else if (dynamic_cast<Vegetal*>(_b)){		// cell is bocked
-			return -2;
-		}											// i can walk cell is empty
-		return -1;
-	}
-
-	// this should never happen(int) Values::getInstance()->getCIMLT()
-	exit_error(5);
-	return -3;
-}
 
 
 
@@ -143,9 +104,6 @@ void Creature:: changePosition(int _plusX, int _plusY){
 }
 
 
-//void Creature::checkWeatherFoodFound() {
-//
-//}
 
 
 int Creature:: getPregnantTime(){
@@ -164,7 +122,16 @@ void Creature:: setPregnant(bool _pregnant){
 	else{
 		pregnantTime = maxPregnantTime + 1;
 	}
+}
 
+// test if a creature is pregnant
+bool Creature::isPregnant(){
+	return (pregnantTime <= maxPregnantTime);
+}
+// returns true if a creature can become pregnant
+bool Creature::isReadyForPregnant() {
+	return	(currentLifeTime > maxLifeTime / 4) &&
+		(pregnantTime > maxPregnantTime);
 }
 
 // increment PregnantTime and return

@@ -198,6 +198,9 @@
 			case 9:
 				error_msg = "One or more of the input files do not exist!\n\n";
 				break;
+			case 10:
+				error_msg += "in interact: can not interact with me myself I!\n\n";
+				break;
 			default:
 				error_msg += "Unknown handled error";
 				break;
@@ -206,4 +209,24 @@
 		std::cout << error_msg;
 		wait_for_keypressed();
 		exit(error_number);
+	}
+
+	// compute greates common divisor of a and b
+	int getggT(int a, int b) {
+		if (a < 0) a = -a;
+		if (b < 0) b = -b;
+		while (true) {
+			if (a == 0) return b;		// trap if a==0
+			b %= a;						// b = b mod a
+			if (b == 0) return a;		// trap if b==0
+			a %= b;						// a = a mod b
+		}
+	}
+
+	// compute least common multiple of a and b use => abs(a*b)=kgV*ggT
+	int getkgV(int a, int b) {
+		int c = abs(a * b);
+		if (c == 0) return 0;			// kgv = 0 if one of the two is 0
+		int g = getggT(a, b);				// compute ggt
+		return c / g;
 	}
