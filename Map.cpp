@@ -76,7 +76,7 @@ void Map:: removeMonster(Coordinate _c){
 
 
 	//go through the stinking fields
-	updateEmission(*((cell[_c.x][_c.y]->monster)), _c.x, _c.y, -1);
+	updateEmission( _c.x, _c.y, -1);
 
 	//remove monster pointer
 	cell[_c.x][_c.y]->monster = NULL;
@@ -98,7 +98,7 @@ void Map::insertMonster(Life* _life, Coordinate _c){
 	cell[_c.x][_c.y]->monster = _life;
 
 	//insert emission
-	updateEmission(*(cell[_c.x][_c.y]->monster), _c.x, _c.y, 1);
+	updateEmission(_c.x, _c.y, 1);
 
 	//update the intern representation of the current position of the life.
 	_life->setX(_c.x);
@@ -127,7 +127,7 @@ void Map::deleteMonster(Coordinate _c){
  * @param _multiplicator multiplied to the normal emission of Life in range.
  * 			Tpyically used +- 1.
  */
-void Map:: updateEmission(Life l, int _x, int _y, int _multiplicator){
+void Map:: updateEmission(int _x, int _y, int _multiplicator){
 
 	//go through the stinking fields
 	for(int x = _x - cell[_x][_y]->monster->getStinkRange();
