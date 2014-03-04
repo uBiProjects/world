@@ -53,8 +53,9 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 }
 
 
-World::~World(){
+World::~World() {
 	free (mp);
+	free (Values::getInstance());
 }
 
 
