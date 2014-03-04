@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>		//printf
 
 #include "Utils.h"
 #include "Life.h"		//used in MapItem

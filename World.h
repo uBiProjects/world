@@ -22,6 +22,7 @@ private:
 	
 public:
 	World(int, int, int,int,int,int);
+	virtual ~World();
 	bool initializeCreature(int,int,int);
 	// bool initializeLife(int, typename) {
 
