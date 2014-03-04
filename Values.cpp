@@ -35,6 +35,13 @@ Values::Values(){
 	writeCII(pointer);
 }
 
+Values::~Values(){
+
+	free(values);
+	//free(readFile());
+
+}
+
 /**
 * Reads a file and stores the information
 * in an int array.

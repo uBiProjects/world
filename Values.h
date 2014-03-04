@@ -52,6 +52,8 @@ public:
 
 	int getPLT();
 
+	~Values();
+
 	static Values* getInstance();
 };
 

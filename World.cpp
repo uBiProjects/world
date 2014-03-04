@@ -54,8 +54,8 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 
 
 World::~World() {
-	free (mp);
-	free (Values::getInstance());
+	delete (mp);
+	delete (Values::getInstance());
 }
 
 

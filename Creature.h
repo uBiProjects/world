@@ -8,11 +8,7 @@ private:
 	
 
 	int timeWithoutFood;
-//	int timeLife;
-	
 	int maxTimeWithoutFood;
-//	int maxTimeLife;
-	
 	int rangeOfSmellDetection;
 	int speed;
 	

@@ -52,10 +52,8 @@ Map :: ~Map() {
 	//destroy existing monster if they exist
 	for(int x = 0; x < width; x ++){
 		for(int y = 0; y < height; y ++){
-			if(cell[x][y]->monster != NULL){
-				c.x = x; c.y = y;
-				deleteMonster(c);
-			}
+			cell[x][y]->~MapItem();
+			delete(cell[x][y]);
 		}
 	}
 
