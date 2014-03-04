@@ -117,7 +117,6 @@ int Creature :: getMaxPregnantTime(){
 void Creature:: setPregnant(bool _pregnant){
 	if(_pregnant){
 		pregnantTime = 0;
-	
 	}
 	else{
 		pregnantTime = maxPregnantTime + 1;
@@ -130,8 +129,7 @@ bool Creature::isPregnant(){
 }
 // returns true if a creature can become pregnant
 bool Creature::isReadyForPregnant() {
-	return	(currentLifeTime > maxLifeTime / 4) &&
-		(pregnantTime > maxPregnantTime);
+	return	(pregnantTime > maxPregnantTime);
 }
 
 // increment PregnantTime and return

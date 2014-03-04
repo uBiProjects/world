@@ -254,7 +254,7 @@ void World::performOneStep() {
 	int speedCII = (int)Values::getInstance()->getCIS();
 
 	int kgv = getkgV(speedCII, speedCI);
-	kgv = 2;
+	kgv = 1;
 
 	//speed = 0 > do not move for that monster and normal move for this monster bzw mache x schritte aber nur eine interaktion
 	//	but was ist mit der production von pflanzen?
@@ -264,7 +264,7 @@ void World::performOneStep() {
     for (int noch = 0; noch < kgv; noch++) {
 
 #ifdef DEBUG2
-        std::cout << "step" << step << "." << noch % 2 << "\n";
+        std::cout << "Step" << step << "." << noch % 2 << "\n";
 #endif
 
         // reset consumers to "walkable true" to ensure it can walk.
@@ -293,7 +293,7 @@ void World::performOneStep() {
 
 					//compute new position and delta values.
 					// calculate the best movement/direction (returns plusX,plusY = 0,1,-1)
-					bool creatureSmellsSomthing = smell(currentCreature, &deltaPos);
+					bool creatureSmellsSomthing = smellAndGetBestDestination(currentCreature, &deltaPos);
 
 					//calculate the new position modulo map size because creatures can pass the edge.
 					newPosition = addCoordinates(c, deltaPos);
@@ -370,8 +370,8 @@ void World::performOneStep() {
 						}
 					}
 				}
-			}
-		}
+			} // height
+		} // width
 	}
 }
 
@@ -487,11 +487,13 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 // TODO wenn creatur nicht in die gew�nscht richtung laufen kann
 //      sollte ein anderer wert f�r plusxy zur�ckgegeben werden
 //      2.bester, 3. bester etc. 
-bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
+bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* plusXY) {
 
+	Coordinate bestDeltaDestination;
 	Coordinate bestDestination;
 	Coordinate oldCoordinate = smellingCreature->getPos();
 	Coordinate c;
+	int speed = smellingCreature->getSpeed();
 	int FE=0, PE=0, STE=0;
 	int score;
 	
@@ -539,24 +541,32 @@ bool World::smell(Creature* smellingCreature, Coordinate* plusXY) {
             // if the current score is better than all scores before
             if(score >= bestScore){
             	bestScore = score;
-            	bestDestination.x = c.x;
-            	bestDestination.y = c.y;
+				bestDestination.x = c.x;
+				bestDestination.y = c.y;
 			}
         }
     }
+	// DeltaDestination must be in the range [-speed,speed]
+	// oldCoordinate +- Speed 
+	// deltal = getRandomNumber(-Speed,Speed)
 	// creatue smells nothing => take a random value
 	if (!smellSomeThing) {
-		bestDestination.x = -1 + getRandomNumber(0, 2);
-		bestDestination.y = -1 + getRandomNumber(0, 2);
-		*plusXY = bestDestination;
+		bestDeltaDestination.x = getRandomNumber(-speed, speed);
+		bestDeltaDestination.y = getRandomNumber(-speed, speed);
+		*plusXY = bestDeltaDestination;
 		return (false);
 	} 
 	
-    //calculate destination and write it into the values posX and posY
-	bestDestination.x = sign((bestDestination.x - oldCoordinate.x));
-	bestDestination.y = sign((bestDestination.y - oldCoordinate.y));
+    // calculate delta to bestdestination
+	bestDeltaDestination = subCoordinates(bestDestination, oldCoordinate);
+	// max allowed range = +-speed
+	bestDeltaDestination.x = sign(bestDeltaDestination.x) * MIN(abs(bestDeltaDestination.x), speed);
+	bestDeltaDestination.y = sign(bestDeltaDestination.y) * MIN(abs(bestDeltaDestination.y), speed);
+
+	// bestDeltaDestination.x = sign((bestDestination.x - oldCoordinate.x));
+	// bestDeltaDestination.y = sign((bestDestination.y - oldCoordinate.y));
 	
-	*plusXY = bestDestination;
+	*plusXY = bestDeltaDestination;
     
 	return (smellSomeThing);
 }

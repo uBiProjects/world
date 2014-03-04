@@ -54,7 +54,6 @@ Map :: ~Map() {
 			if(cell[x][y]->monster != NULL){
 				c.x = x; c.y = y;
 				deleteMonster(c);
-//				free(cell[x][y]->monster);
 			}
 		}
 	}
@@ -76,14 +75,6 @@ Map :: ~Map() {
  */
 void Map:: removeMonster(Coordinate _c){
 
-	//check whether at position (_x, _y) there is a monster to be removed
-//	if(emission[_x][_y].monster == NULL) {
-//		std:: cout << ("Map::removeMonster.	 Error. Pointer to monster to be removed is null");
-//	} 
-//	else
-//	if (*(emission[_x][_y].monster) == NULL) {
-//		std:: cout << ("Map::removeMonster.	 Error. Monster to be removed is null");
-//	}
 
 	//go through the stinking fields
 	updateEmission(*((cell[_c.x][_c.y]->monster)), _c.x, _c.y, -1);
@@ -103,11 +94,6 @@ void Map:: removeMonster(Coordinate _c){
  */
 void Map::insertMonster(Life* _life, Coordinate _c){
 
-	//check whether at position (_x, _y) there is already a monster
-	//if(emission[_x][_y].monster != NULL){
-	//|| *(emission[_x][_y].monster) == NULL) {
-	//	std:: cout <<("Map::removeMonster.	 Error. insert at occupied position");
-	//}
 
 	//insert monster
 	cell[_c.x][_c.y]->monster = _life;
@@ -158,7 +144,7 @@ void Map:: updateEmission(Life l, int _x, int _y, int _multiplicator){
 			//calculate
 			int addition = _multiplicator *
 					(cell[_x][_y]->monster->getStinkRange() + 1
-					- MIN(abs(x - _x), abs (y - _y)));
+					- MAX(abs(x - _x), abs (y - _y)));
 
 			//switch the monster type and reduce the stink range in fields
 			if(dynamic_cast<ConsumerI*> (cell[_x][_y]->monster)){
@@ -168,7 +154,7 @@ void Map:: updateEmission(Life l, int _x, int _y, int _multiplicator){
 			} else if(dynamic_cast<Vegetal*> (cell[_x][_y]->monster)){
 				cell[realX][realY]->vEmission += addition;
 			} else {
-				std:: cout << "Map::updateEmission Error. ISA relationship is not complete.";
+				exit_error(11);
 			}
 		}
 	}
@@ -197,12 +183,7 @@ void Map::print(bool _detailed) {
 #ifdef CLEAR_SCREEN
 	clear_screen();
 #endif
-	//std::cout << amountFreePosition << "\n";
-	//std::cout << Life::number_of_living_lifes << "\n";
-	//std::cout << ConsumerI::number_of_living_creaturesI << "\n";
-	//std::cout << ConsumerII::number_of_living_creaturesII << "\n";
-	//std::cout << Vegetal::number_of_living_vegetal << "\n";
-
+	
 	//size of cells in chars
 	int sizeCell = 3;
 	char* art;
@@ -281,7 +262,6 @@ void Map::print(bool _detailed) {
             	if(!_detailed) {
 
                     std::cout << art;
-//                	for(int cchar = 0; cchar < sizeCell - 1 && _detailed; cchar ++) {           geändert Thomas
 					for (int cchar = 0; cchar < sizeCell - 1; cchar++) {
 						std::cout << " ";
                 	}
@@ -329,8 +309,9 @@ void Map::print(bool _detailed) {
         }
         std::cout << "\n";
     }
-    
-        std::cout << "Number of Consumer1: " << numberOfCI << ",\tNumber of Consumer2: " << numberOfCII << ",\tNumber of Vegetals: " << numberOfVeg << "\n";
+	printf("Nr of Consumer1: %4i\n", numberOfCI);
+	printf("Nr of Consumer2: %4i\n", numberOfCII);
+	printf("Nr of Vegetals:  %4i\n", numberOfVeg);
 }
 
 /**

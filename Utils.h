@@ -6,7 +6,7 @@
 // #define DEBUG		// shows debug info							(comment out for normal run)
 // #define DEBUG1		// updates the screen afer every crature	(comment out for normal run)
 #define DEBUG2			// print steps								(comment out/include for normal run)
-// #define TESTFREE		// calls the testfree routine				(comment out for normal run)
+#define TESTFREE		// calls the testfree routine				(comment out for normal run)
 #define FASTRUN         // wait only 5 millisecons after a step     (comment out for normal run)
 #define CLEAR_SCREEN	// clears the scree after each round		(include     for normal run)
 
@@ -18,8 +18,8 @@
 #endif
 
 // a min/max template
-#define MAX(a,b) (((a)<(b))?(a):(b))
-#define MIN(a,b) (((a)>(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+#define MIN(a,b) (((a)<(b))?(a):(b))
 
 
 	
@@ -43,6 +43,7 @@
 	void exit_error(int);									// exit routine for all error
 	int getRandomNumber(int, int);							// get a random int in a range
 	Coordinate addCoordinates(Coordinate, Coordinate);		// add 2 coordinates
+	Coordinate subCoordinates(Coordinate, Coordinate);		// add 2 coordinates
 	int getggT(int, int);									// compute greates common divisor of 2 ints
 	int getkgV(int, int);									// compute least common multiple of 2 ints
 

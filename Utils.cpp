@@ -69,7 +69,7 @@
 			Dateityp = Status.st_mode & S_IFMT;
 			switch (Dateityp) {
 				case S_IFREG:
-					puts("is a file");
+					// puts("is a file");
 					return true;
 				case S_IFDIR:
 					puts("is a folder");
@@ -140,7 +140,15 @@
 	}
 
 
-// get a random number in intervall [range_min, range_max]
+// sub 2 vectors return _c1-_c2
+	Coordinate subCoordinates(Coordinate _c1, Coordinate _c2) {
+
+		return Coordinate((_c1.x - _c2.x), (_c1.y - _c2.y));
+
+	}
+
+
+	// get a random number in intervall [range_min, range_max]
 	int getRandomNumber(int range_min, int range_max) {
 		double u;
 
@@ -200,6 +208,9 @@
 				break;
 			case 10:
 				error_msg += "in interact: can not interact with me myself I!\n\n";
+				break;
+			case 11:
+				error_msg += "Map::updateEmission Error. ISA relationship is not complete.\n\n";
 				break;
 			default:
 				error_msg += "Unknown handled error";
