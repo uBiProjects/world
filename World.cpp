@@ -777,7 +777,9 @@ int main(int _anzParam, char *strings[]) {
 
 	World* w = new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 	w->~World();
+#ifdef WINDOWS
 	_CrtDumpMemoryLeaks();
+#endif
 	wait_for_keypressed();
 	return 0;
 }
