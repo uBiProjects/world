@@ -54,7 +54,9 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 
 
 World::~World() {
+	mp->~Map();
 	delete (mp);
+	Values::getInstance()->~Values();
 	delete (Values::getInstance());
 }
 
