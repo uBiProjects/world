@@ -11,7 +11,7 @@ class World {
 private:
 
 	Map* mp;
-	//
+
 	int step;
 	int maxsteps;
 	const static int stepsForNewVegetal=3;		// new vegetal each 2. step.
@@ -24,11 +24,8 @@ public:
 	World(int, int, int,int,int,int);
 	virtual ~World();
 	bool initializeCreature(int,int,int);
-	// bool initializeLife(int, typename) {
 
 	void print();
-	Life getLife(int, int);
-	void setLife(int, int, Life);
 	void performOneStep();
 	void run();	
 	int testfree();

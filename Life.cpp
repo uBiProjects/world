@@ -15,7 +15,7 @@
 	
 	
 	Life::~Life(){
-		
+		int i = 0;
 	}
 	
 	char Life::getCellChar(){

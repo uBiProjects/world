@@ -773,8 +773,8 @@ int main(int _anzParam, char *strings[]) {
 	// allways clear the screen at the beginning
 	clear_screen();
 
-	new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
-
+	World* w = new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
+	w->~World();
 
 	wait_for_keypressed();
 	return 0;
