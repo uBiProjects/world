@@ -1,7 +1,7 @@
 Life Time	0
 Maximal Life Time	70
 Smell Emission	4
-Smell detection	5
-Max time without food	20
+Smell detection	6
+Max time without food	30
 Time without food	0
-Speed	2
+Speed	4

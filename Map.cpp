@@ -172,6 +172,7 @@ void Map:: updateEmission(int _x, int _y, int _multiplicator){
  * print the current map.
  * @param _detailed if detailed, also print stink value
  */
+// TODO aufrauemen doppelte geleiche aufrufe von sout
 void Map::print(bool _detailed) {
 
 	//Reset Counters for numberOf* values
@@ -193,7 +194,7 @@ void Map::print(bool _detailed) {
 	
 	//size of cells in chars
 	int sizeCell = 3;
-	char* art;
+	
 
 	if(_detailed){
     	sizeCell = 12;
@@ -215,7 +216,7 @@ void Map::print(bool _detailed) {
             if (j == 0) {
                 std::cout << " |";
             }
-
+			char art = ' ';
             if (dynamic_cast<ConsumerI*>( cell[j][i]->monster)) {
 				//increase numberOfCI:
 				numberOfCI++;
@@ -223,14 +224,15 @@ void Map::print(bool _detailed) {
             	//fetch the identifier of Life
             	Creature * c = (Creature*)  cell[j][i]->monster;
                 if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-                   art = "p";
+					std::cout << "p";
+					art = c->getCellChar();
                 } else {
-                    art = "c";
+					std::cout << "c";
+					art = c->getCellChar();
                 }
 
                 //print if not detailed
                 if(!_detailed) {
-                    std::cout << art;
                 	for(int cchar = 0; cchar < sizeCell - 1; cchar ++) {
                 		std::cout << " ";
                 	}
@@ -244,14 +246,15 @@ void Map::print(bool _detailed) {
             	//fetch the identifier of Life
             	Creature * c = (Creature*)  cell[j][i]->monster;
                 if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-                   art = "P";
+					std::cout << "P";
+					art = c->getCellChar();
                 } else {
-                    art = "C";
+					std::cout << "C";
+					art = c->getCellChar();
                 }
                 //print if not detailed
             	if(!_detailed) {
-
-            		std:: cout << art;
+            		
                 	for(int cchar = 0; cchar < sizeCell - 1; cchar ++) {
                 		std::cout << " ";
                 	}
@@ -259,16 +262,15 @@ void Map::print(bool _detailed) {
             	}
 
             } else if (dynamic_cast<Vegetal*> ( cell[j][i]->monster)) {
-
-            	art = "v";
+				Vegetal * v = (Vegetal*)cell[j][i]->monster;
+				art = v->getCellChar();
+				std::cout << "v";
             	
 				//increase numberOfCI:
 				numberOfVeg++;
 
                 //print if not detailed
             	if(!_detailed) {
-
-                    std::cout << art;
 					for (int cchar = 0; cchar < sizeCell - 1; cchar++) {
 						std::cout << " ";
                 	}
@@ -277,12 +279,10 @@ void Map::print(bool _detailed) {
 
             } else {
 
-            	art = " ";
+				std::cout << " ";
 
                 //print if not detailed
             	if(!_detailed) {
-
-            		std::cout << art;
                 	for(int cchar = 0; cchar < sizeCell - 1; cchar ++) {
                 		std::cout << " ";
                 	}
@@ -321,6 +321,7 @@ void Map::print(bool _detailed) {
 	printf("Nr of Vegetals:  %4i\n", numberOfVeg);
 	numberOfCreature = numberOfCI + numberOfCII;
 	numberOfVegetal = numberOfVeg;
+
 }
 
 /**

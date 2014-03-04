@@ -265,9 +265,9 @@ void World::performOneStep() {
 	Coordinate c, newPosition, deltaPos;
 
 
-#ifdef DEBUG2
-        std::cout << "Step " << step << "\n";
-#endif
+
+        std::cout << "Step " << step+1 << "\n";
+
 
         // reset consumers to "walkable true" to ensure it can walk.
         // set walkable false is used later inside the loops to avoid that
