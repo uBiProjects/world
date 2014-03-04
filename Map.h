@@ -35,6 +35,7 @@ class Map {
 		MapItem*** cell;
 		void updateEmission(Life, int, int, int);
 		void test();
+		int numberOfCI, numberOfCII, numberOfVeg;
 
 };
 
