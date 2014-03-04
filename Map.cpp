@@ -181,7 +181,10 @@ void Map:: updateEmission(Life l, int _x, int _y, int _multiplicator){
  */
 void Map::print(bool _detailed) {
 
-	
+	//Reset Counters for numberOf* values
+	numberOfCI=0;
+	numberOfCII=0;
+	numberOfVeg=0;
 
 #ifdef FASTRUN
 	#ifndef DEBUG1
@@ -226,7 +229,9 @@ void Map::print(bool _detailed) {
             }
 
             if (dynamic_cast<ConsumerI*>( cell[j][i]->monster)) {
-
+				//increase numberOfCI:
+				numberOfCI++;
+				
             	//fetch the identifier of Life
             	Creature * c = (Creature*)  cell[j][i]->monster;
                 if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
@@ -234,7 +239,6 @@ void Map::print(bool _detailed) {
                 } else {
                     art = "c";
                 }
-
 
                 //print if not detailed
                 if(!_detailed) {
@@ -245,6 +249,9 @@ void Map::print(bool _detailed) {
                     std::cout << "|";
                 }
             } else if (dynamic_cast<ConsumerII*> ( cell[j][i]->monster)) {
+				//increase numberOfCII:
+				numberOfCII++;
+
 
             	//fetch the identifier of Life
             	Creature * c = (Creature*)  cell[j][i]->monster;
@@ -253,7 +260,6 @@ void Map::print(bool _detailed) {
                 } else {
                     art = "C";
                 }
-
                 //print if not detailed
             	if(!_detailed) {
 
@@ -267,6 +273,9 @@ void Map::print(bool _detailed) {
             } else if (dynamic_cast<Vegetal*> ( cell[j][i]->monster)) {
 
             	art = "v";
+            	
+				//increase numberOfCI:
+				numberOfVeg++;
 
                 //print if not detailed
             	if(!_detailed) {
@@ -320,6 +329,8 @@ void Map::print(bool _detailed) {
         }
         std::cout << "\n";
     }
+    
+        std::cout << "Number of Consumer1: " << numberOfCI << ",\tNumber of Consumer2: " << numberOfCII << ",\tNumber of Vegetals: " << numberOfVeg << "\n";
 }
 
 /**

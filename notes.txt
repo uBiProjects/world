@@ -9,3 +9,7 @@ Pflanzen wachsen in jeder Zelle. Sie können entweder anwesend oder abgefressen 
 http://www.gnu.org/software/libc/manual/index.html#dir
 
 http://www.cplusplus.com/
+
+
+Nur ein Lebewesen auf Feld
+Babys dürfen neben Mutter geboren werden

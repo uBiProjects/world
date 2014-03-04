@@ -618,7 +618,7 @@ void World::giveBirthToABaby(Creature* d) {
 		}
 		// child get the same time without food +5 than the mother
 		else if (isAConsumerII(myPos)) {
-			createNewConsumerII(childPos,MAX(TWF-5,0));
+			createNewConsumerII(childPos, MAX(TWF-5,0));
 		}
 	}
 	else {										// no place found
