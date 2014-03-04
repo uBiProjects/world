@@ -614,11 +614,11 @@ void World::giveBirthToABaby(Creature* d) {
 	if (childPos) {								// place found
 		if (isAConsumerI(myPos)) {
 			// child get the same time without food -5 than the mother
-			createNewConsumerI(childPos, 0*MAX(TWF-5,0));
+			createNewConsumerI(childPos, MAX(TWF-5,0));
 		}
 		// child get the same time without food +5 than the mother
 		else if (isAConsumerII(myPos)) {
-			createNewConsumerII(childPos,0*MAX(TWF-5,0));
+			createNewConsumerII(childPos,MAX(TWF-5,0));
 		}
 	}
 	else {										// no place found
@@ -637,10 +637,10 @@ void World::giveBirthToABaby(Creature* d) {
  */
 bool World::creaturMustDie(Creature* d) {
 	bool idie = false;
-	if ((*d).getTimeWithoutFood() > (*d).getMaxTimeWithoutFood()) {
+	if ((*d).getTimeWithoutFood() >= (*d).getMaxTimeWithoutFood()) {
 		idie = true;
 	}
-	if ((*d).getCurrentLifeTime() > (*d).getMaxLifeTime()) {
+	if ((*d).getCurrentLifeTime() >= (*d).getMaxLifeTime()) {
 		idie = true;
 	}
 #ifdef DEBUG
