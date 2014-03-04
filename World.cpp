@@ -170,10 +170,12 @@ void World::run() {
         // every X rounds a new plant grows in a random place
 		// if amound of free cells > 0
 		if (mp->getAmountFreePosition()>0) {
+
 			if (step % (stepsForNewVegetal - 1) == 0) {
 				c = getRandomFreePosition();
 				createNewVegetal(c);
 			}
+
 		}
 		// update the map
 		mp->print(false);
@@ -253,23 +255,9 @@ void World::performOneStep() {
 	
 	Coordinate c, newPosition, deltaPos;
 
-    //kgv berechenen, aktuelles level modulo kgv rechnen	TODO!!!	
-
-	int speedCI	 = (int)Values::getInstance()->getCIS();
-	int speedCII = (int)Values::getInstance()->getCIS();
-
-	int kgv = getkgV(speedCII, speedCI);
-	kgv = 1;
-
-	//speed = 0 > do not move for that monster and normal move for this monster bzw mache x schritte aber nur eine interaktion
-	//	but was ist mit der production von pflanzen?
-	//kgv <> 0 => in kgv schritten macht monster a kgv/a schritte und monster b kgv/speed b schritte aber nur eine interaktion
-	//man kann aber auch die neue postion so festlegen, dass man 
-
-    for (int noch = 0; noch < kgv; noch++) {
 
 #ifdef DEBUG2
-        std::cout << "Step" << step << "." << noch % 2 << "\n";
+        std::cout << "Step " << step << "\n";
 #endif
 
         // reset consumers to "walkable true" to ensure it can walk.
@@ -285,9 +273,8 @@ void World::performOneStep() {
 
 				
             	//TODO: aendern damit hier auch der vom user definierte speed drin vorkommt
-                if (
-					(isAConsumerI(c) || (isAConsumerII(c) && noch % kgv == 0))
-                        && (mp->getMapItem(c)->monster->isWalkable())) {
+                if ((isACreature(c)) &&
+                    (mp->getMapItem(c)->monster->isWalkable())) {
 
                     //save current Life as Creature and remove monster from old position.
                     Creature* currentCreature = (Creature*) (mp->getMapItem(c)->monster);
@@ -358,26 +345,21 @@ void World::performOneStep() {
 					// in this step.
 					currentCreature->setWalkable(false);
 
-					// TODO: nicht mehr hardcoden, ggt etc.
-					if (noch % kgv == 0) {
-						timePassed(currentCreature);
-					}
+					// check die/etc.
+					timePassed(currentCreature);
+					
 #ifdef DEBUG1
 					mp->print(false); 
 #endif
 				}
 				else {
 					if (isAVegetal(c)) {
-						//TODO: nicht mehr hardcoden, ggt etc.
-						if (noch % kgv == 0) {
 							Vegetal* currentVegetal = (Vegetal*)(mp->getMapItem(c)->monster);
 							timePassed(currentVegetal);
-						}
 					}
 				}
 			} // height
 		} // width
-	}
 }
 
 
