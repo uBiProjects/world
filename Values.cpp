@@ -25,20 +25,23 @@ Values::Values(){
  	int* pointer=Values::readFile((char*)"Vegetal.txt");
 	print(pointer);
 	writeV(pointer);
-	
+	free(pointer);
+
 	pointer=Values::readFile((char*)"Consumer1.txt");
 	print(pointer);
 	writeCI(pointer);
-	
+	free(pointer);
+
 	pointer=Values::readFile((char*)"Consumer2.txt");
 	print(pointer);
 	writeCII(pointer);
+	free(pointer);
 }
 
 Values::~Values(){
-
-	free(values);
-	//free(readFile());
+	// free(instance);
+	// free(values);
+	// free(readFile);
 
 }
 
@@ -70,7 +73,7 @@ int* Values::readFile(char* filename){
     }
     
     //Declare array for values:
-    int* p = (int*)( malloc(filerows *sizeof(int)));
+    int* p = (int*)(malloc(filerows *sizeof(int)));
     
     //Reopen File:
     infile.close();

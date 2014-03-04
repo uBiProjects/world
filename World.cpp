@@ -734,6 +734,7 @@ bool World::isAVegetal(Coordinate _pos){
 
 int main(int _anzParam, char *strings[]) {
 
+
 	int height;
 	int width;
 	int maxNumberOfSteps;
@@ -763,7 +764,6 @@ int main(int _anzParam, char *strings[]) {
 	}
 
 
-	std::string errorMessage;
 	if (!is_file(strings[6]) || !is_file(strings[8]) || !is_file(strings[7])) {
 		exit_error(9);
 	}
@@ -774,11 +774,19 @@ int main(int _anzParam, char *strings[]) {
 	// allways clear the screen at the beginning
 	clear_screen();
 
+#ifdef WINDOWS
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+#endif
 	World* w = new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 	w->~World();
+
+	// free(w);
 #ifdef WINDOWS
+
 	_CrtDumpMemoryLeaks();
 #endif
+	
 	wait_for_keypressed();
 	return 0;
 }

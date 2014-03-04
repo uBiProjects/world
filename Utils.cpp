@@ -16,7 +16,6 @@
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <windows.system.h>
-	#include <crtdbg.h>  // detect memory leak
 // TODO 1. clr screen immer<
 //	#define CLRSCR system("cls")
     #define CLRSCR System::Console::SetCursorPosition(0, 0);			
