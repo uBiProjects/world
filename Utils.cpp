@@ -39,17 +39,17 @@ int length(unsigned int _number) {
 	if(_number / 1000 > 0){
 		return 4;
 	}
-	else if (abs(_number)/ 100 > 0){
-return 3;
+	else if (_number/ 100 > 0){
+		return 3;
 	}
-	else if (abs(_number) / 10 > 0){
-return 2;
+	else if (_number / 10 > 0){
+		return 2;
 	}
 	else {
 		return 1;
 	}
-
 }
+
 
 
 	// sleep for milliseconds
