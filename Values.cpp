@@ -10,6 +10,7 @@
 #include <string>
 #include <stdlib.h>
 
+#include "Utils.h"
 #include "Values.h"
 
 using namespace std;
@@ -20,19 +21,19 @@ Values* Values::instance = 0;
 * Constructor for Values.
 * Reads and stores the the files.
 */
-Values::Values(){
+Values::Values(char* a, char* b, char* c){
 
- 	int* pointer=Values::readFile((char*)"Vegetal.txt");
+ 	int* pointer=Values::readFile(a);
 	print(pointer);
 	writeV(pointer);
 	free(pointer);
 
-	pointer=Values::readFile((char*)"Consumer1.txt");
+	pointer=Values::readFile(b);
 	print(pointer);
 	writeCI(pointer);
 	free(pointer);
 
-	pointer=Values::readFile((char*)"Consumer2.txt");
+	pointer=Values::readFile(c);
 	print(pointer);
 	writeCII(pointer);
 	free(pointer);
@@ -230,10 +231,13 @@ void Values::testAllValues(){
 	cout<<CIIS<<endl;
 }
 
+void Values::setInstance(char* a, char* b, char* c){
+	instance = new Values(a, b, c);
+}
 
 Values* Values :: getInstance(){
 
   if( instance == 0 )
-	  instance = new Values();
+	  exit_error(12);
   return instance;
 }

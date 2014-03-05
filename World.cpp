@@ -776,8 +776,9 @@ int main(int _anzParam, char *strings[]) {
 		exit_error(9);
 	}
 	
-	//Set sources in lifeforms
+	//Set sources for lifeforms
 	//ConsumerI::setSource((char*)strings[7]);
+	Values::setInstance(strings[6],strings[7],strings[8]);
 
 	// allways clear the screen at the beginning
 	clear_screen();
