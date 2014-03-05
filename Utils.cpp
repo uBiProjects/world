@@ -166,10 +166,11 @@ int length(unsigned int _number) {
 
 	// get a random number in interval [range_min, range_max]
 	int getRandomNumber(int range_min, int range_max) {
-		double u;
-
-		u = (double) rand() / (RAND_MAX + 1.0) * 
-            (range_max + 1.0 - range_min) + range_min;
+		double u,y;
+		y = RAND_MAX;
+		u = rand();
+		u = u / (y + 1.0) *
+			(double)(range_max + 1.0 - range_min) + (double)range_min;
 		return (int)u;
 }
 

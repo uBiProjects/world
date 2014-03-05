@@ -23,8 +23,4 @@ ConsumerI:: ConsumerI(Coordinate _pos) : Creature(_pos,
 ConsumerI:: ~ConsumerI(){
 
 }
-/*
-void ConsumerI:: setSource(char* SOURCE){
-		static const char* source = SOURCE;
-}
-*/
+

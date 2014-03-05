@@ -305,7 +305,7 @@ void World::performOneStep(int step) {
 
 
 
-                int index = -2;
+                int index = -1;
                 if (creatureSmellsSomthing) {
                     // smell says do not move 
                     // the only thing the creature can do is get Pregnant
