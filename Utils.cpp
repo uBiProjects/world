@@ -212,6 +212,9 @@
 			case 11:
 				error_msg += "Map::updateEmission Error. ISA relationship is not complete.\n\n";
 				break;
+			case 12:
+				error_msg += "No instance of Values.. .\n\n";
+				break;
 			default:
 				error_msg += "Unknown handled error";
 				break;

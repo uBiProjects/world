@@ -25,7 +25,7 @@ private:
 	
 	static Values *instance;
 //	static bool created;
-	Values();
+	Values(char*,char*,char*);
 
 public:
 	
@@ -55,6 +55,7 @@ public:
 	~Values();
 
 	static Values* getInstance();
+	static void setInstance(char*,char*,char*);
 };
 
 
