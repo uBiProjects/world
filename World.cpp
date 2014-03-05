@@ -45,7 +45,7 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
     initializeCreature(nC1, nC2, nV);
 
 	// print fist screen
-	mp->print(true);
+	mp->print(false);
 	
 
     // start life of creatures.
@@ -170,7 +170,7 @@ void World::run(int fixedNumberOfVegetal) {
 		testfree();
 #endif
 		// update the map and number of Vegetal
-		mp->print(true);
+		mp->print(false);
 		std::cout << "Step " << step + 1 << "\n";
 
 		// simulation ends if # of creatures =0
@@ -288,7 +288,9 @@ void World::performOneStep() {
 
                     //save current Life as Creature and remove monster from old position.
                     Creature* currentCreature = (Creature*) (mp->getMapItem(c)->monster);
-
+					if (currentCreature->getMaxTimeWithoutFood() - currentCreature->getTimeWithoutFood()<2) {
+						int i = 0;
+					}
 					// to ensure all emisions are form other livings, the current consumer
 					// has to be temorary removed from the map
 					mp->removeMonster(c);
@@ -300,6 +302,7 @@ void World::performOneStep() {
 					//calculate the new position modulo map size because creatures can pass the edge.
 					newPosition = addCoordinates(c, deltaPos);
 					newPosition = normCoordinateToWorld(newPosition);
+					
 					
 
 					int index = -2;
@@ -338,9 +341,8 @@ void World::performOneStep() {
 						mp->deleteMonster(newPosition);	
 						// go to new position.
 						mp->insertMonster(currentCreature, newPosition);
-                                                // reset time without food
-                                                currentCreature->setTimeWithoutFood(0);
-                                                std::cout << "Reset twf: " << currentCreature->getTimeWithoutFood()<< "\n";
+                        // reset time without food
+                        currentCreature->setTimeWithoutFood(0);
 						break;
 					case 0:					// (try) reproduce don't walk
 						// back on the map
@@ -496,10 +498,10 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
 	Coordinate c;
 	int speed = smellingCreature->getSpeed();
 	int FE=0, PE=0, STE=0;
-	int score;
+	double score;
 	
 	
-	int bestScore = INT_MIN;
+	double bestScore = DBL_MIN;
 	bool smellSomeThing = false;
 
 	//the range of smell detection of the current creature
@@ -531,7 +533,8 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
         	}
 
         	// compute score
-            score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
+			score = computeScroe(FE, TWF, MTWF, STE, PE);
+			// score = (double)FE * (TWF / MTWF) + (double)(STE - PE) * ((MTWF - TWF) / MTWF);
 
 			// if one of the emissions is <>0 for only one cell 
 			// the creature smells something
@@ -571,8 +574,14 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
     
 	return (smellSomeThing);
 }
-
-
+/**
+	compute score
+*/
+double World::computeScroe(double FE, double TWF, double MTWF, double STE, double PE) {
+	double score;
+	score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
+	return score;
+}
 /**
 	time depending vegetal (max Liefetime)
 */

@@ -51,6 +51,7 @@ public:
 	void giveBirthToABaby(Creature*);
 	int interact(Creature*, Coordinate);
 	bool findPregnantReadyCreatureNearby(Creature*, Coordinate*);
+	double computeScroe(double, double, double, double, double);
 };
 
 #endif
