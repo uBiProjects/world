@@ -45,7 +45,7 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
     initializeCreature(nC1, nC2, nV);
 
 	// print fist screen
-	mp->print(false);
+	mp->print(true);
 	
 
     // start life of creatures.
@@ -170,7 +170,7 @@ void World::run(int fixedNumberOfVegetal) {
 		testfree();
 #endif
 		// update the map and number of Vegetal
-		mp->print(false);
+		mp->print(true);
 		std::cout << "Step " << step + 1 << "\n";
 
 		// simulation ends if # of creatures =0
@@ -340,6 +340,7 @@ void World::performOneStep() {
 						mp->insertMonster(currentCreature, newPosition);
                                                 // reset time without food
                                                 currentCreature->setTimeWithoutFood(0);
+                                                std::cout << "Reset twf: " << currentCreature->getTimeWithoutFood()<< "\n";
 						break;
 					case 0:					// (try) reproduce don't walk
 						// back on the map
@@ -532,8 +533,8 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
         	// compute score
             score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
 
-			// if one of the emmisions is <>0 for only one cell 
-			// the creatue smells something
+			// if one of the emissions is <>0 for only one cell 
+			// the creature smells something
 			if ( (FE != 0) || (STE != 0) || (PE != 0) ) {
 				smellSomeThing = true;
 			}
@@ -618,22 +619,25 @@ void World::giveBirthToABaby(Creature* d) {
 	Coordinate myPos, childPos;
 	myPos = (*d).getPos();
 	int TWF = (*d).getTimeWithoutFood();
-
+        int MTWF = (*d).getMaxTimeWithoutFood();
+        int childTWF = (MTWF+TWF)/2;
 	// find a place for the baby
 	childPos = getAFreePositionAroundme(myPos);
-	if (childPos) {								// place found
+	if (childPos) {		
+                //Takes half of the mother's food
+                (*d).setTimeWithoutFood(MTWF+TWF-childTWF);					// place found
 		if (isAConsumerI(myPos)) {
-			// child get the same time without food -5 than the mother
-			createNewConsumerI(childPos, MAX(TWF-5,0));
+			// child gets half of the mother's food
+			createNewConsumerI(childPos, childTWF);
 		}
-		// child get the same time without food +5 than the mother
 		else if (isAConsumerII(myPos)) {
-			createNewConsumerII(childPos, MAX(TWF-5,0));
+                        // child gets half of the mother's food
+			createNewConsumerII(childPos, childTWF);
 		}
 	}
 	else {										// no place found
 		// the child can not be born=dies and 
-		// the creature is not pragnant any more.
+		// the creature is not pregnant any more.
 #ifdef DEBUG
 		std::cout << "baby dies";
 #endif
@@ -642,8 +646,8 @@ void World::giveBirthToABaby(Creature* d) {
 
 
 /**
- *	tests if a creatue reaches it's maximum LifeTime
- *	or starve due to lack of food
+ *	tests if a creature reaches its maximum LifeTime
+ *	or starves due to lack of food
  */
 bool World::creaturMustDie(Creature* d) {
 	bool idie = false;
