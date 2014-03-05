@@ -38,6 +38,7 @@ class Map {
 		int numberOfCreature;
 		int numberOfVegetal;
 		int numberOfCI, numberOfCII, numberOfVeg;
+		void printSeparator(int, int, char);
 
 };
 

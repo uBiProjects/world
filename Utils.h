@@ -42,7 +42,7 @@
 		operator bool() const { return x >= 0 && y >= 0; }
 	};
 
-	
+	int length(unsigned int);
 	int sign(int);											// signum
 	void sleepd(unsigned);									// slepp routine
     bool is_file(const char* );								// test if it is a file

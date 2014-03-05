@@ -199,22 +199,54 @@ void Map::print(bool _detailed) {
 	if (_detailed){
 		sizeCell = 12;
 	}
-	//first line
-	std::cout << "\n +";
-	for (int i = 0; i < width; i++) {
 
-		for (int cchar = 0; cchar < sizeCell; cchar++) {
-			std::cout << "-";
-		}
-		std::cout << "+";
+
+	/*
+	 * print headline
+	 */
+	//first line
+	std::cout << "\n";
+
+	printSeparator(width, sizeCell, '+');
+
+	//first cell
+	std::cout << " |";
+	for(int x = 0; x < 2; x ++){
+		std::cout << " ";
 	}
+	//second line containing line numbers
+	for(int i = 0; i < width; i ++) {
+
+		std::cout << " |";
+		for (int cchar = 0; cchar < sizeCell/2 - 1; cchar++) {
+			std::cout << " ";
+		}
+		std::cout << i;
+
+		for (int cchar = 0; cchar < sizeCell/2 + sizeCell%2 - 1; cchar++) {
+			std::cout << " ";
+		}
+	}
+	std::cout << " +";
+
+	printSeparator(width, sizeCell, '+');
 
 	//
-	std::cout << "\n";
-	for (int i = 0; i < height; i++) {
+	for (unsigned int i = 0; i < height; i++) {
+
+		//first cell
+		std::cout << " |";
+		for(int x = 0; x < (3 - length(i)) / 2; x ++){
+			std::cout << " ";
+		}
+		std:: cout << i;
+		for(int x = 0; x < (3 - length(i)) / 2 + (3 - length(i)) % 2; x ++){
+			std::cout << " ";
+		}
+
 		for (int j = 0; j < width; j++) {
 			if (j == 0) {
-				std::cout << " |";
+				std::cout << "|";
 			}
 
 			if (dynamic_cast<ConsumerI*>(cell[j][i]->monster)) {
@@ -299,7 +331,9 @@ void Map::print(bool _detailed) {
 			if (_detailed){
 
 				std::cout << art << "e" << cell[j][i]->vEmission << "." << cell[j][i]->c1Emission << "." << cell[j][i]->c2Emission;
-				for (int cchar = 0; cchar < sizeCell - (cell[j][i]->vEmission / 10 + 1) - (cell[j][i]->c1Emission / 10 + 1) - (cell[j][i]->c2Emission / 10 + 1) - 2 - 2; cchar++) {
+				int sizeD = sizeCell - (length(cell[j][i]->vEmission)) - length(cell[j][i]->c1Emission) - length(cell[j][i]->c2Emission) - 2 - 2;
+
+				for (int cchar = 0; cchar < sizeD; cchar++) {
 					std::cout << " ";
 				}
 				std::cout << "|";
@@ -307,26 +341,47 @@ void Map::print(bool _detailed) {
 
 		}
 
+		printSeparator(width, sizeCell, '+');
 		//lines
+		/*
 		std::cout << "\n";
 		for (int j = 0; j < width; j++) {
 			if (j == 0) {
 
 				std::cout << " +";
 			}
+
 			for (int cchar = 0; cchar < sizeCell; cchar++) {
 				std::cout << "-";
 			}
 			std::cout << "+";
 
 		}
-		std::cout << "\n";
+		std::cout << "\n";*/
 	}
 	printf("Nr of Consumer1: %4i\n", numberOfCI);
 	printf("Nr of Consumer2: %4i\n", numberOfCII);
 	printf("Nr of Vegetals:  %4i\n", numberOfVeg);
 	numberOfCreature = numberOfCI + numberOfCII;
 	numberOfVegetal = numberOfVeg;
+}
+
+
+void Map:: printSeparator(int _width, int _sizeCell, char _separationChar) {
+
+	//third line (separator)
+	std::cout << "\n +";
+
+	std::cout << "---" << _separationChar;
+
+	for (int i = 0; i < _width; i++) {
+
+		for (int cchar = 0; cchar < _sizeCell; cchar++) {
+			std::cout << "-";
+		}
+		std::cout << _separationChar;
+	}
+	std::cout << "\n";
 }
 
 /**
