@@ -30,7 +30,7 @@ class Map {
 		void print(bool);
 
 	private :
-		int width, height;
+		unsigned int width, height;
 		int amountFreePosition;
 		MapItem*** cell;
 		void updateEmission(int, int, int);
