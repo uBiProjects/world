@@ -790,8 +790,7 @@ int main(int _anzParam, char *strings[]) {
 #endif
 
 	World* w = new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
-	w->~World();
-
+	delete (w);
 
 #ifdef WINDOWS 
 	#ifdef DEBUG

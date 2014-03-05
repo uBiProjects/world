@@ -3,7 +3,15 @@
 #define UTILS_H_
 
 
-// #define DEBUG		// shows debug info							(comment out for normal run)
+#ifdef _DEBUG   
+#ifndef DBG_NEW      
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )      
+#define new DBG_NEW   
+#endif
+#endif  // _DEBUG
+
+
+#define DEBUG		// shows debug info							(comment out for normal run)
 // #define DEBUG1		// updates the screen afer every crature	(comment out for normal run)
 #define DEBUG2			// print steps								(comment out/include for normal run)
 // #define TESTFREE		// calls the testfree routine				(comment out for normal run)
