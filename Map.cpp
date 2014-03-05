@@ -27,13 +27,13 @@ Map :: Map(int _width, int _height){
 	//initialize the array
 	cell = (MapItem***) malloc(width * sizeof(MapItem**));
 
-	for (int var = 0; var < height; ++var) {
+	for (unsigned int var = 0; var < height; ++var) {
 		cell[var] =(MapItem**) malloc(height * sizeof(MapItem*));
 	}
 
 	//initialize array with null values and null
-	for (int x = 0; x < width; x ++) {
-		for (int y = 0; y < height; y ++) {
+	for (unsigned int x = 0; x < width; x ++) {
+		for (unsigned int y = 0; y < height; y ++) {
 
 			cell[x][y] = new MapItem();
 		}
@@ -59,14 +59,14 @@ int Map::getnumberOfVegetal(){
 Map :: ~Map() {
 	Coordinate c;
 	//destroy existing monster if they exist
-	for(int x = 0; x < width; x ++){
-		for(int y = 0; y < height; y ++){
+	for(unsigned int x = 0; x < width; x ++){
+		for(unsigned int y = 0; y < height; y ++){
 			delete(cell[x][y]);
 		}
 	}
 
 	//the free emission
-	for (int var = 0; var < height; ++var) {
+	for (unsigned int var = 0; var < height; ++var) {
 		free(cell[var]);
 	}
 
@@ -215,7 +215,7 @@ void Map::print(bool _detailed) {
 		std::cout << " ";
 	}
 	//second line containing line numbers
-	for(int i = 0; i < width; i ++) {
+	for(unsigned int i = 0; i < width; i ++) {
 
 		std::cout << " |";
 		for(int x = 0; x < (3 - length(i)) / 2; x ++){
@@ -243,7 +243,7 @@ void Map::print(bool _detailed) {
 			std::cout << " ";
 		}
 
-		for (int j = 0; j < width; j++) {
+		for (unsigned int j = 0; j < width; j++) {
 			if (j == 0) {
 				std::cout << "|";
 			}
