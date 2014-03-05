@@ -290,7 +290,7 @@ void World::performOneStep() {
                     Creature* currentCreature = (Creature*) (mp->getMapItem(c)->monster);
 #ifdef DEBUG2
 					if (currentCreature->getMaxTimeWithoutFood() - currentCreature->getTimeWithoutFood()<2) {
-						int i = 0;
+//						int i = 0;
 					}
 #endif
 					// to ensure all emisions are form other livings, the current consumer
