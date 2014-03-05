@@ -255,10 +255,10 @@ void Map::print(bool _detailed) {
 				//fetch the identifier of Life
 				Creature * c = (Creature*)cell[j][i]->monster;
 				if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-					art = "p";
+					art = (char*)"p";
 				}
 				else {
-					art = "c";
+					art = (char*)"c";
 				}
 
 				//print if not detailed
@@ -278,10 +278,10 @@ void Map::print(bool _detailed) {
 				//fetch the identifier of Life
 				Creature * c = (Creature*)cell[j][i]->monster;
 				if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-					art = "P";
+					art = (char*)"P";
 				}
 				else {
-					art = "C";
+					art = (char*)"C";
 				}
 				//print if not detailed
 				if (!_detailed) {
@@ -296,7 +296,7 @@ void Map::print(bool _detailed) {
 			}
 			else if (dynamic_cast<Vegetal*> (cell[j][i]->monster)) {
 
-				art = "v";
+				art = (char*)"v";
 
 				//increase numberOfCI:
 				numberOfVeg++;
@@ -314,7 +314,7 @@ void Map::print(bool _detailed) {
 			}
 			else {
 
-				art = " ";
+				art = (char*)" ";
 
 				//print if not detailed
 				if (!_detailed) {
