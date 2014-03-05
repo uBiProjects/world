@@ -218,12 +218,11 @@ void Map::print(bool _detailed) {
 	for(int i = 0; i < width; i ++) {
 
 		std::cout << " |";
-		for (int cchar = 0; cchar < sizeCell/2 - 1; cchar++) {
+		for(int x = 0; x < (3 - length(i)) / 2; x ++){
 			std::cout << " ";
 		}
-		std::cout << i;
-
-		for (int cchar = 0; cchar < sizeCell/2 + sizeCell%2 - 1; cchar++) {
+		std:: cout << i;
+		for(int x = 0; x < (3 - length(i)) / 2 + (3 - length(i)) % 2 - 1; x ++){
 			std::cout << " ";
 		}
 	}
