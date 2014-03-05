@@ -104,91 +104,91 @@ int* Values::readFile(char* filename){
 * Writes plant-values.
 */
 void Values::writeV(int* pointer){
-	PLT = pointer[0];
-	PMLT = pointer[1];
-	PSE = pointer[2];
+	VegLifeTime = pointer[0];
+	VegMaxLifeTime = pointer[1];
+	VegSmellEmission = pointer[2];
 }
 
 /**
 * Writes consumer1-values.
 */
 void Values::writeCI(int* pointer){
-	CILT = pointer[0];
-	CIMLT = pointer[1];
-	CISE = pointer[2];
-	CISD = pointer[3];
-	CIMTWF = pointer[4];
-	CITWF = pointer[5];
-	CIS = pointer[6];
+	CILifeTime = pointer[0];
+	CIMaxLifeTime = pointer[1];
+	CISmellEmission = pointer[2];
+	CISmellDetection = pointer[3];
+	CIMaxTimeWithoutFood = pointer[4];
+	CITimeWithoutFood = pointer[5];
+	CISpeed = pointer[6];
 }
 
 /**
 * Writes consumer2-values.
 */
 void Values::writeCII(int* pointer){
-	CIILT = pointer[0];
-	CIIMLT = pointer[1];
-	CIISE = pointer[2];
-	CIISD = pointer[3];
-	CIIMTWF = pointer[4];
-	CIITWF = pointer[5];
-	CIIS = pointer[6];
+	CIILifeTime = pointer[0];
+	CIIMaxLifeTime = pointer[1];
+	CIISmellEmission = pointer[2];
+	CIISmellDetection = pointer[3];
+	CIIMaxTimeWithoutFood = pointer[4];
+	CIITimeWithoutFood = pointer[5];
+	CIISpeed = pointer[6];
 }
 
 //---GETTER---
 
-int Values::getPMLT(){
-	return PMLT;
+int Values::getVegMaxLifeTime(){
+	return VegMaxLifeTime;
 }
-int Values::getPSE(){
-	return PSE;
+int Values::getVegSmellEmission(){
+	return VegSmellEmission;
 }
-int Values::getCIMLT(){
-	return CIMLT;
+int Values::getCIMaxLifeTime(){
+	return CIMaxLifeTime;
 }
-int Values::getCILT(){
-	return CILT;
+int Values::getCILifeTime(){
+	return CILifeTime;
 }
-int Values::getCISD(){
-	return CIISD;
+int Values::getCISmellDetection(){
+	return CIISmellDetection;
 }
-int Values::getCISE(){
-	return CISE;
+int Values::getCISmellEmission(){
+	return CISmellEmission;
 }
-int Values::getCIMTWF(){
-	return CIMTWF;
+int Values::getCIMaxTimeWithoutFood(){
+	return CIMaxTimeWithoutFood;
 }
-int Values::getCITWF(){
-	return CITWF;
+int Values::getCITimeWithoutFood(){
+	return CITimeWithoutFood;
 }
-int Values::getCIS(){
-	return CIS;
+int Values::getCISpeed(){
+	return CISpeed;
 }
-int Values::getPLT(){
-	return PLT;
+int Values::getVegLifeTime(){
+	return VegLifeTime;
 }
 
 
 
-int Values::getCIIMLT(){
-	return CIIMLT;
-}int Values::getCIILT(){
-	return CIILT;
+int Values::getCIIMaxLifeTime(){
+	return CIIMaxLifeTime;
+}int Values::getCIILifeTime(){
+	return CIILifeTime;
 }
-int Values::getCIISE(){
-	return CIISE;
+int Values::getCIISmellEmission(){
+	return CIISmellEmission;
 }
-int Values::getCIISD(){
-	return CIISD;
+int Values::getCIISmellDetection(){
+	return CIISmellDetection;
 }
-int Values::getCIIMTWF(){
-	return CIIMTWF;
+int Values::getCIIMaxTimeWithoutFood(){
+	return CIIMaxTimeWithoutFood;
 }
-int Values::getCIITWF(){
-	return CIITWF;
+int Values::getCIITimeWithoutFood(){
+	return CIITimeWithoutFood;
 }
-int Values::getCIIS(){
-	return CIIS;
+int Values::getCIISpeed(){
+	return CIISpeed;
 }
 
 //---TEST FUNCTIONS---
@@ -210,25 +210,25 @@ void Values::print(int* pointer){
 */
 void Values::testAllValues(){
 	//Print plant values
-	cout<<PLT<<endl;
-	cout<<PMLT<<endl;
-	cout<<PSE<<endl;
+	cout<<VegLifeTime<<endl;
+	cout<<VegMaxLifeTime<<endl;
+	cout<<VegSmellEmission<<endl;
 	//Print c1 values
-	cout<<CILT<<endl;
-	cout<<CIMLT<<endl;
-	cout<<CISE<<endl;
-	cout<<CISD<<endl;
-	cout<<CIMTWF<<endl;
-	cout<<CITWF<<endl;
-	cout<<CIS<<endl;
+	cout<<CILifeTime<<endl;
+	cout<<CIMaxLifeTime<<endl;
+	cout<<CISmellEmission<<endl;
+	cout<<CISmellDetection<<endl;
+	cout<<CIMaxTimeWithoutFood<<endl;
+	cout<<CITimeWithoutFood<<endl;
+	cout<<CISpeed<<endl;
 	//Print c2 values
-	cout<<CIILT<<endl;
-	cout<<CIIMLT<<endl;
-	cout<<CIISE<<endl;
-	cout<<CIISD<<endl;
-	cout<<CIIMTWF<<endl;
-	cout<<CIITWF<<endl;
-	cout<<CIIS<<endl;
+	cout<<CIILifeTime<<endl;
+	cout<<CIIMaxLifeTime<<endl;
+	cout<<CIISmellEmission<<endl;
+	cout<<CIISmellDetection<<endl;
+	cout<<CIIMaxTimeWithoutFood<<endl;
+	cout<<CIITimeWithoutFood<<endl;
+	cout<<CIISpeed<<endl;
 }
 
 void Values::setInstance(char* a, char* b, char* c){
