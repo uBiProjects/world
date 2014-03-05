@@ -30,7 +30,26 @@
     #define SLEEP usleep(milliseconds * 1000)
 #endif
 
+/**
+ * returns length of number up to 4.
+ * @param _number the number
+ * @return the length of the number
+ */
+int length(unsigned int _number) {
+	if(_number / 1000 > 0){
+		return 4;
+	}
+	else if (abs(_number)/ 100 > 0){
+return 3;
+	}
+	else if (abs(_number) / 10 > 0){
+return 2;
+	}
+	else {
+		return 1;
+	}
 
+}
 
 
 	// sleep for milliseconds
