@@ -14,7 +14,8 @@ ConsumerI:: ConsumerI(Coordinate _pos) : Creature(_pos,
 		(int) Values::getInstance()->getCISpeed(),
 		(int) Values::getInstance()->getCIMaxTimeWithoutFood(),
 		(char) cell_char,
-		Values::getInstance()->getCILifeTime()){
+		Values::getInstance()->getCILifeTime(),
+		20){
 }
 
 
