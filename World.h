@@ -25,7 +25,7 @@ public:
 	bool initializeCreature(int,int,int);
 
 	void print();
-	void performOneStep();
+	void performOneStep(int);
 	void run(int);	
 	int testfree();
 
@@ -33,7 +33,7 @@ public:
 	void timePassed(Vegetal*);
  	// int modulo(int, int);
 	bool smellAndGetBestDestination(Creature*, Coordinate*);
-	bool creaturMustDie(Creature*);
+	bool creatureMustDie(Creature*);
 	bool cell_is_empty(Coordinate);
 	bool isAConsumerI(Coordinate);
  	bool isAConsumerI(Life*);

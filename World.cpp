@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include "stdlib.h"
+#include <stdlib.h>
 #include <string>
 #include <float.h>	//eg. the bounds of integer
 #include <time.h>
@@ -99,7 +99,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 #ifdef TESTFREE
 	// debug routine to test if the values are correct
 	int World::testfree() {
-		Coordinate d;											// cell to set the living (init value is (-1,-1)
+		Coordinate d;       // cell to set the living (init value is (-1,-1)
 		int testam = 0;
 		for (d.x = 0; d.x < wwidth; d.x++) {
 			for (d.y = 0; d.y < wwidth; d.y++) {
@@ -108,7 +108,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 				}
 			}
 		}
-		int free_cells = mp->getAmountFreePosition();			// only free_cells are empty
+		int free_cells = mp->getAmountFreePosition();	// only free_cells are empty
 		if (free_cells != testam) {
 			exit_error(1);
 		}
@@ -119,21 +119,21 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 
 Coordinate World::getRandomFreePosition(){
 
-	Coordinate c;											// cell to set the living (init value is (-1,-1)
+	Coordinate c;				// cell to set the living (init value is (-1,-1)
 
 #ifdef TESTFREE
 	testfree();
 #endif
 
-	int free_cells = mp->getAmountFreePosition();			// only free_cells are empty
+	int free_cells = mp->getAmountFreePosition();		// only free_cells are empty
 	if (free_cells == 0) {
-		return c;											// return false if no free cells left 
+		return c;										// return false if no free cells left 
 	}
 	
 	int indexFree = getRandomNumber(1, free_cells);		// find the indexFree free cell
 	
     // counter
-    int AmountOfPassedFreePos = 0;							// free cells passed
+    int AmountOfPassedFreePos = 0;						// free cells passed
 
 	// find the indexFree empty cell
 	for (c.x = 0; c.x < wwidth; c.x++) {
@@ -163,7 +163,7 @@ void World::run(int fixedNumberOfVegetal) {
 
     for (int step = 0; step < maxsteps; step++) {
 
-        performOneStep();
+        performOneStep(step);
 
 		
 #ifdef TESTFREE
@@ -171,7 +171,7 @@ void World::run(int fixedNumberOfVegetal) {
 #endif
 		// update the map and number of Vegetal
 		mp->print(false);
-		std::cout << "Step " << step + 1 << "\n";
+		
 
 		// simulation ends if # of creatures =0
 		if (mp->getnumberOfCreature() == 0) {
@@ -261,122 +261,121 @@ Coordinate World::normCoordinateToWorld(Coordinate c) {
 
 
 
-void World::performOneStep() {
+void World::performOneStep(int step) {
 	
 	Coordinate c, newPosition, deltaPos;
 
 
+    // reset consumers to "walkable true" to ensure it can walk.
+    // set walkable false is used later inside the loops to avoid that
+    // a monster can move twice.
+    setAllConsumersWalkableAndInteractable();
 
-        
+	std::cout << "Step " << step + 1 << "\n";
+    // go through the map and perform an action if a cell is occupied by a
+    // Creature.
+	
+    for (c.x = 0; c.x < wwidth; c.x++) {
+        for (c.y = 0; c.y < wheight; c.y++) {
 
-
-        // reset consumers to "walkable true" to ensure it can walk.
-        // set walkable false is used later inside the loops to avoid that
-        // a monster can move twice.
-		setAllConsumersWalkableAndInteractable();
-
-
-        // go through the map and perform an action if a cell is occupied by a
-        // Creature.
-        for (c.x = 0; c.x < wwidth; c.x++) {
-            for (c.y = 0; c.y < wheight; c.y++) {
-
-				
-            	//TODO: aendern damit hier auch der vom user definierte speed drin vorkommt
-                if ((isACreature(c)) &&
-                    (mp->getMapItem(c)->monster->isWalkable())) {
-
-                    //save current Life as Creature and remove monster from old position.
-                    Creature* currentCreature = (Creature*) (mp->getMapItem(c)->monster);
+			if ((isACreature(c)) &&
+                (mp->getMapItem(c)->monster->isWalkable())) {
+			
+                //save current Life as Creature and remove monster 
+                // from old position.
+                Creature* currentCreature = 
+                                (Creature*) (mp->getMapItem(c)->monster);
 #ifdef DEBUG2
-					if (currentCreature->getMaxTimeWithoutFood() - currentCreature->getTimeWithoutFood()<2) {
-//						int i = 0;
-					}
+				if (currentCreature->getMaxTimeWithoutFood() - currentCreature->getTimeWithoutFood()<2) {
+					printf("compute x = %i y=%i\n", c.x, c.y);
+					mp->print(false);
+                }
 #endif
-					// to ensure all emisions are form other livings, the current consumer
-					// has to be temorary removed from the map
-					mp->removeMonster(c);
+                // to ensure all emissions are form other livings, the current consumer
+                // has to be temporary removed from the map
+                mp->removeMonster(c);
 
-					//compute new position and delta values.
-					// calculate the best movement/direction (returns plusX,plusY = 0,1,-1)
-					bool creatureSmellsSomthing = smellAndGetBestDestination(currentCreature, &deltaPos);
+                //compute new position and delta values.
+                // calculate the best movement/direction (returns plusX,plusY = 0,1,-1)
+                bool creatureSmellsSomthing = smellAndGetBestDestination(currentCreature, &deltaPos);
 
-					//calculate the new position modulo map size because creatures can pass the edge.
-					newPosition = addCoordinates(c, deltaPos);
-					newPosition = normCoordinateToWorld(newPosition);
-					
-					
+                //calculate the new position modulo map size because creatures can pass the edge.
+                newPosition = addCoordinates(c, deltaPos);
+                newPosition = normCoordinateToWorld(newPosition);
 
-					int index = -2;
-					if (creatureSmellsSomthing) {
-						// smell says do not move 
-						// the only thing the creature can do is get Pregnant
-						// if there is a creature of the same kind nearby
-						if ((deltaPos.x == 0) && (deltaPos.y == 0)) {
-							if (currentCreature->isReadyForPregnant()) {
-								// find a creature of the same kind nearby
-								if (findPregnantReadyCreatureNearby(currentCreature, &newPosition)){
-									index = 0;
-								} else {
-									index = -2;
-								}
-							} else {
-								index = -2;
-							}
-						} else {
-							// index of method "interact" tells how to
-							// interact with the new coordinate 
-							index = interact(currentCreature, newPosition);
-						}
-					}
-					
-					switch (index) {
 
-					case -2:				// do not move and do not interact
-						mp->insertMonster(currentCreature, c);
-						break;
-					case -1:				// walk: move creatur to new position
-						mp->insertMonster(currentCreature, newPosition);
-						break;
-					case 1:					// eat something and walk
-						// eat the meal.
-						mp->deleteMonster(newPosition);	
-						// go to new position.
-						mp->insertMonster(currentCreature, newPosition);
-                        // reset time without food
-                        currentCreature->setTimeWithoutFood(0);
-						break;
-					case 0:					// (try) reproduce don't walk
-						// back on the map
-						mp->insertMonster(currentCreature, c);
-						// set currentCreatue Pregnant if possible
-						if (!(currentCreature->isPregnant())) {
-							Creature* partner = (Creature*)(mp->getMapItem(newPosition)->monster);
-							impregnate(currentCreature, partner);
-						}
-						break;
-					} // end switch
-					
 
-					// set walkable false because this creature should be unable to move/interact once again
-					// in this step.
-					currentCreature->setWalkable(false);
+                int index = -2;
+                if (creatureSmellsSomthing) {
+                    // smell says do not move 
+                    // the only thing the creature can do is get Pregnant
+                    // if there is a creature of the same kind nearby
+                    if ((deltaPos.x == 0) && (deltaPos.y == 0)) {
+                        if (currentCreature->isReadyForPregnant()) {
+                            // find a creature of the same kind nearby
+                            if (findPregnantReadyCreatureNearby(
+                                            currentCreature, &newPosition)){
+                                index = 0;
+                            } else {
+                                index = -2;
+                            }
+                        } else {
+                            index = -2;
+                        }
+                    } else {
+                        // index of method "interact" tells how to
+                        // interact with the new coordinate 
+                        index = interact(currentCreature, newPosition);
+                    }
+                }
 
-					// check die/etc.
-					timePassed(currentCreature);
-					
+                switch (index) {
+
+                case -2:				// do not move and do not interact
+                    mp->insertMonster(currentCreature, c);
+                    break;
+                case -1:				// walk: move creature to new position
+                    mp->insertMonster(currentCreature, newPosition);
+                    break;
+                case 1:					// eat something and walk
+                    // eat the meal.
+                    mp->deleteMonster(newPosition);	
+                    // go to new position.
+                    mp->insertMonster(currentCreature, newPosition);
+                    // reset time without food
+                    currentCreature->setTimeWithoutFood(0);
+                    break;
+                case 0:					// (try) reproduce don't walk
+                    // back on the map
+                    mp->insertMonster(currentCreature, c);
+                    // set currentCreatue Pregnant if possible
+                    if (!(currentCreature->isPregnant())) {
+                        Creature* partner = 
+                                (Creature*)(mp->getMapItem(newPosition)->monster);
+                        impregnate(currentCreature, partner);
+                    }
+                    break;
+                } // end switch
+
+
+                // set walkable false because this creature should be unable 
+                // to move/interact once again in this step.
+                currentCreature->setWalkable(false);
+
+                // check die/etc.
+                timePassed(currentCreature);
 #ifdef DEBUG1
-					mp->print(false); 
+				mp->print(true);
+				std::cout << "Step " << step + 1 << "\n";
 #endif
-				}
-				else {
-					if (isAVegetal(c)) {
-							Vegetal* currentVegetal = (Vegetal*)(mp->getMapItem(c)->monster);
-							timePassed(currentVegetal);
-					}
-				}
-			} // height
-		} // width
+			}
+            else if (isAVegetal(c)) {
+                        Vegetal* currentVegetal = 
+                                (Vegetal*)(mp->getMapItem(c)->monster);
+                        timePassed(currentVegetal);
+            }
+        } // height
+    } // width
 }
 
 
@@ -391,7 +390,7 @@ bool World::findPregnantReadyCreatureNearby(Creature* _c, Coordinate* _newpos) {
 	// scan my neighbors;
 	for (c.x = -1; c.x <= 1; c.x++) {
 		for (c.y = -1; c.y <= 1; c.y++) {
-			// avoid (0,0) pos
+			// avoid (0,0) position
 			if ((c.x == 0) && (c.y == 0)) c.y++;
 			// norm position
 			tmpPos = addCoordinates(myPos, c);
@@ -456,18 +455,18 @@ int World::interact(Creature* _a, Coordinate testpos){
 
 
 
-// impregnate if both creatues are ready
-// if c1 get pregnant c2 is also set intaktiv for the step.
+// impregnate if both creatures are ready
+// if c1 get pregnant c2 is also set inactive for the step.
 
 void World::impregnate(Creature* _c1, Creature* _c2) {
 
 #ifdef DEBUG
-	std::cout << "zeit1: " << _c1->getMaxPregnantTime() << "\n";
+	std::cout << "time1: " << _c1->getMaxPregnantTime() << "\n";
 #endif
 
 	// test if creature1/2 are ready for pregnant
-	// both creatues must be older then 1/4 of it's maximum lifetime
-	//          and  both must not be pregnat
+	// both creatures must be older then 1/4 of it's maximum lifetime
+	//          and  both must not be pregnant
 			  
 	if ((_c1->isReadyForPregnant()) && (_c2->isReadyForPregnant())) {
 		_c1->setPregnant(true);
@@ -484,15 +483,13 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 
 /**
  *
- * @param smellingCreature the creature which smells somenthing
+ * @param smellingCreature the creature which smells something
  * @param plusXY 
  * @return true if the smellingCreature smells something.
  *         deltaValue for movement in plusXY
  */
-// TODO wenn creatur nicht in die gew�nscht richtung laufen kann
-//      sollte ein anderer wert f�r plusxy zur�ckgegeben werden
-//      2.bester, 3. bester etc. 
-bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* plusXY) {
+bool World::smellAndGetBestDestination(
+            Creature* smellingCreature, Coordinate* plusXY) {
 
 	Coordinate bestDeltaDestination;
 	Coordinate bestDestination;
@@ -510,8 +507,8 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
     int range = smellingCreature->getRangeOfSmellDetection();
 
 
-    //the values for the computation of the index which are independent from the
-    //special fields.
+    // the values for the computation of the index 
+    // which are independent from the special fields.
     int TWF  = (*smellingCreature).getTimeWithoutFood();		
     int MTWF = (*smellingCreature).getMaxTimeWithoutFood();
 
@@ -525,9 +522,9 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
         	// compute Food, predator, same type emission depending on type of
         	// smellingCreature.
         	if(isAConsumerI(smellingCreature)){
-        		FE  = mp->getMapItem(coord)->vEmission;				// food emission
-        		PE  = mp->getMapItem(coord)->c2Emission;			// predator emission
-        		STE = mp->getMapItem(coord)->c1Emission;			// same typ emission
+        		FE  = mp->getMapItem(coord)->vEmission;		// food emission
+        		PE  = mp->getMapItem(coord)->c2Emission;	// predator emission
+        		STE = mp->getMapItem(coord)->c1Emission;	// same type emission
         	} else {
         		FE  = mp->getMapItem(coord)->c1Emission;
         		PE  = 0;
@@ -535,8 +532,8 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
         	}
 
         	// compute score
+            // score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
 			score = computeScroe(FE, TWF, MTWF, STE, PE);
-			// score = (double)FE * (TWF / MTWF) + (double)(STE - PE) * ((MTWF - TWF) / MTWF);
 
 			// if one of the emissions is <>0 for only one cell 
 			// the creature smells something
@@ -554,8 +551,8 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
     }
 	// DeltaDestination must be in the range [-speed,speed]
 	// oldCoordinate +- Speed 
-	// deltal = getRandomNumber(-Speed,Speed)
-	// creatue smells nothing => take a random value
+	// delta  = getRandomNumber(-Speed,Speed)
+	// creature smells nothing => take a random value
 	if (!smellSomeThing) {
 		bestDeltaDestination.x = getRandomNumber(-speed, speed);
 		bestDeltaDestination.y = getRandomNumber(-speed, speed);
@@ -563,11 +560,13 @@ bool World::smellAndGetBestDestination(Creature* smellingCreature, Coordinate* p
 		return (false);
 	} 
 	
-    // calculate delta to bestdestination
+    // calculate delta to best destination
 	bestDeltaDestination = subCoordinates(bestDestination, oldCoordinate);
 	// max allowed range = +-speed
-	bestDeltaDestination.x = sign(bestDeltaDestination.x) * MIN(abs(bestDeltaDestination.x), speed);
-	bestDeltaDestination.y = sign(bestDeltaDestination.y) * MIN(abs(bestDeltaDestination.y), speed);
+	bestDeltaDestination.x = 
+            sign(bestDeltaDestination.x) * MIN(abs(bestDeltaDestination.x), speed);
+	bestDeltaDestination.y = 
+            sign(bestDeltaDestination.y) * MIN(abs(bestDeltaDestination.y), speed);
 
 	// bestDeltaDestination.x = sign((bestDestination.x - oldCoordinate.x));
 	// bestDeltaDestination.y = sign((bestDestination.y - oldCoordinate.y));
@@ -585,7 +584,7 @@ double World::computeScroe(double FE, double TWF, double MTWF, double STE, doubl
 	return score;
 }
 /**
-	time depending vegetal (max Liefetime)
+	time depending vegetal (max Lifetime)
 */
 void World::timePassed(Vegetal* d) {
 
@@ -604,8 +603,6 @@ void World::timePassed(Vegetal* d) {
 */
 void World::timePassed(Creature* d) {
 	
-	Coordinate childPos;
-
     // increment values
 
     (*d).incrementTimeWithoutFood();
@@ -617,7 +614,7 @@ void World::timePassed(Creature* d) {
 	}
 
 	// do not live too long
-	if (creaturMustDie(d)) {
+	if (creatureMustDie(d)) {
 		mp->deleteMonster((*d).getPos());
 	}
 }
@@ -627,22 +624,25 @@ void World::timePassed(Creature* d) {
 // give birth to a baby
 
 void World::giveBirthToABaby(Creature* d) {
+
 	Coordinate myPos, childPos;
 	myPos = (*d).getPos();
 	int TWF = (*d).getTimeWithoutFood();
-        int MTWF = (*d).getMaxTimeWithoutFood();
-        int childTWF = (MTWF+TWF)/2;
+    int MTWF = (*d).getMaxTimeWithoutFood();
+    
+    int childTWF = (MTWF+TWF)/2;
+    
 	// find a place for the baby
 	childPos = getAFreePositionAroundme(myPos);
 	if (childPos) {		
-                //Takes half of the mother's food
-                (*d).setTimeWithoutFood(MTWF+TWF-childTWF);					// place found
+        //Takes half of the mother's food
+        (*d).setTimeWithoutFood(MTWF+TWF-childTWF);	// place found
 		if (isAConsumerI(myPos)) {
 			// child gets half of the mother's food
 			createNewConsumerI(childPos, childTWF);
 		}
 		else if (isAConsumerII(myPos)) {
-                        // child gets half of the mother's food
+            // child gets half of the mother's food
 			createNewConsumerII(childPos, childTWF);
 		}
 	}
@@ -660,7 +660,7 @@ void World::giveBirthToABaby(Creature* d) {
  *	tests if a creature reaches its maximum LifeTime
  *	or starves due to lack of food
  */
-bool World::creaturMustDie(Creature* d) {
+bool World::creatureMustDie(Creature* d) {
 	bool idie = false;
 	if ((*d).getTimeWithoutFood() >= (*d).getMaxTimeWithoutFood()) {
 		idie = true;
@@ -680,7 +680,7 @@ bool World::creaturMustDie(Creature* d) {
 
 
 
-// seaches all cells around _myPos and 
+// searches all cells around _myPos and 
 // returns true and a freePosition
 // returns false
 Coordinate World::getAFreePositionAroundme(Coordinate _myPos) {
@@ -688,7 +688,7 @@ Coordinate World::getAFreePositionAroundme(Coordinate _myPos) {
 
 	for (c.x = -1; c.x <= 1; c.x++) {
 		for (c.y = -1; c.y <= 1; c.y++) {
-			// avoid (0,0) = mypos
+			// jump over my position  (0,0) 
 			if ((c.x == 0) && (c.y == 0)) c.y++;
 			freePos = addCoordinates(_myPos, c);
 			freePos = normCoordinateToWorld(freePos);
@@ -697,7 +697,7 @@ Coordinate World::getAFreePositionAroundme(Coordinate _myPos) {
 			}
 		}
 	}
-	return Coordinate(-1,-1); // false equivalent of Coordiante
+	return Coordinate(-1,-1); // false equivalent of Coordinate
 }
 
 
@@ -754,9 +754,6 @@ bool World::isAVegetal(Coordinate _pos){
 *	7	[char*]	path to consumer1.txt
 *	8	[char*]	path to consumer2.txt
 */
-
-
-
 int main(int _anzParam, char *strings[]) {
 
 
@@ -793,11 +790,11 @@ int main(int _anzParam, char *strings[]) {
 		exit_error(9);
 	}
 	
-	//Set sources for lifeforms
+	//Set sources for life forms
 	//ConsumerI::setSource((char*)strings[7]);
 	Values::setInstance(strings[6],strings[7],strings[8]);
 
-	// allways clear the screen at the beginning
+	// always clear the screen at the beginning
 	clear_screen();
 
 #ifdef WINDOWS
@@ -807,7 +804,8 @@ int main(int _anzParam, char *strings[]) {
 	#endif
 #endif
 
-	World* w = new World(width, height, numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
+	World* w = new World(width, height, 
+            numberConsumer1, numberConsumer2, maxNumberOfSteps, numberVegetal);
 	delete (w);
 
 #ifdef WINDOWS 
