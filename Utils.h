@@ -3,12 +3,6 @@
 #define UTILS_H_
 
 
-#ifdef _DEBUG   
-#ifndef DBG_NEW      
-#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )      
-#define new DBG_NEW   
-#endif
-#endif  // _DEBUG
 
 
 // #define DEBUG		// shows debug info							(comment out for normal run)
@@ -23,6 +17,12 @@
 	#define	WINDOWS
 	#define _CRTDBG_MAP_ALLOC
 	#include <crtdbg.h>  // detect memory leaks
+	#ifdef _DEBUG   
+		#ifndef DBG_NEW      
+			#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )      
+			#define new DBG_NEW   
+		#endif
+	#endif  // _DEBUG
 #else
 	#define	LINUX
 #endif

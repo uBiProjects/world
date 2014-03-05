@@ -2,7 +2,7 @@
 #include <iostream>
 #include "stdlib.h"
 #include <string>
-#include <limits.h>	//eg. the bounds of integer
+#include <float.h>	//eg. the bounds of integer
 #include <time.h>
 #include <cstddef>
 #include <fstream> //for checking whether file does not exist (in method main).
@@ -288,9 +288,11 @@ void World::performOneStep() {
 
                     //save current Life as Creature and remove monster from old position.
                     Creature* currentCreature = (Creature*) (mp->getMapItem(c)->monster);
+#ifdef DEBUG2
 					if (currentCreature->getMaxTimeWithoutFood() - currentCreature->getTimeWithoutFood()<2) {
 						int i = 0;
 					}
+#endif
 					// to ensure all emisions are form other livings, the current consumer
 					// has to be temorary removed from the map
 					mp->removeMonster(c);
