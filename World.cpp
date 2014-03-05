@@ -305,8 +305,8 @@ void World::performOneStep(int step) {
 
 
 
-                int index = -1;
-                if (creatureSmellsSomthing) {
+                int index = -2;
+                // if (creatureSmellsSomthing) {
                     // smell says do not move 
                     // the only thing the creature can do is get Pregnant
                     // if there is a creature of the same kind nearby
@@ -327,7 +327,7 @@ void World::performOneStep(int step) {
                         // interact with the new coordinate 
                         index = interact(currentCreature, newPosition);
                     }
-                }
+                //}
 
                 switch (index) {
 
