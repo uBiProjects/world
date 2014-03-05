@@ -176,14 +176,14 @@ void Map:: updateEmission(int _x, int _y, int _multiplicator){
 void Map::print(bool _detailed) {
 
 	//Reset Counters for numberOf* values
-	numberOfCI=0;
-	numberOfCII=0;
-	numberOfVeg=0;
+	numberOfCI = 0;
+	numberOfCII = 0;
+	numberOfVeg = 0;
 
 #ifdef FASTRUN
-	#ifndef DEBUG1
-		sleepd(5);
-	#endif
+#ifndef DEBUG1
+	sleepd(5);
+#endif
 #else
 	sleepd(800);
 #endif
@@ -191,137 +191,142 @@ void Map::print(bool _detailed) {
 #ifdef CLEAR_SCREEN
 	clear_screen();
 #endif
-	
+
 	//size of cells in chars
 	int sizeCell = 3;
-	
+	char* art;
 
-	if(_detailed){
-    	sizeCell = 12;
+	if (_detailed){
+		sizeCell = 12;
 	}
 	//first line
 	std::cout << "\n +";
-    for (int i = 0; i < width; i++) {
+	for (int i = 0; i < width; i++) {
 
-    	for(int cchar = 0; cchar < sizeCell; cchar ++) {
-    		std::cout << "-";
-    	}
+		for (int cchar = 0; cchar < sizeCell; cchar++) {
+			std::cout << "-";
+		}
 		std::cout << "+";
-    }
+	}
 
-    //
-    std::cout << "\n";
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            if (j == 0) {
-                std::cout << " |";
-            }
-			char art = ' ';
-            if (dynamic_cast<ConsumerI*>( cell[j][i]->monster)) {
+	//
+	std::cout << "\n";
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			if (j == 0) {
+				std::cout << " |";
+			}
+
+			if (dynamic_cast<ConsumerI*>(cell[j][i]->monster)) {
 				//increase numberOfCI:
 				numberOfCI++;
-				
-            	//fetch the identifier of Life
-            	Creature * c = (Creature*)  cell[j][i]->monster;
-                if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-					std::cout << "p";
-					art = c->getCellChar();
-                } else {
-					std::cout << "c";
-					art = c->getCellChar();
-                }
 
-                //print if not detailed
-                if(!_detailed) {
-                	for(int cchar = 0; cchar < sizeCell - 1; cchar ++) {
-                		std::cout << " ";
-                	}
-                    std::cout << "|";
-                }
-            } else if (dynamic_cast<ConsumerII*> ( cell[j][i]->monster)) {
+				//fetch the identifier of Life
+				Creature * c = (Creature*)cell[j][i]->monster;
+				if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
+					art = "p";
+				}
+				else {
+					art = "c";
+				}
+
+				//print if not detailed
+				if (!_detailed) {
+					std::cout << art;
+					for (int cchar = 0; cchar < sizeCell - 1; cchar++) {
+						std::cout << " ";
+					}
+					std::cout << "|";
+				}
+			}
+			else if (dynamic_cast<ConsumerII*> (cell[j][i]->monster)) {
 				//increase numberOfCII:
 				numberOfCII++;
 
 
-            	//fetch the identifier of Life
-            	Creature * c = (Creature*)  cell[j][i]->monster;
-                if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-					std::cout << "P";
-					art = c->getCellChar();
-                } else {
-					std::cout << "C";
-					art = c->getCellChar();
-                }
-                //print if not detailed
-            	if(!_detailed) {
-            		
-                	for(int cchar = 0; cchar < sizeCell - 1; cchar ++) {
-                		std::cout << " ";
-                	}
-                    std::cout << "|";
-            	}
+				//fetch the identifier of Life
+				Creature * c = (Creature*)cell[j][i]->monster;
+				if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
+					art = "P";
+				}
+				else {
+					art = "C";
+				}
+				//print if not detailed
+				if (!_detailed) {
 
-            } else if (dynamic_cast<Vegetal*> ( cell[j][i]->monster)) {
-				Vegetal * v = (Vegetal*)cell[j][i]->monster;
-				art = v->getCellChar();
-				std::cout << "v";
-            	
+					std::cout << art;
+					for (int cchar = 0; cchar < sizeCell - 1; cchar++) {
+						std::cout << " ";
+					}
+					std::cout << "|";
+				}
+
+			}
+			else if (dynamic_cast<Vegetal*> (cell[j][i]->monster)) {
+
+				art = "v";
+
 				//increase numberOfCI:
 				numberOfVeg++;
 
-                //print if not detailed
-            	if(!_detailed) {
+				//print if not detailed
+				if (!_detailed) {
+
+					std::cout << art;
 					for (int cchar = 0; cchar < sizeCell - 1; cchar++) {
 						std::cout << " ";
-                	}
-                    std::cout << "|";
-            	}
+					}
+					std::cout << "|";
+				}
 
-            } else {
+			}
+			else {
 
-				std::cout << " ";
+				art = " ";
 
-                //print if not detailed
-            	if(!_detailed) {
-                	for(int cchar = 0; cchar < sizeCell - 1; cchar ++) {
-                		std::cout << " ";
-                	}
-                    std::cout << "|";
-            	}
-            }
+				//print if not detailed
+				if (!_detailed) {
 
-            if (_detailed){
+					std::cout << art;
+					for (int cchar = 0; cchar < sizeCell - 1; cchar++) {
+						std::cout << " ";
+					}
+					std::cout << "|";
+				}
+			}
 
-                std::cout <<  art << "e" << cell[j][i]->vEmission << "." << cell[j][i]->c1Emission << "." << cell[j][i]->c2Emission;
-            	for(int cchar = 0; cchar < sizeCell  - (cell[j][i]->vEmission/10 + 1)- (cell[j][i]->c1Emission/10 + 1)  - (cell[j][i]->c2Emission/10 + 1) - 2 - 2; cchar ++) {
-            		std::cout << " ";
-            	}
-        		std::cout << "|";
-            }
+			if (_detailed){
 
-        }
+				std::cout << art << "e" << cell[j][i]->vEmission << "." << cell[j][i]->c1Emission << "." << cell[j][i]->c2Emission;
+				for (int cchar = 0; cchar < sizeCell - (cell[j][i]->vEmission / 10 + 1) - (cell[j][i]->c1Emission / 10 + 1) - (cell[j][i]->c2Emission / 10 + 1) - 2 - 2; cchar++) {
+					std::cout << " ";
+				}
+				std::cout << "|";
+			}
 
-        //lines
-        std::cout << "\n";
-        for (int j = 0; j < width; j++) {
-            if (j == 0) {
+		}
 
-                std::cout << " +";
-            }
-        	for(int cchar = 0; cchar < sizeCell; cchar ++) {
-        		std::cout << "-";
-        	}
-    		std::cout << "+";
+		//lines
+		std::cout << "\n";
+		for (int j = 0; j < width; j++) {
+			if (j == 0) {
 
-        }
-        std::cout << "\n";
-    }
+				std::cout << " +";
+			}
+			for (int cchar = 0; cchar < sizeCell; cchar++) {
+				std::cout << "-";
+			}
+			std::cout << "+";
+
+		}
+		std::cout << "\n";
+	}
 	printf("Nr of Consumer1: %4i\n", numberOfCI);
 	printf("Nr of Consumer2: %4i\n", numberOfCII);
 	printf("Nr of Vegetals:  %4i\n", numberOfVeg);
 	numberOfCreature = numberOfCI + numberOfCII;
 	numberOfVegetal = numberOfVeg;
-
 }
 
 /**
