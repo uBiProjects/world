@@ -45,11 +45,11 @@ Map :: Map(int _width, int _height){
 
 // return Creature #
 int Map::getnumberOfCreature(){
-	return numberOfCreature;
+	return numberOfCI+numberOfCII;
 }
 // return Vegetals #
 int Map::getnumberOfVegetal(){
-	return numberOfVegetal;
+	return numberOfVeg;
 }
 
 /**
@@ -175,6 +175,9 @@ void Map:: updateEmission(int _x, int _y, int _multiplicator){
 // TODO aufrauemen doppelte geleiche aufrufe von sout
 void Map::print(bool _detailed) {
 
+	int sumTWFCI = 0, sumMTWFCI = 0;
+	int sumTWFCII = 0, sumMTWFCII = 0;
+
 	//Reset Counters for numberOf* values
 	numberOfCI = 0;
 	numberOfCII = 0;
@@ -251,7 +254,6 @@ void Map::print(bool _detailed) {
 			if (dynamic_cast<ConsumerI*>(cell[j][i]->monster)) {
 				//increase numberOfCI:
 				numberOfCI++;
-
 				//fetch the identifier of Life
 				Creature * c = (Creature*)cell[j][i]->monster;
 				if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
@@ -260,6 +262,9 @@ void Map::print(bool _detailed) {
 				else {
 					art = (char*)"c";
 				}
+				// sum TWF
+				sumTWFCI += c->getTimeWithoutFood();
+				sumMTWFCI += c->getMaxTimeWithoutFood();
 
 				//print if not detailed
 				if (!_detailed) {
@@ -283,6 +288,10 @@ void Map::print(bool _detailed) {
 				else {
 					art = (char*)"C";
 				}
+				// sum TWF
+				sumTWFCII += c->getTimeWithoutFood();
+				sumMTWFCII += c->getMaxTimeWithoutFood();
+
 				//print if not detailed
 				if (!_detailed) {
 
@@ -298,8 +307,8 @@ void Map::print(bool _detailed) {
 
 				art = (char*)"v";
 
-				//increase numberOfCI:
-				numberOfVeg++;
+				//increase numberOfveg
+				numberOfVeg++; 
 
 				//print if not detailed
 				if (!_detailed) {
@@ -341,28 +350,14 @@ void Map::print(bool _detailed) {
 		}
 
 		printSeparator(width, sizeCell, '+');
-		//lines
-		/*
-		std::cout << "\n";
-		for (int j = 0; j < width; j++) {
-			if (j == 0) {
-
-				std::cout << " +";
-			}
-
-			for (int cchar = 0; cchar < sizeCell; cchar++) {
-				std::cout << "-";
-			}
-			std::cout << "+";
-
-		}
-		std::cout << "\n";*/
+	
 	}
-	printf("Nr of Consumer1: %4i\n", numberOfCI);
-	printf("Nr of Consumer2: %4i\n", numberOfCII);
+	int hungry;
+	if (sumMTWFCI == 0) hungry = 0; else hungry = sumTWFCI * 100 / sumMTWFCI;
+	printf("Nr of Consumer1: %4i  hungry:%3i%%\n", numberOfCI, hungry);
+	if (sumMTWFCII == 0) hungry = 0; else hungry = sumTWFCII * 100 / sumMTWFCII;
+	printf("Nr of Consumer2: %4i  hungry:%3i%%\n", numberOfCII, hungry);
 	printf("Nr of Vegetals:  %4i\n", numberOfVeg);
-	numberOfCreature = numberOfCI + numberOfCII;
-	numberOfVegetal = numberOfVeg;
 }
 
 
