@@ -215,6 +215,15 @@
 			case 12:
 				error_msg += "No instance of Values.. .\n\n";
 				break;
+			case 13:
+				error_msg += "Something is wrong with your Vegetal.txt file.\n\n";
+				break;
+			case 14:
+				error_msg += "Something is wrong with your Consumer1.txt file.\n\n";
+				break;
+			case 15:
+				error_msg += "Something is wrong with your Consumer2.txt file.\n\n";
+				break;
 			default:
 				error_msg += "Unknown handled error";
 				break;

@@ -8,13 +8,13 @@
 #include "Values.h"
 
 ConsumerI:: ConsumerI(Coordinate _pos) : Creature(_pos,
-		(int) Values::getInstance()->getCIMLT(),
-		(int) Values::getInstance()->getCISE(),
-		(int) Values::getInstance()->getCISD(),//smell detection
-		(int) Values::getInstance()->getCIS(),
-		(int) Values::getInstance()->getCIMTWF(),
+		(int) Values::getInstance()->getCIMaxLifeTime(),
+		(int) Values::getInstance()->getCISmellEmission(),
+		(int) Values::getInstance()->getCISmellDetection(),//smell detection
+		(int) Values::getInstance()->getCISpeed(),
+		(int) Values::getInstance()->getCIMaxTimeWithoutFood(),
 		(char) cell_char,
-		Values::getInstance()->getCILT()){
+		Values::getInstance()->getCILifeTime()){
 }
 
 

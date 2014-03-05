@@ -6,9 +6,9 @@
 
 
 	Vegetal :: Vegetal (Coordinate _c) : Life(_c,
-			Values::getInstance()->getPLT(),
-			Values::getInstance()->getPSE(),
-			Values::getInstance()->getPMLT(),
+			Values::getInstance()->getVegLifeTime(),
+			Values::getInstance()->getVegSmellEmission(),
+			Values::getInstance()->getVegMaxLifeTime(),
 			cell_char) {
 	}
 	

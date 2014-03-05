@@ -7,13 +7,13 @@
 
 
 ConsumerII::ConsumerII(Coordinate _pos) : Creature(_pos,
-		Values::getInstance()->getCIIMLT(),
-		Values::getInstance()->getCIISE(),
-		Values::getInstance()->getCIISD(),
-		Values::getInstance()->getCIIS(),
-		Values::getInstance()->getCIIMTWF(),
+		Values::getInstance()->getCIIMaxLifeTime(),
+		Values::getInstance()->getCIISmellEmission(),
+		Values::getInstance()->getCIISmellDetection(),
+		Values::getInstance()->getCIISpeed(),
+		Values::getInstance()->getCIIMaxTimeWithoutFood(),
 		(char)cell_char,
-		Values::getInstance()->getCIILT()){
+		Values::getInstance()->getCIILifeTime()){
 }
 
 ConsumerII:: ~ConsumerII(){
