@@ -338,6 +338,8 @@ void World::performOneStep() {
 						mp->deleteMonster(newPosition);	
 						// go to new position.
 						mp->insertMonster(currentCreature, newPosition);
+                                                // reset time without food
+                                                currentCreature->setTimeWithoutFood(0);
 						break;
 					case 0:					// (try) reproduce don't walk
 						// back on the map

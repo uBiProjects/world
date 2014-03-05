@@ -37,6 +37,8 @@ Values::Values(char* a, char* b, char* c){
 	print(pointer);
 	writeCII(pointer);
 	free(pointer);
+        
+        checkValues();
 }
 
 Values::~Values(){
@@ -189,6 +191,41 @@ int Values::getCIITimeWithoutFood(){
 }
 int Values::getCIISpeed(){
 	return CIISpeed;
+}
+
+/**
+ * Checks if the entered .txt files are valid
+ */
+void Values::checkValues(){
+    //Checks Veg file
+    if(!(VegLifeTime < VegMaxLifeTime &&
+	VegMaxLifeTime > 0 &&
+	VegSmellEmission > 0)){
+        exit_error(13);
+    }
+    
+    //Checks CI file
+    if(!(CILifeTime < CIMaxLifeTime &&
+	CIMaxLifeTime > 0 &&
+	CISmellEmission > 0 &&
+	CISmellDetection > 0 &&
+	CIMaxTimeWithoutFood > 0 &&
+	CITimeWithoutFood < CIMaxTimeWithoutFood &&
+	CISpeed > 0)){
+        exit_error(14);
+    }
+            
+    //Checks CII file
+    if(!(CIILifeTime < CIIMaxLifeTime &&
+	CIIMaxLifeTime > 0 &&
+	CIISmellEmission > 0 &&
+	CIISmellDetection > 0 &&
+	CIIMaxTimeWithoutFood > 0 &&
+	CIITimeWithoutFood < CIIMaxTimeWithoutFood &&
+	CIISpeed > 0
+            )){
+        exit_error(15);
+    }
 }
 
 //---TEST FUNCTIONS---

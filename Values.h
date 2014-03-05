@@ -22,6 +22,7 @@ private:
 	void writeCI(int*);
 	void writeCII(int*);
 	void testAllValues();
+	void checkValues();
 	
 	static Values *instance;
 //	static bool created;
