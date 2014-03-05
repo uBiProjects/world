@@ -283,10 +283,10 @@ void Map::print(bool _detailed) {
 				//fetch the identifier of Life
 				Creature * c = (Creature*)cell[j][i]->monster;
 				if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-					art = (char*)"P";
+					art = (char*)"Q";
 				}
 				else {
-					art = (char*)"C";
+					art = (char*)"X";
 				}
 				// sum TWF
 				sumTWFCII += c->getTimeWithoutFood();

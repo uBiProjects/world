@@ -397,7 +397,7 @@ bool World::findPregnantReadyCreatureNearby(Creature* _c, Coordinate* _newpos) {
 			tmpPos = normCoordinateToWorld(tmpPos);
 			// only scan creatures
 			if (((myChar == 'c') && (isAConsumerI(tmpPos))) ||
-				((myChar == 'C') && (isAConsumerII(tmpPos)))) {
+				((myChar == 'X') && (isAConsumerII(tmpPos)))) {
 				Creature* otherCreature;
 				otherCreature = (Creature*)mp->getMapItem(tmpPos)->monster;
 				// only take ready for pregnant creatures
@@ -438,10 +438,10 @@ int World::interact(Creature* _a, Coordinate testpos){
 	case 'c':
 		if (char_b == 'c') return 0;		// i can reproduce
 		if (char_b == 'v') return 1;		// i can eat that
-		if (char_b == 'C') return -2;		// i can not do anything
+		if (char_b == 'X') return -2;		// i can not do anything
 		return -1;							// i can walk, cell is empty
-	case 'C':
-		if (char_b == 'C') return 0;		// i can reproduce
+	case 'X':
+		if (char_b == 'X') return 0;		// i can reproduce
 		if (char_b == 'c') return 1;		// i can eat that
 		if (char_b == 'v') return -2;		// i can not do anything
 		return -1;							// i can walk, cell is empty
@@ -733,7 +733,7 @@ bool World::isAConsumerII(Coordinate _pos){
 
 bool World::isAConsumerII(Life* _life){
 	if (_life == NULL) return false;
-	return _life->getCellChar() == 'C';
+	return _life->getCellChar() == 'X';
 }
 bool World::isAVegetal(Coordinate _pos){
 	if (cell_is_empty(_pos)) return false;
