@@ -27,13 +27,13 @@ Map :: Map(int _width, int _height){
 	//initialize the array
 	cell = (MapItem***) malloc(width * sizeof(MapItem**));
 
-	for (int var = 0; var < height; ++var) {
+	for (unsigned int var = 0; var < height; ++var) {
 		cell[var] =(MapItem**) malloc(height * sizeof(MapItem*));
 	}
 
 	//initialize array with null values and null
-	for (int x = 0; x < width; x ++) {
-		for (int y = 0; y < height; y ++) {
+	for (unsigned int x = 0; x < width; x ++) {
+		for (unsigned int y = 0; y < height; y ++) {
 
 			cell[x][y] = new MapItem();
 		}
@@ -45,11 +45,11 @@ Map :: Map(int _width, int _height){
 
 // return Creature #
 int Map::getnumberOfCreature(){
-	return numberOfCreature;
+	return numberOfCI+numberOfCII;
 }
 // return Vegetals #
 int Map::getnumberOfVegetal(){
-	return numberOfVegetal;
+	return numberOfVeg;
 }
 
 /**
@@ -59,14 +59,14 @@ int Map::getnumberOfVegetal(){
 Map :: ~Map() {
 	Coordinate c;
 	//destroy existing monster if they exist
-	for(int x = 0; x < width; x ++){
-		for(int y = 0; y < height; y ++){
+	for(unsigned int x = 0; x < width; x ++){
+		for(unsigned int y = 0; y < height; y ++){
 			delete(cell[x][y]);
 		}
 	}
 
 	//the free emission
-	for (int var = 0; var < height; ++var) {
+	for (unsigned int var = 0; var < height; ++var) {
 		free(cell[var]);
 	}
 
@@ -175,6 +175,9 @@ void Map:: updateEmission(int _x, int _y, int _multiplicator){
 // TODO aufrauemen doppelte geleiche aufrufe von sout
 void Map::print(bool _detailed) {
 
+	int sumTWFCI = 0, sumMTWFCI = 0;
+	int sumTWFCII = 0, sumMTWFCII = 0;
+
 	//Reset Counters for numberOf* values
 	numberOfCI = 0;
 	numberOfCII = 0;
@@ -199,36 +202,69 @@ void Map::print(bool _detailed) {
 	if (_detailed){
 		sizeCell = 12;
 	}
-	//first line
-	std::cout << "\n +";
-	for (int i = 0; i < width; i++) {
 
-		for (int cchar = 0; cchar < sizeCell; cchar++) {
-			std::cout << "-";
-		}
-		std::cout << "+";
+
+	/*
+	 * print headline
+	 */
+	//first line
+	std::cout << "\n";
+
+	printSeparator(width, sizeCell, '+');
+
+	//first cell
+	std::cout << " |";
+	for(int x = 0; x < 2; x ++){
+		std::cout << " ";
 	}
+	//second line containing line numbers
+	for(unsigned int i = 0; i < width; i ++) {
+
+		std::cout << " |";
+		for(int x = 0; x < (3 - length(i)) / 2; x ++){
+			std::cout << " ";
+		}
+		std:: cout << i;
+		for(int x = 0; x < (3 - length(i)) / 2 + (3 - length(i)) % 2 - 1; x ++){
+			std::cout << " ";
+		}
+	}
+	std::cout << " +";
+
+	printSeparator(width, sizeCell, '+');
 
 	//
-	std::cout << "\n";
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
+	for (unsigned int i = 0; i < height; i++) {
+
+		//first cell
+		std::cout << " |";
+		for(int x = 0; x < (3 - length(i)) / 2; x ++){
+			std::cout << " ";
+		}
+		std:: cout << i;
+		for(int x = 0; x < (3 - length(i)) / 2 + (3 - length(i)) % 2; x ++){
+			std::cout << " ";
+		}
+
+		for (unsigned int j = 0; j < width; j++) {
 			if (j == 0) {
-				std::cout << " |";
+				std::cout << "|";
 			}
 
 			if (dynamic_cast<ConsumerI*>(cell[j][i]->monster)) {
 				//increase numberOfCI:
 				numberOfCI++;
-
 				//fetch the identifier of Life
 				Creature * c = (Creature*)cell[j][i]->monster;
 				if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-					art = "p";
+					art = (char*)"p";
 				}
 				else {
-					art = "c";
+					art = (char*)"c";
 				}
+				// sum TWF
+				sumTWFCI += c->getTimeWithoutFood();
+				sumMTWFCI += c->getMaxTimeWithoutFood();
 
 				//print if not detailed
 				if (!_detailed) {
@@ -247,11 +283,15 @@ void Map::print(bool _detailed) {
 				//fetch the identifier of Life
 				Creature * c = (Creature*)cell[j][i]->monster;
 				if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-					art = "P";
+					art = (char*)"Q";
 				}
 				else {
-					art = "C";
+					art = (char*)"X";
 				}
+				// sum TWF
+				sumTWFCII += c->getTimeWithoutFood();
+				sumMTWFCII += c->getMaxTimeWithoutFood();
+
 				//print if not detailed
 				if (!_detailed) {
 
@@ -265,10 +305,10 @@ void Map::print(bool _detailed) {
 			}
 			else if (dynamic_cast<Vegetal*> (cell[j][i]->monster)) {
 
-				art = "v";
+				art = (char*)"v";
 
-				//increase numberOfCI:
-				numberOfVeg++;
+				//increase numberOfveg
+				numberOfVeg++; 
 
 				//print if not detailed
 				if (!_detailed) {
@@ -283,7 +323,7 @@ void Map::print(bool _detailed) {
 			}
 			else {
 
-				art = " ";
+				art = (char*)" ";
 
 				//print if not detailed
 				if (!_detailed) {
@@ -299,7 +339,9 @@ void Map::print(bool _detailed) {
 			if (_detailed){
 
 				std::cout << art << "e" << cell[j][i]->vEmission << "." << cell[j][i]->c1Emission << "." << cell[j][i]->c2Emission;
-				for (int cchar = 0; cchar < sizeCell - (cell[j][i]->vEmission / 10 + 1) - (cell[j][i]->c1Emission / 10 + 1) - (cell[j][i]->c2Emission / 10 + 1) - 2 - 2; cchar++) {
+				int sizeD = sizeCell - (length(cell[j][i]->vEmission)) - length(cell[j][i]->c1Emission) - length(cell[j][i]->c2Emission) - 2 - 2;
+
+				for (int cchar = 0; cchar < sizeD; cchar++) {
 					std::cout << " ";
 				}
 				std::cout << "|";
@@ -307,26 +349,33 @@ void Map::print(bool _detailed) {
 
 		}
 
-		//lines
-		std::cout << "\n";
-		for (int j = 0; j < width; j++) {
-			if (j == 0) {
-
-				std::cout << " +";
-			}
-			for (int cchar = 0; cchar < sizeCell; cchar++) {
-				std::cout << "-";
-			}
-			std::cout << "+";
-
-		}
-		std::cout << "\n";
+		printSeparator(width, sizeCell, '+');
+	
 	}
-	printf("Nr of Consumer1: %4i\n", numberOfCI);
-	printf("Nr of Consumer2: %4i\n", numberOfCII);
+	int hungry;
+	if (sumMTWFCI == 0) hungry = 0; else hungry = sumTWFCI * 100 / sumMTWFCI;
+	printf("Nr of Consumer1: %4i  hungry:%3i%%\n", numberOfCI, hungry);
+	if (sumMTWFCII == 0) hungry = 0; else hungry = sumTWFCII * 100 / sumMTWFCII;
+	printf("Nr of Consumer2: %4i  hungry:%3i%%\n", numberOfCII, hungry);
 	printf("Nr of Vegetals:  %4i\n", numberOfVeg);
-	numberOfCreature = numberOfCI + numberOfCII;
-	numberOfVegetal = numberOfVeg;
+}
+
+
+void Map:: printSeparator(int _width, int _sizeCell, char _separationChar) {
+
+	//third line (separator)
+	std::cout << "\n +";
+
+	std::cout << "---" << _separationChar;
+
+	for (int i = 0; i < _width; i++) {
+
+		for (int cchar = 0; cchar < _sizeCell; cchar++) {
+			std::cout << "-";
+		}
+		std::cout << _separationChar;
+	}
+	std::cout << "\n";
 }
 
 /**

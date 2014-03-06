@@ -14,7 +14,8 @@ ConsumerI:: ConsumerI(Coordinate _pos) : Creature(_pos,
 		(int) Values::getInstance()->getCISpeed(),
 		(int) Values::getInstance()->getCIMaxTimeWithoutFood(),
 		(char) cell_char,
-		Values::getInstance()->getCILifeTime()){
+		Values::getInstance()->getCILifeTime(),
+		20){
 }
 
 
@@ -22,8 +23,4 @@ ConsumerI:: ConsumerI(Coordinate _pos) : Creature(_pos,
 ConsumerI:: ~ConsumerI(){
 
 }
-/*
-void ConsumerI:: setSource(char* SOURCE){
-		static const char* source = SOURCE;
-}
-*/
+

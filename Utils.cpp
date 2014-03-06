@@ -1,4 +1,4 @@
-// std includes
+
 #include <stdio.h>
 #include <iostream>
 #include <errno.h>		//for getting error number in method is_file
@@ -13,15 +13,14 @@
 
 
 
-#ifdef WINDOWS
+#ifdef WINDOWS                                                  // Windows
 	#include <windows.h>
 	#include <windows.system.h>
-// TODO 1. clr screen immer<
 //	#define CLRSCR system("cls")
     #define CLRSCR System::Console::SetCursorPosition(0, 0);			
 	#define FLUSH_KEYBOARD fflush(stdin)
 	#define SLEEP  Sleep(milliseconds)
-#else															// LINUX
+#else															// Linux
 	#include <unistd.h>
 	#include <stdlib.h>
 	#include <stdio_ext.h>
@@ -31,6 +30,25 @@
 #endif
 
 
+/**
+ * returns length of number up to 4.
+ * @param _number the number
+ * @return the length of the number
+ */
+int length(unsigned int _number) {
+	if(_number >= 1000){
+		return 4;
+	}
+	else if (_number >= 100){
+		return 3;
+	}
+	else if (_number >= 10){
+		return 2;
+	}
+	else {
+		return 1;
+	}
+}
 
 
 	// sleep for milliseconds
@@ -86,23 +104,21 @@
 
 
 /**
- * calc positive modulo 
+ * calculate a positive modulo 
  *              _x (mod _y)
- * toReturn: R�ckgabewert immer positiv
- * else: Erh�hen bis Wert positiv
-**/
+ */
 	int modulo(int _x, int _y){
 
 		int toReturn = (_x % _y);
 		if (toReturn < 0) {
-			toReturn += _y;		// -a = x mod y => a = -a + y
+			toReturn += _y;		
 		}
 		return toReturn;
 	}
 
 
 
-// clear keybuffer (discard all pressed keys)
+// clear keyboard buffer (discard all pressed keys)
 	void clear_keyboard_buffer() {
 		FLUSH_KEYBOARD;
 	}
@@ -124,9 +140,9 @@
 // returns the signum of x
 // or 0 if x = 0
 	int sign(int x) {
-		// x > 0 => (x>0) = 1 und (x<0)=0 =>1
-		// x = 0 => (x>0) = 0 und (x<0)=0 =>0
-		// x <0  => (x>0) = 0 und (x<0)=1 =>-1
+		// x > 0 => (x>0) = 1 and (x<0)=0 =>1
+		// x = 0 => (x>0) = 0 and (x<0)=0 =>0
+		// x <0  => (x>0) = 0 and (x<0)=1 =>-1
 
 		return (x > 0) - (x < 0);
 	}
@@ -148,11 +164,13 @@
 	}
 
 
-	// get a random number in intervall [range_min, range_max]
+	// get a random number in interval [range_min, range_max]
 	int getRandomNumber(int range_min, int range_max) {
-		double u;
-
-		u = (double)rand() / (RAND_MAX + 1.0) * (range_max + 1.0 - range_min) + range_min;
+		double u,y;
+		y = RAND_MAX;
+		u = rand();
+		u = u / (y + 1.0) *
+			(double)(range_max + 1.0 - range_min) + (double)range_min;
 		return (int)u;
 }
 
@@ -234,11 +252,11 @@
 		exit(error_number);
 	}
 
-	// compute greates common divisor of a and b
+	// compute greatest common divisor of a and b
 	int getggT(int a, int b) {
 		if (a < 0) a = -a;
 		if (b < 0) b = -b;
-		while (true) {
+		for (;;){
 			if (a == 0) return b;		// trap if a==0
 			b %= a;						// b = b mod a
 			if (b == 0) return a;		// trap if b==0
@@ -246,10 +264,11 @@
 		}
 	}
 
+    
 	// compute least common multiple of a and b use => abs(a*b)=kgV*ggT
 	int getkgV(int a, int b) {
 		int c = abs(a * b);
 		if (c == 0) return 0;			// kgv = 0 if one of the two is 0
-		int g = getggT(a, b);				// compute ggt
+		int g = getggT(a, b);			// compute ggt
 		return c / g;
 	}

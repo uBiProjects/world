@@ -19,7 +19,7 @@ private:
 	
 public:
 
-	Creature(Coordinate, int, int, int,int, int, char, int);
+	Creature(Coordinate, int, int, int,int, int, char, int,int);
 	virtual ~Creature();
 	
 	//getter and setter methods

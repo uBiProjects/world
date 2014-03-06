@@ -9,7 +9,7 @@ class ConsumerII : public Creature {
 		
 		ConsumerII(Coordinate);
 		virtual ~ConsumerII();
-		static const char cell_char = 'C';
+		static const char cell_char = 'X';
 };
 
 #endif

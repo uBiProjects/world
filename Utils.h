@@ -3,19 +3,13 @@
 #define UTILS_H_
 
 
-#ifdef _DEBUG   
-#ifndef DBG_NEW      
-#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )      
-#define new DBG_NEW   
-#endif
-#endif  // _DEBUG
 
 
 // #define DEBUG		// shows debug info							(comment out for normal run)
 // #define DEBUG1		// updates the screen afer every crature	(comment out for normal run)
-#define DEBUG2			// print steps								(comment out/include for normal run)
+// #define DEBUG2		// print steps								(comment out/include for normal run)
 // #define TESTFREE		// calls the testfree routine				(comment out for normal run)
-#define FASTRUN         // wait only 5 millisecons after a step     (comment out for normal run)
+// #define FASTRUN      // wait only 5 millisecons after a step     (comment out for normal run)
 #define CLEAR_SCREEN	// clears the scree after each round		(include     for normal run)
 
 // check os system
@@ -23,6 +17,12 @@
 	#define	WINDOWS
 	#define _CRTDBG_MAP_ALLOC
 	#include <crtdbg.h>  // detect memory leaks
+	#ifdef _DEBUG   
+		#ifndef DBG_NEW      
+			#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )      
+			#define new DBG_NEW   
+		#endif
+	#endif  // _DEBUG
 #else
 	#define	LINUX
 #endif
@@ -42,7 +42,7 @@
 		operator bool() const { return x >= 0 && y >= 0; }
 	};
 
-	
+	int length(unsigned int);
 	int sign(int);											// signum
 	void sleepd(unsigned);									// slepp routine
     bool is_file(const char* );								// test if it is a file

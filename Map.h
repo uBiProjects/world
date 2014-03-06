@@ -16,7 +16,7 @@ class Map {
 		//insert monster at int int. update smell.
 		void insertMonster(Life*, Coordinate);
 
-		//caa removeMonster and free monster.
+		//removeMonster and free monster.
 		void deleteMonster(Coordinate);
 
 		//getter methods for width, height and special mapItem.
@@ -30,14 +30,13 @@ class Map {
 		void print(bool);
 
 	private :
-		int width, height;
+		unsigned int width, height;
 		int amountFreePosition;
 		MapItem*** cell;
 		void updateEmission(int, int, int);
 		void test();
-		int numberOfCreature;
-		int numberOfVegetal;
 		int numberOfCI, numberOfCII, numberOfVeg;
+		void printSeparator(int, int, char);
 
 };
 

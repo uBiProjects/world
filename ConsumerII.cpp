@@ -13,7 +13,8 @@ ConsumerII::ConsumerII(Coordinate _pos) : Creature(_pos,
 		Values::getInstance()->getCIISpeed(),
 		Values::getInstance()->getCIIMaxTimeWithoutFood(),
 		(char)cell_char,
-		Values::getInstance()->getCIILifeTime()){
+		Values::getInstance()->getCIILifeTime(),
+		40){
 }
 
 ConsumerII:: ~ConsumerII(){

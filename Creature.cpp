@@ -17,7 +17,8 @@ Creature::Creature(Coordinate _pos,
 					int _speed, 
 					int _maxTimeWithoutFood, 
 					char _char, 
-					int _currentLifeTime) : Life(_pos, _currentLifeTime, _rangeSmellAbgeben, _maxLifeTime, _char) {
+					int _currentLifeTime,
+					int _maxPregnantTime) : Life(_pos, _currentLifeTime, _rangeSmellAbgeben, _maxLifeTime, _char) {
 
 	// timeLife = _currentLifeTime;
 	// maxTimeLife = _maxLifeTime;
@@ -26,8 +27,8 @@ Creature::Creature(Coordinate _pos,
 	maxTimeWithoutFood = _maxTimeWithoutFood;
 	rangeOfSmellDetection = _rangeSmell;
 	speed					= _speed;
-	maxPregnantTime			= 5;
-	pregnantTime			= maxPregnantTime + 1;		
+	maxPregnantTime = _maxPregnantTime;
+	pregnantTime = maxPregnantTime + 1;
 }
 
 Creature:: ~Creature(){
