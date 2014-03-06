@@ -234,13 +234,13 @@ int length(unsigned int _number) {
 				error_msg += "No instance of Values.. .\n\n";
 				break;
 			case 13:
-				error_msg += "Something is wrong with your Vegetal.txt file.\n\n";
+				error_msg += "Something is wrong with first file.\nYou should enter the filenames in the following order:\n1. Vegetals.txt\n2. Consumer1.txt\n3. Consumer2.txt\n\n";
 				break;
 			case 14:
-				error_msg += "Something is wrong with your Consumer1.txt file.\n\n";
+				error_msg += "Something is wrong with second file.\nYou should enter the filenames in the following order:\n1. Vegetals.txt\n2. Consumer1.txt\n3. Consumer2.txt\n\n";
 				break;
 			case 15:
-				error_msg += "Something is wrong with your Consumer2.txt file.\n\n";
+				error_msg += "Something is wrong with third file.\nYou should enter the filenames in the following order:\n1. Vegetals.txt\n2. Consumer1.txt\n3. Consumer2.txt\n\n";
 				break;
 			default:
 				error_msg += "Unknown handled error";

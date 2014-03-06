@@ -24,21 +24,21 @@ Values* Values::instance = 0;
 Values::Values(char* a, char* b, char* c){
 
  	int* pointer=Values::readFile(a);
-	print(pointer);
+	//print(pointer);
 	writeV(pointer);
 	free(pointer);
 
 	pointer=Values::readFile(b);
-	print(pointer);
+	//print(pointer);
 	writeCI(pointer);
 	free(pointer);
 
 	pointer=Values::readFile(c);
-	print(pointer);
+	//print(pointer);
 	writeCII(pointer);
 	free(pointer);
         
-        checkValues();
+    checkValues();
 }
 
 Values::~Values(){
