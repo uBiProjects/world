@@ -1,4 +1,6 @@
-
+/*
+ * Life class.
+ */
 #include <iostream>
 
 #include "Utils.h"
@@ -50,16 +52,13 @@ int Life::getStinkRange() {
 
 
 // SETTER:
+
 void Life::setCellChar(char new_cell_char) {
     cell_char = new_cell_char;
 }
 
 void Life::setCurrentLifeTime(int a) {
     currentLifeTime = a;
-}
-
-void Life::setWalkable(bool a) {
-    walkable = a;
 }
 
 void Life::setWalkable(bool a) {
