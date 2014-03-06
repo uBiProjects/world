@@ -45,7 +45,7 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
     initializeCreature(nC1, nC2, nV);
 
 	// print fist screen
-	mp->print(true);
+	mp->print(false);
 	
 
     // start life of creatures.
@@ -170,7 +170,7 @@ void World::run(int fixedNumberOfVegetal) {
 		testfree();
 #endif
 		// update the map and number of Vegetal
-		mp->print(true);
+		mp->print(false);
 		std::cout << "Step " << step + 1 << "\n";
 
 		// simulation ends if # of creatures =0
