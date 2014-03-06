@@ -24,83 +24,77 @@ Values* Values::instance = 0;
 Values::Values(char* a, char* b, char* c){
 
  	int* pointer=Values::readFile(a);
-	//print(pointer);
 	writeV(pointer);
 	free(pointer);
 
 	pointer=Values::readFile(b);
-	//print(pointer);
 	writeCI(pointer);
 	free(pointer);
 
 	pointer=Values::readFile(c);
-	//print(pointer);
 	writeCII(pointer);
 	free(pointer);
         
     checkValues();
 }
 
+//Destructor:
 Values::~Values(){
-	// free(instance);
-	// free(values);
-	// free(readFile);
-	// free(values);
 }
-
 /**
-* Reads a file and stores the information
-* in an int array.
-* filename: name of file
-* STRING: used to store one line from the file
-* temp: used to extract a single value from STRING
-* filerows: number of rows in the file
-* infile: file that is being read
-* p: array where the values from temp are stored
-*	after they are converted to int
-*/
-int* Values::readFile(char* filename){
+ * Reads a file and stores the information
+ * in an int array.
+ * filename: name of file
+ * STRING: used to store one line from the file
+ * temp: used to extract a single value from STRING
+ * filerows: number of rows in the file
+ * infile: file that is being read
+ * p: array where the values from temp are stored
+ *	after they are converted to int
+ */
+int* Values::readFile(char* filename) {
 
-	//Declare some variables and assign values:
-	string STRING;
-    string temp="";
+    // Declare some variables and assign values:
+    string STRING;
+    string temp = "";
     ifstream infile;
-    infile.open (filename);
-	filerows=0;
-    
+    infile.open(filename);
+    filerows = 0;
+
     // Determine number of lines:
-    while(!infile.eof()) 
-    {
-  	getline(infile,STRING);
-  	filerows++;
+    while (!infile.eof()) {
+        getline(infile, STRING);
+        filerows++;
     }
-    
-    //Declare array for values:
-    int* p = (int*)(malloc(filerows *sizeof(int)));
-    
-    //Reopen File:
+
+    // Declare array for values:
+    int* p = (int*) (malloc(filerows * sizeof (int)));
+
+    // Reopen File:
     infile.close();
-    infile.open (filename);
-    
-    //Extract values from STRING to temp
-    for(int j=0; !infile.eof();j++){
-	  	getline(infile,STRING);
-	  	for(unsigned int i=0;i<STRING.length();i++){
-	  		if(STRING.at(i)=='\t'){
-	  			for(i++;i<STRING.length();i++){
-	  				temp+=STRING.at(i);
-	  			}
-	  		}
-	  	}
-  	
-  		//Convert values from string to int:
-	  	p[j]=atoi(temp.c_str());
-	  	temp="";
-  	
+    infile.open(filename);
+
+    // Extract values from STRING to temp
+    for (int j = 0; !infile.eof(); j++) {
+        getline(infile, STRING);
+        for (unsigned int i = 0; i < STRING.length(); i++) {
+            if (STRING.at(i) == '\t') {
+                for (i++; i < STRING.length(); i++) {
+                    temp += STRING.at(i);
+                }
+            }
+        }
+
+        // Convert values from string to int:
+        p[j] = atoi(temp.c_str());
+        temp = "";
+
     }
     infile.close();
     return p;
 }
+
+// FUNCTIONS FOR SAVING VALUES:
 
 /**
 * Writes plant-values.
@@ -137,7 +131,7 @@ void Values::writeCII(int* pointer){
 	CIISpeed = pointer[6];
 }
 
-//---GETTER---
+// GETTER:
 
 int Values::getVegMaxLifeTime(){
 	return VegMaxLifeTime;
@@ -169,12 +163,10 @@ int Values::getCISpeed(){
 int Values::getVegLifeTime(){
 	return VegLifeTime;
 }
-
-
-
 int Values::getCIIMaxLifeTime(){
 	return CIIMaxLifeTime;
-}int Values::getCIILifeTime(){
+}
+int Values::getCIILifeTime(){
 	return CIILifeTime;
 }
 int Values::getCIISmellEmission(){
@@ -191,6 +183,19 @@ int Values::getCIITimeWithoutFood(){
 }
 int Values::getCIISpeed(){
 	return CIISpeed;
+}
+
+Values* Values :: getInstance(){
+
+  if( instance == 0 )
+	  exit_error(12);
+  return instance;
+}
+
+// SETTER:
+
+void Values::setInstance(char* a, char* b, char* c){
+	instance = new Values(a, b, c);
 }
 
 /**
@@ -266,15 +271,4 @@ void Values::testAllValues(){
 	cout<<CIIMaxTimeWithoutFood<<endl;
 	cout<<CIITimeWithoutFood<<endl;
 	cout<<CIISpeed<<endl;
-}
-
-void Values::setInstance(char* a, char* b, char* c){
-	instance = new Values(a, b, c);
-}
-
-Values* Values :: getInstance(){
-
-  if( instance == 0 )
-	  exit_error(12);
-  return instance;
 }

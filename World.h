@@ -50,8 +50,8 @@ public:
 	void impregnate(Creature*, Creature*);
 	void giveBirthToABaby(Creature*);
 	int interact(Creature*, Coordinate);
-	bool findPregnantReadyCreatureNearby(Creature*, Coordinate*);
-	double computeScroe(double, double, double, double, double);
+	bool findMatingPartner(Creature*, Coordinate*);
+	double computeScore(double, double, double, double, double);
 };
 
 #endif
