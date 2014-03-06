@@ -30,8 +30,8 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
 	wwidth  = _width;
 	wheight = _height;
 
-	//tell random to generate random numbers
-	srand((unsigned)time(NULL));
+	// tell random to generate random numbers
+	// srand((unsigned)time(NULL));
 
 
 	//save maximal amount of steps
@@ -495,12 +495,13 @@ bool World::smellAndGetBestDestination(
 	Coordinate bestDestination;
 	Coordinate oldCoordinate = smellingCreature->getPos();
 	Coordinate c;
+	bool cellempty;
 	int speed = smellingCreature->getSpeed();
 	int FE=0, PE=0, STE=0;
 	double score;
 	
 	
-	double bestScore = DBL_MIN;
+	double bestScore = -DBL_MAX;
 	bool smellSomeThing = false;
 
 	//the range of smell detection of the current creature
@@ -530,10 +531,12 @@ bool World::smellAndGetBestDestination(
         		PE  = 0;
         		STE = mp->getMapItem(coord)->c2Emission;
         	}
+			cellempty = cell_is_empty(coord);
+			bool allreadyPregnant = smellingCreature->isPregnant();
 
         	// compute score
             // score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
-			score = computeScroe(FE, TWF, MTWF, STE, PE);
+			score = computeScroe(FE, TWF, MTWF, STE, PE, cellempty, allreadyPregnant);
 
 			// if one of the emissions is <>0 for only one cell 
 			// the creature smells something
@@ -578,9 +581,51 @@ bool World::smellAndGetBestDestination(
 /**
 	compute score
 */
-double World::computeScroe(double FE, double TWF, double MTWF, double STE, double PE) {
+double World::computeScroe(double FE, double TWF, double MTWF, double STE, double PE, 
+							bool _cellIsEmpty, bool _isPregnant) {
 	double score;
-	score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
+	double score_hungry;
+	double score_walk;
+	double hungry = (TWF / MTWF);
+
+	if (_isPregnant) {
+		STE = 0;
+	}
+
+	score_hungry = hungry * FE;
+	score_walk = (1.0 - hungry) * (STE - PE);
+
+	if (_cellIsEmpty) {
+		FE = 0;
+	} else {
+		// score_hungry *=2.0;
+	}
+	// compute if it s better too eat something
+	//if (hungry > 0.75) {
+	//	if (!cellIsEmpty) {
+	//		// a cell with something to eat is better
+	//		// than a cell with nothing in it.
+	//		score_hungry = score_hungry * 2.0;
+	//	}
+	//// there is time for eating later
+	//} else if (hungry < 0.25) {
+	//	if (cellIsEmpty) {
+	//		
+	//		// if (score_walk>0) score_walk = score_walk * 2;
+	//	}
+	//} else {
+
+	//}
+		
+		// an empty cell is better
+		// a cell near my kind is better
+		// a cell far away from PE is better.
+		if (_cellIsEmpty) {
+			// score_walk = score_walk * 2;
+		}
+	
+	// score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
+	score = score_hungry + score_walk;
 	return score;
 }
 /**
