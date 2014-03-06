@@ -52,6 +52,7 @@ public:
 	void checkWeatherFoodFound();
 	bool isPregnant();
 	bool isReadyForPregnant();
+	bool isHungry();
 //	int interact(Creature*, Life*);
 	
 	

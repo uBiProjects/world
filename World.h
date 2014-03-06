@@ -20,9 +20,9 @@ private:
 	Coordinate getRandomFreePosition();
 	
 public:
-	World(int, int, int,int,int,int);
+	World(int, int, int, int, int, int);
 	virtual ~World();
-	bool initializeCreature(int,int,int);
+	bool initializeCreature(int, int, int);
 
 	void print();
 	void performOneStep(int);
@@ -42,16 +42,18 @@ public:
 	bool isAVegetal(Coordinate);
 	bool isACreature(Coordinate);
 	bool createNewVegetal(Coordinate);
-	bool createNewConsumerI(Coordinate,int);
-	bool createNewConsumerII(Coordinate,int);
+	bool createNewConsumerI(Coordinate, int);
+	bool createNewConsumerII(Coordinate, int);
 	void setAllConsumersWalkableAndInteractable();
 	Coordinate normCoordinateToWorld(Coordinate);
 	Coordinate getAFreePositionAroundme(Coordinate);
 	void impregnate(Creature*, Creature*);
 	void giveBirthToABaby(Creature*);
 	int interact(Creature*, Coordinate);
-	bool findPregnantReadyCreatureNearby(Creature*, Coordinate*);
-	double computeScroe(double, double, double, double, double, bool,bool);
+	double computeScore(double, double, double, double, double, bool, bool, bool);
+	bool findMatingPartner(Creature*, Coordinate*);
+	bool findFood(Creature*, Coordinate*);
+	bool cellIsFood(Creature*, Coordinate);
 };
 
 #endif

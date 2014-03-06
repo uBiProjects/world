@@ -1,4 +1,6 @@
-
+/*
+ * Creature inherits from Life.
+ */
 #include <iostream>
 #include <typeinfo>
 
@@ -9,140 +11,134 @@
 #include "ConsumerII.h"
 #include "Vegetal.h"
 
+/* Constructor
+ */
+Creature::Creature(Coordinate _pos,
+        int _maxLifeTime,               //max life time
+        int _smellEmission,             //smell emission
+        int _smellDetection,            //smell detection
+        int _speed,                     //speed
+        int _maxTimeWithoutFood,        //max time w/o food
+        char _char,                     //char used for display
+        int _currentLifeTime,           //life time
+        //max pregnant time
+        int _maxPregnantTime) : Life(_pos, _currentLifeTime, _smellEmission, _maxLifeTime, _char) {
 
-Creature::Creature(Coordinate _pos, 
-					int _maxLifeTime, 
-					int _rangeSmellAbgeben, 
-					int _rangeSmell, 
-					int _speed, 
-					int _maxTimeWithoutFood, 
-					char _char, 
-					int _currentLifeTime,
-					int _maxPregnantTime) : Life(_pos, _currentLifeTime, _rangeSmellAbgeben, _maxLifeTime, _char) {
-
-	// timeLife = _currentLifeTime;
-	// maxTimeLife = _maxLifeTime;
-
-	timeWithoutFood = 0;
-	maxTimeWithoutFood = _maxTimeWithoutFood;
-	rangeOfSmellDetection = _rangeSmell;
-	speed					= _speed;
-	maxPregnantTime = _maxPregnantTime;
-	pregnantTime = maxPregnantTime + 1;
+    //Sets values
+    timeWithoutFood = 0;
+    maxTimeWithoutFood = _maxTimeWithoutFood;
+    rangeOfSmellDetection = _smellDetection;
+    speed = _speed;
+    maxPregnantTime = _maxPregnantTime;
+    pregnantTime = maxPregnantTime + 1;
 }
 
+/* Destructor
+ */
 Creature:: ~Creature(){
 }
 
-// _coordianteX, _coordinateY, _lifeTime, _maxLifeTime, _rangeSmellAbgeben
-// getter- and setter methods
-// getter methods
+// GETTER:
 
-int Creature::getTimeWithoutFood(){
-	return timeWithoutFood;
-}
-int Creature::getMaxTimeWithoutFood(){
-	return maxTimeWithoutFood;
+int Creature::getTimeWithoutFood() {
+    return timeWithoutFood;
 }
 
-//int Creature::getLifeTime(){
-//	return timeLife;
-//}
-//int Creature::getMaxLifeTime(){
-//	return maxTimeLife;
-//}
-
-//void Creature::setMaxLifeTime(int _maxTimeLife){
-//	maxTimeLife = _maxTimeLife;
-//}
-
-//void Creature::setLifeTime(int _timeLife){
-//	timeLife = _timeLife;
-//}
-
-//void Creature::incrementLifeTime(){
-//	timeLife++;
-//}
-
-int Creature::getRangeOfSmellDetection(){
-	return rangeOfSmellDetection;
+int Creature::getMaxTimeWithoutFood() {
+    return maxTimeWithoutFood;
 }
 
-int Creature::getSpeed(){
-	return speed;
+int Creature::getRangeOfSmellDetection() {
+    return rangeOfSmellDetection;
+}
+
+int Creature::getSpeed() {
+    return speed;
+}
+
+int Creature::getPregnantTime() {
+    return pregnantTime;
+}
+
+int Creature::getMaxPregnantTime() {
+    return maxPregnantTime;
 }
 
 
+// SETTER:
 
-//setter methods
-
-void Creature::setTimeWithoutFood(int _timeWithoutFood){
-	timeWithoutFood = _timeWithoutFood;
-}
-void Creature::incrementTimeWithoutFood(){
-	timeWithoutFood++;
-}
-void Creature::setMaxTimeWithoutFood(int _maxTimeWithoutFood){
-	maxTimeWithoutFood = _maxTimeWithoutFood;
+void Creature::setTimeWithoutFood(int _timeWithoutFood) {
+    timeWithoutFood = _timeWithoutFood;
 }
 
-void Creature::setRangeOfSmellDetection(int _rangeOfSmellDetection){
-	rangeOfSmellDetection = _rangeOfSmellDetection;
+void Creature::incrementTimeWithoutFood() {
+    timeWithoutFood++;
 }
 
-void Creature::setSpeed(int _speed){
-	speed = _speed;
+void Creature::setMaxTimeWithoutFood(int _maxTimeWithoutFood) {
+    maxTimeWithoutFood = _maxTimeWithoutFood;
+}
+
+void Creature::setRangeOfSmellDetection(int _rangeOfSmellDetection) {
+    rangeOfSmellDetection = _rangeOfSmellDetection;
+}
+
+void Creature::setSpeed(int _speed) {
+    speed = _speed;
+}
+
+// sets the pregnantTime
+void Creature::setPregnant(bool _pregnant) {
+    if (_pregnant) {
+        pregnantTime = 0;
+    } else {
+        pregnantTime = maxPregnantTime + 1;
+    }
 }
 
 
-
-
-
-
-void Creature:: changePosition(int _plusX, int _plusY){
-	setX(getX() + _plusX);
-	setY(getY() + _plusY);
-}
-
-
-
-
-int Creature:: getPregnantTime(){
-	return pregnantTime;	
-}
-int Creature :: getMaxPregnantTime(){
-	return maxPregnantTime;
-}
-
-// set pregnantTime
-void Creature:: setPregnant(bool _pregnant){
-	if(_pregnant){
-		pregnantTime = 0;
-	}
-	else{
-		pregnantTime = maxPregnantTime + 1;
-	}
-}
+// FUNCTIONS THAT TEST CURRENT STATE OF THE CREATURE:
 
 // test if a creature is pregnant
-bool Creature::isPregnant(){
-	return (pregnantTime <= maxPregnantTime);
+bool Creature::isPregnant() {
+    return (pregnantTime <= maxPregnantTime);
 }
+
 // returns true if a creature can become pregnant
 bool Creature::isReadyForPregnant() {
-	return	(pregnantTime > maxPregnantTime);
+	// to become pregnant the creature
+	// 1. must be old enough
+	// 2. not pregnant
+	bool oldEnough = currentLifeTime > (maxLifeTime / 4);
+    return (pregnantTime > maxPregnantTime) && oldEnough;
 }
+
+// returns true if time without food > 0.5 * max time without food
+bool Creature::isHungry() {
+	// TWF/MTWF > MTWF-TWF/MTWF
+	return  (2 * timeWithoutFood > maxTimeWithoutFood);
+	
+}
+
+// OTHER FUNCTIONS:
 
 // increment PregnantTime and return
 // true, if it's time for birth.
-bool Creature ::incrementPregnantTime(){
-	
-	if(pregnantTime < maxPregnantTime){
-		pregnantTime ++;
-	}
-	if(pregnantTime == maxPregnantTime){		
-		pregnantTime ++;			// creature can become pregnant again
-		return true;				// the child will be born in this step
-	}
-	return false;					// no child this time
+bool Creature::incrementPregnantTime() {
+
+    if (pregnantTime < maxPregnantTime) {
+        pregnantTime++;
+    }
+    if (pregnantTime == maxPregnantTime) {
+        pregnantTime++; // creature can become pregnant again
+        return true; // the child will be born in this step
+    }
+    return false; // no child this time
+}
+
+/* Changes a creature's position
+ */
+void Creature::changePosition(int _plusX, int _plusY) {
+    setX(getX() + _plusX);
+    setY(getY() + _plusY);
 }

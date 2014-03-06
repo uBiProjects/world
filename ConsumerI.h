@@ -14,7 +14,6 @@ class ConsumerI : public Creature {
 		static char* getSource();
 		
 	private:
-		//static char* source;
 
 };
 
