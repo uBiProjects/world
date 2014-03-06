@@ -11,6 +11,8 @@ private:
 	int maxTimeWithoutFood;
 	int rangeOfSmellDetection;
 	int speed;
+	int speedNormal;
+	int speedPregnant;
 	
 	int pregnantTime;					// if pregnatTime >maxPregnantTime => can become Pregnant
 										// if pregnatTime <maxPregnantTime => is pregnant

@@ -178,7 +178,7 @@ void World::run(int fixedNumberOfVegetal) {
 		// update the map and number of Vegetal
 		mp->print(false);
 
-		std::cout << "Step " << step + 1 << "\n";
+		
 
 		// simulation ends if # of creatures =0
 		if (mp->getnumberOfCreature() == 0) {
@@ -355,6 +355,7 @@ void World::performOneStep(int step) {
             }
         } // height
     } // width
+	std::cout << "Step " << step + 1 << "\n";
 }
 
 
@@ -534,12 +535,12 @@ bool World::smellAndGetBestDestination(
         	}
 			cellContainsFood = cellIsFood(smellingCreature,coord);
 			cellempty = cell_is_empty(coord);
-			bool isPregnant = smellingCreature->isPregnant();
+			// bool isPregnant = smellingCreature->isPregnant();
 
             // compute score
             // score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
 
-			score = computeScore(FE, TWF, MTWF, STE, PE, cellempty, isPregnant, cellContainsFood);
+			score = computeScore(FE, TWF, MTWF, STE, PE, cellempty, cellContainsFood);
 
             // if one of the emissions is <>0 for only one cell 
             // the creature smells something
@@ -585,7 +586,7 @@ bool World::smellAndGetBestDestination(
 
 // Computes the score.
 double World::computeScore(double FE, double TWF, double MTWF, double STE, double PE,
-							bool _cellIsEmpty, bool _isPregnant, bool _containsFood) {
+							bool _cellIsEmpty, bool _containsFood) {
 	double score;
 	double score_hungry;
 	double score_walk;

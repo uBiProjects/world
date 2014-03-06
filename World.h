@@ -50,7 +50,7 @@ public:
 	void impregnate(Creature*, Creature*);
 	void giveBirthToABaby(Creature*);
 	int interact(Creature*, Coordinate);
-	double computeScore(double, double, double, double, double, bool, bool, bool);
+	double computeScore(double, double, double, double, double, bool, bool);
 	bool findMatingPartner(Creature*, Coordinate*);
 	bool findFood(Creature*, Coordinate*);
 	bool cellIsFood(Creature*, Coordinate);

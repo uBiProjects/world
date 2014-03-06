@@ -31,6 +31,9 @@ Creature::Creature(Coordinate _pos,
     speed = _speed;
     maxPregnantTime = _maxPregnantTime;
     pregnantTime = maxPregnantTime + 1;
+	speedPregnant = 3 * _speed / 4;
+	// speedPregnant = _speed;
+	speedNormal = _speed;
 }
 
 /* Destructor
@@ -91,8 +94,10 @@ void Creature::setSpeed(int _speed) {
 void Creature::setPregnant(bool _pregnant) {
     if (_pregnant) {
         pregnantTime = 0;
+		speed = speedPregnant;
     } else {
         pregnantTime = maxPregnantTime + 1;
+		speed = speedNormal;
     }
 }
 
