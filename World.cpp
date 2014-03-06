@@ -759,7 +759,6 @@ bool World::isAVegetal(Coordinate _pos){
 */
 int main(int _anzParam, char *strings[]) {
 
-
 	int height;
 	int width;
 	int maxNumberOfSteps;

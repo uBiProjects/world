@@ -1,7 +1,5 @@
-C2 müssen Pflanzen umgehen
-Mehrere Tiere auf einem Feld(?) Dadurch wird 1 gelöst..
+Mehrere Tiere auf einem Feld(?)
 Tiere werden auf dem Feld geboren, wo die Mutter steht.
-Simulation endet wenn alle C tot sind.
 Pflanzen wachsen in jeder Zelle. Sie können entweder anwesend oder abgefressen worden sein
 
 
@@ -9,7 +7,3 @@ Pflanzen wachsen in jeder Zelle. Sie können entweder anwesend oder abgefressen 
 http://www.gnu.org/software/libc/manual/index.html#dir
 
 http://www.cplusplus.com/
-
-
-Nur ein Lebewesen auf Feld
-Babys dürfen neben Mutter geboren werden

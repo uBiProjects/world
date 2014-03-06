@@ -9,23 +9,23 @@
 #include "ConsumerII.h"
 #include "Vegetal.h"
 
-
+/* Constructor
+ */
 Creature::Creature(Coordinate _pos, 
-					int _maxLifeTime, 
-					int _rangeSmellAbgeben, 
-					int _rangeSmell, 
-					int _speed, 
-					int _maxTimeWithoutFood, 
-					char _char, 
-					int _currentLifeTime,
-					int _maxPregnantTime) : Life(_pos, _currentLifeTime, _rangeSmellAbgeben, _maxLifeTime, _char) {
+					int _maxLifeTime,               //max life time
+					int _smellEmission,             //smell emission
+					int _smellDetection,            //smell detection
+					int _speed,                     //speed
+					int _maxTimeWithoutFood,        //max time w/o food
+					char _char,                     //char used for display
+					int _currentLifeTime,           //life time
+                                                                        //max pregnant time
+					int _maxPregnantTime) : Life(_pos, _currentLifeTime, _smellEmission, _maxLifeTime, _char) {
 
-	// timeLife = _currentLifeTime;
-	// maxTimeLife = _maxLifeTime;
 
 	timeWithoutFood = 0;
 	maxTimeWithoutFood = _maxTimeWithoutFood;
-	rangeOfSmellDetection = _rangeSmell;
+	rangeOfSmellDetection = _smellDetection;
 	speed					= _speed;
 	maxPregnantTime = _maxPregnantTime;
 	pregnantTime = maxPregnantTime + 1;
@@ -34,8 +34,6 @@ Creature::Creature(Coordinate _pos,
 Creature:: ~Creature(){
 }
 
-// _coordianteX, _coordinateY, _lifeTime, _maxLifeTime, _rangeSmellAbgeben
-// getter- and setter methods
 // getter methods
 
 int Creature::getTimeWithoutFood(){
