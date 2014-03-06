@@ -6,7 +6,7 @@
 
 #include "Utils.h"
 #include "Life.h"		//used in MapItem
-#include "MapItem.h"	//used in Map.h
+#include "MapItem.h"            //used in Map.h
 #include "Map.h"
 #include "Creature.h"
 #include "ConsumerI.h"
@@ -15,7 +15,7 @@
 
 /**
  * Constructor:
- * initializes the array of
+ * initializes the array
  */
 Map :: Map(int _width, int _height){
 
@@ -31,7 +31,7 @@ Map :: Map(int _width, int _height){
 		cell[var] =(MapItem**) malloc(height * sizeof(MapItem*));
 	}
 
-	//initialize array with null values and null
+	//initialize array with null values
 	for (unsigned int x = 0; x < width; x ++) {
 		for (unsigned int y = 0; y < height; y ++) {
 
@@ -47,7 +47,7 @@ Map :: Map(int _width, int _height){
 int Map::getnumberOfCreature(){
 	return numberOfCI+numberOfCII;
 }
-// return Vegetals #
+// return Vegetal #
 int Map::getnumberOfVegetal(){
 	return numberOfVeg;
 }
@@ -76,9 +76,9 @@ Map :: ~Map() {
 
 
 /**
- * remove monster from a special field. This method does not
- * completely delete the monster, but it only removes the
- * pointer to the special monster out of the map
+ * remove monster from a specific field. This method does not
+ * completely delete the monster. It only removes the
+ * pointer to the specific monster out of the map.
  */
 void Map:: removeMonster(Coordinate _c){
 
@@ -89,18 +89,17 @@ void Map:: removeMonster(Coordinate _c){
 	//remove monster pointer
 	cell[_c.x][_c.y]->monster = NULL;
 
-	//update the current amount of free position
+	//update the current amount of free positions
 	amountFreePosition ++;
 	
 }
 
 /**
- * insert monster to map and update the smell emission of Life* _life
+ * Insert a monster onto the map and update the smell emission of Life* _life
  * @param _life the life which is added
  * @param _x, _y the coordinates where to insert the Life.
  */
 void Map::insertMonster(Life* _life, Coordinate _c){
-
 
 	//insert monster
 	cell[_c.x][_c.y]->monster = _life;
@@ -117,7 +116,7 @@ void Map::insertMonster(Life* _life, Coordinate _c){
 }
 
 /**
- * remove monster from list and emission array and then free the pointer to life.
+ * Remove monster from list and emission array and then free the pointer to life.
  */
 void Map::deleteMonster(Coordinate _c){
 
@@ -128,12 +127,11 @@ void Map::deleteMonster(Coordinate _c){
 
 
 /**
- * add or reduce the emission of a monster with the type of Life l
+ * Add or reduce the emission of a monster at a certain position
  *
- * @param l the Life of which time the emission is updated
- * @param _x, _y the coordiantes
+ * @param _x, _y the coordinates
  * @param _multiplicator multiplied to the normal emission of Life in range.
- * 			Tpyically used +- 1.
+ * 			Typically used +- 1.
  */
 void Map:: updateEmission(int _x, int _y, int _multiplicator){
 
@@ -148,7 +146,6 @@ void Map:: updateEmission(int _x, int _y, int _multiplicator){
 			int realX = modulo(x, width);
 			int realY = modulo(y, height);
 
-			//calculate
 			int addition = _multiplicator *
 					(cell[_x][_y]->monster->getStinkRange() + 1
 					- MAX(abs(x - _x), abs (y - _y)));
@@ -170,9 +167,8 @@ void Map:: updateEmission(int _x, int _y, int _multiplicator){
 
 /**
  * print the current map.
- * @param _detailed if detailed, also print stink value
+ * @param _detailed if detailed (also print stink value)
  */
-// TODO aufrauemen doppelte geleiche aufrufe von sout
 void Map::print(bool _detailed) {
 
 	int sumTWFCI = 0, sumMTWFCI = 0;
@@ -233,7 +229,6 @@ void Map::print(bool _detailed) {
 
 	printSeparator(width, sizeCell, '+');
 
-	//
 	for (unsigned int i = 0; i < height; i++) {
 
 		//first cell
@@ -307,7 +302,7 @@ void Map::print(bool _detailed) {
 
 				art = (char*)"v";
 
-				//increase numberOfveg
+				//increase numberOfVeg
 				numberOfVeg++; 
 
 				//print if not detailed
@@ -360,7 +355,7 @@ void Map::print(bool _detailed) {
 	printf("Nr of Vegetals:  %4i\n", numberOfVeg);
 }
 
-
+//Prints the separators for the grid
 void Map:: printSeparator(int _width, int _sizeCell, char _separationChar) {
 
 	//third line (separator)
@@ -378,9 +373,8 @@ void Map:: printSeparator(int _width, int _sizeCell, char _separationChar) {
 	std::cout << "\n";
 }
 
-/**
- * simple getter method
- */
+// GETTER:
+
 int Map:: getAmountFreePosition(){
 	return amountFreePosition;
 }
@@ -396,6 +390,7 @@ int Map:: getHeight(){
 	return height;
 }
 
+// FUNCTION ONLY USED FOR TESTING PURPOSES:
 void Map:: test(){
 
 	Map* map = new Map(10,10);
@@ -407,5 +402,3 @@ void Map:: test(){
 	map->removeMonster(Coordinate(2, 3));
 	map->print(true);
 }
-
-

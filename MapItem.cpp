@@ -4,7 +4,7 @@
 #include "MapItem.h"
 
 
-
+// Constructor
 MapItem :: MapItem(){
 
 	vEmission = 0;
@@ -14,6 +14,7 @@ MapItem :: MapItem(){
 
 }
 
+// Destructor
 MapItem :: ~MapItem(){
 
 	if(monster != NULL){

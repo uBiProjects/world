@@ -22,19 +22,21 @@ Creature::Creature(Coordinate _pos,
                                                                         //max pregnant time
 					int _maxPregnantTime) : Life(_pos, _currentLifeTime, _smellEmission, _maxLifeTime, _char) {
 
-
+        //Sets values
 	timeWithoutFood = 0;
 	maxTimeWithoutFood = _maxTimeWithoutFood;
 	rangeOfSmellDetection = _smellDetection;
-	speed					= _speed;
+	speed = _speed;
 	maxPregnantTime = _maxPregnantTime;
 	pregnantTime = maxPregnantTime + 1;
 }
 
+/* Destructor
+ */
 Creature:: ~Creature(){
 }
 
-// getter methods
+// GETTER:
 
 int Creature::getTimeWithoutFood(){
 	return timeWithoutFood;
@@ -42,25 +44,6 @@ int Creature::getTimeWithoutFood(){
 int Creature::getMaxTimeWithoutFood(){
 	return maxTimeWithoutFood;
 }
-
-//int Creature::getLifeTime(){
-//	return timeLife;
-//}
-//int Creature::getMaxLifeTime(){
-//	return maxTimeLife;
-//}
-
-//void Creature::setMaxLifeTime(int _maxTimeLife){
-//	maxTimeLife = _maxTimeLife;
-//}
-
-//void Creature::setLifeTime(int _timeLife){
-//	timeLife = _timeLife;
-//}
-
-//void Creature::incrementLifeTime(){
-//	timeLife++;
-//}
 
 int Creature::getRangeOfSmellDetection(){
 	return rangeOfSmellDetection;
@@ -70,9 +53,15 @@ int Creature::getSpeed(){
 	return speed;
 }
 
+int Creature:: getPregnantTime(){
+	return pregnantTime;	
+}
+int Creature :: getMaxPregnantTime(){
+	return maxPregnantTime;
+}
 
 
-//setter methods
+// SETTER:
 
 void Creature::setTimeWithoutFood(int _timeWithoutFood){
 	timeWithoutFood = _timeWithoutFood;
@@ -92,27 +81,7 @@ void Creature::setSpeed(int _speed){
 	speed = _speed;
 }
 
-
-
-
-
-
-void Creature:: changePosition(int _plusX, int _plusY){
-	setX(getX() + _plusX);
-	setY(getY() + _plusY);
-}
-
-
-
-
-int Creature:: getPregnantTime(){
-	return pregnantTime;	
-}
-int Creature :: getMaxPregnantTime(){
-	return maxPregnantTime;
-}
-
-// set pregnantTime
+// sets the pregnantTime
 void Creature:: setPregnant(bool _pregnant){
 	if(_pregnant){
 		pregnantTime = 0;
@@ -122,6 +91,9 @@ void Creature:: setPregnant(bool _pregnant){
 	}
 }
 
+
+// FUNCTIONS THAT TEST CURRENT STATE OF THE CREATURE:
+
 // test if a creature is pregnant
 bool Creature::isPregnant(){
 	return (pregnantTime <= maxPregnantTime);
@@ -130,6 +102,9 @@ bool Creature::isPregnant(){
 bool Creature::isReadyForPregnant() {
 	return	(pregnantTime > maxPregnantTime);
 }
+
+
+// OTHER FUNCTIONS:
 
 // increment PregnantTime and return
 // true, if it's time for birth.
@@ -143,4 +118,11 @@ bool Creature ::incrementPregnantTime(){
 		return true;				// the child will be born in this step
 	}
 	return false;					// no child this time
+}
+
+/* Changes a creature's position
+ */
+void Creature:: changePosition(int _plusX, int _plusY){
+	setX(getX() + _plusX);
+	setY(getY() + _plusY);
 }
