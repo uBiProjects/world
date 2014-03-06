@@ -300,7 +300,7 @@ void World::performOneStep(int step) {
 
                 //compute new position and delta values.
                 // calculate the best movement/direction (returns plusX,plusY = 0,1,-1)
-                bool creatureSmellsSomthing = smellAndGetBestDestination(currentCreature, &deltaPos);
+                smellAndGetBestDestination(currentCreature, &deltaPos);
 
                 //calculate the new position modulo map size because creatures can pass the edge.
                 newPosition = addCoordinates(c, deltaPos);
