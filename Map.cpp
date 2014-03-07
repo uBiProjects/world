@@ -28,7 +28,7 @@ Map::Map(int _width, int _height) {
     //initialize the array
     cell = (MapItem***) malloc(width * sizeof (MapItem**));
 
-    for (unsigned int var = 0; var < height; ++var) {
+    for (unsigned int var = 0; var < width; var++) {
         cell[var] = (MapItem**) malloc(height * sizeof (MapItem*));
     }
 
