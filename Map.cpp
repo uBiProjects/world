@@ -179,11 +179,11 @@ void Map::print(bool _detailed) {
     numberOfVeg = 0;
 
 #ifdef FASTRUN
-#ifndef DEBUG1
-    sleepd(1);
-#endif
-#else
-    sleepd(500);
+	#ifndef DEBUG1
+		sleepd(1);
+	#endif
+#else 
+	sleepd(500);
 #endif
 
 #ifdef CLEAR_SCREEN

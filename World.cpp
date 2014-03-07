@@ -155,6 +155,7 @@ void World::run(int fixedNumberOfVegetal) {
     Coordinate c;
 
     for (int step = 0; step < maxsteps || maxsteps == -1; step++) {
+        
         performOneStep(step);
 
 #ifdef TESTFREE
