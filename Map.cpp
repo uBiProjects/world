@@ -342,7 +342,7 @@ void Map::print(bool _detailed) {
         }
 
 //printSeparator(width, sizeCell, '+');
-		printSeparator(width, sizeCell, ' ');
+		printSeparator(width-(width-1)*sizeCell, sizeCell, '+');
 
     }
     int hungry;
