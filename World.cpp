@@ -155,7 +155,6 @@ void World::run(int fixedNumberOfVegetal) {
     Coordinate c;
 
     for (int step = 0; step < maxsteps || maxsteps == -1; step++) {
-
         performOneStep(step);
 
 #ifdef TESTFREE
@@ -601,7 +600,7 @@ double World::computeScore(double FE, double TWF, double MTWF, double STE, doubl
 
 
 	score_hungry = hungry * FE;
-	score_walk = (1.0 - hungry) * (STE - PE*4);
+	score_walk = (1.0 - hungry) * (STE - PE*4.0);
 
 
 	// if creature is very hungry => boost score_hungry
