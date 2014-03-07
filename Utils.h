@@ -49,7 +49,7 @@
 	int modulo(int, int);									// special modulo 
 	void wait_for_keypressed();								// wait for enter
 	void clear_keyboard_buffer();							// fush keybord buffer
-	void clear_screen();									// clear screen
+	void clear_screen(bool);								// clear screen
 	void exit_error(int);									// exit routine for all error
 	int getRandomNumber(int, int);							// get a random int in a range
 	Coordinate addCoordinates(Coordinate, Coordinate);		// add 2 coordinates

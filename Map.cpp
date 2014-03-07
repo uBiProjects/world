@@ -182,7 +182,7 @@ void Map::print(bool _detailed) {
 #endif
 
 #ifdef CLEAR_SCREEN
-    clear_screen();
+    clear_screen(false);
 #endif
 
     //size of cells in chars
