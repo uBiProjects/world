@@ -25,7 +25,8 @@ class Map {
 		
 		MapItem* getMapItem(Coordinate);
 		int getnumberOfVegetal();
-		int getnumberOfCreature();
+		int getnumberOfCI();
+		int getnumberOfCII();
 		int getAmountFreePosition();
 		void print(bool);
 

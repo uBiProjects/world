@@ -44,10 +44,15 @@ Map::Map(int _width, int _height) {
     amountFreePosition = _width * _height;
 }
 
-// return Creature #
-int Map::getnumberOfCreature(){
-	return numberOfCI+numberOfCII;
+// return Creature #s
+int Map::getnumberOfCI(){
+	return numberOfCI;
 }
+
+int Map::getnumberOfCII(){
+	return numberOfCII;
+}
+
 // return Vegetal #
 int Map::getnumberOfVegetal(){
 	return numberOfVeg;
