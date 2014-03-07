@@ -180,7 +180,7 @@ void World::run(int fixedNumberOfVegetal) {
 		
 
 		// simulation ends if # of creatures =0
-		if (mp->getnumberOfCreature() == 0) {
+		if (mp->getnumberOfCI() == 0 || mp->getnumberOfCII() == 0) {
 			return;
 		}
 	}
@@ -361,9 +361,7 @@ void World::performOneStep(int step) {
 // Find food in a neighboring cell.
 bool World::findFood(Creature* _c, Coordinate* _newpos) {
 	Coordinate c, tmpPos, myPos;
-	char myChar;
 
-	myChar = _c->getCellChar();
 	myPos = _c->getPos();
 
 	// scan my neighbors;
