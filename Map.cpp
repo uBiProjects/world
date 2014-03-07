@@ -71,7 +71,7 @@ Map::~Map() {
     }
 
     //the free emission
-    for (unsigned int var = 0; var < height; ++var) {
+	for (unsigned int var = 0; var < width; var++) {
         free(cell[var]);
     }
 
