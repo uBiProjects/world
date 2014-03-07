@@ -797,7 +797,7 @@ int main(int _anzParam, char *strings[]) {
     numberVegetal = numberConsumer1 * 2; // something to eat for consumer1
 
     //check whether integer values are correct (greater than 0)
-    if (maxNumberOfSteps <= 0 || height <= 0 || width <= 0 ||
+    if (maxNumberOfSteps < -1 || height <= 0 || width <= 0 ||
             numberConsumer1 < 0 || numberConsumer2 < 0) {
         exit_error(8);
     }
