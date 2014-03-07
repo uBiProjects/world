@@ -1,9 +1,83 @@
-Mehrere Tiere auf einem Feld(?)
-Tiere werden auf dem Feld geboren, wo die Mutter steht.
-Pflanzen wachsen in jeder Zelle. Sie können entweder anwesend oder abgefressen worden sein
-
+Wenn 2. Par größer als 1. bei Dimension, gibt es Segmentation fault.
+Bei 1. größer 2. gibt es am ende das Problem, was ganz unten steht.
 
 
 http://www.gnu.org/software/libc/manual/index.html#dir
 
 http://www.cplusplus.com/
+
+
+Gute Startbedingungen:
+./World 25 20 20000 25 7 Vegetal.txt Consumer1.txt Consumer2.txt
+
+
+C1:
+Life Time	0
+Maximal Life Time	50
+Smell Emission	2
+Smell detection	3
+Max time without food	17
+Time without food	0
+Speed	4
+
+C2:
+Life Time	0
+Maximal Life Time	50
+Smell Emission	4
+Smell detection	4
+Max time without food	30
+Time without food	0
+Speed	4
+
+Veg:
+Life Time	0
+Max Life Time	40
+Smell Emission	3
+
+
+------------------------------------------------------------------------------------------------------------------
+
+Memory Problem:
+*** glibc detected *** ./World: double free or corruption (out): 0x0000000000c3d120 ***
+======= Backtrace: =========
+/lib/x86_64-linux-gnu/libc.so.6(+0x7eb96)[0x7f814397ab96]
+./World[0x404569]
+./World[0x4045c6]
+./World[0x4017be]
+./World[0x401812]
+./World[0x403138]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xed)[0x7f814391d76d]
+./World[0x4015f9]
+======= Memory map: ========
+00400000-00409000 r-xp 00000000 00:24 1620168321                         /homes/sdreher/C/C++/Project/cc/World
+00608000-00609000 r--p 00008000 00:24 1620168321                         /homes/sdreher/C/C++/Project/cc/World
+00609000-0060a000 rw-p 00009000 00:24 1620168321                         /homes/sdreher/C/C++/Project/cc/World
+00c3d000-00c5e000 rw-p 00000000 00:00 0                                  [heap]
+7f8143600000-7f81436fb000 r-xp 00000000 fc:01 536036                     /lib/x86_64-linux-gnu/libm-2.15.so
+7f81436fb000-7f81438fa000 ---p 000fb000 fc:01 536036                     /lib/x86_64-linux-gnu/libm-2.15.so
+7f81438fa000-7f81438fb000 r--p 000fa000 fc:01 536036                     /lib/x86_64-linux-gnu/libm-2.15.so
+7f81438fb000-7f81438fc000 rw-p 000fb000 fc:01 536036                     /lib/x86_64-linux-gnu/libm-2.15.so
+7f81438fc000-7f8143ab1000 r-xp 00000000 fc:01 536030                     /lib/x86_64-linux-gnu/libc-2.15.so
+7f8143ab1000-7f8143cb1000 ---p 001b5000 fc:01 536030                     /lib/x86_64-linux-gnu/libc-2.15.so
+7f8143cb1000-7f8143cb5000 r--p 001b5000 fc:01 536030                     /lib/x86_64-linux-gnu/libc-2.15.so
+7f8143cb5000-7f8143cb7000 rw-p 001b9000 fc:01 536030                     /lib/x86_64-linux-gnu/libc-2.15.so
+7f8143cb7000-7f8143cbc000 rw-p 00000000 00:00 0 
+7f8143cbc000-7f8143cd1000 r-xp 00000000 fc:01 530107                     /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f8143cd1000-7f8143ed0000 ---p 00015000 fc:01 530107                     /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f8143ed0000-7f8143ed1000 r--p 00014000 fc:01 530107                     /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f8143ed1000-7f8143ed2000 rw-p 00015000 fc:01 530107                     /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f8143ed2000-7f8143fb4000 r-xp 00000000 fc:01 540199                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16
+7f8143fb4000-7f81441b3000 ---p 000e2000 fc:01 540199                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16
+7f81441b3000-7f81441bb000 r--p 000e1000 fc:01 540199                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16
+7f81441bb000-7f81441bd000 rw-p 000e9000 fc:01 540199                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16
+7f81441bd000-7f81441d2000 rw-p 00000000 00:00 0 
+7f81441d2000-7f81441f4000 r-xp 00000000 fc:01 536026                     /lib/x86_64-linux-gnu/ld-2.15.so
+7f81443ac000-7f81443b1000 rw-p 00000000 00:00 0 
+7f81443f0000-7f81443f4000 rw-p 00000000 00:00 0 
+7f81443f4000-7f81443f5000 r--p 00022000 fc:01 536026                     /lib/x86_64-linux-gnu/ld-2.15.so
+7f81443f5000-7f81443f7000 rw-p 00023000 fc:01 536026                     /lib/x86_64-linux-gnu/ld-2.15.so
+7fff6fd84000-7fff6fda5000 rw-p 00000000 00:00 0                          [stack]
+7fff6fdf9000-7fff6fdfa000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+Aborted
+

@@ -175,10 +175,10 @@ void Map::print(bool _detailed) {
 
 #ifdef FASTRUN
 #ifndef DEBUG1
-    sleepd(5);
+    sleepd(1);
 #endif
 #else
-    sleepd(800);
+    sleepd(500);
 #endif
 
 #ifdef CLEAR_SCREEN
@@ -245,9 +245,9 @@ void Map::print(bool _detailed) {
                 //fetch the identifier of Life
                 Creature * c = (Creature*) cell[j][i]->monster;
                 if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-                    art = (char*) "p";
+                    art = (char*) "\033[1;34mp\033[0m";
                 } else {
-                    art = (char*) "c";
+                    art = (char*) "\033[1;34mc\033[0m";
                 }
                 // sum TWF
                 sumTWFCI += c->getTimeWithoutFood();
@@ -270,9 +270,9 @@ void Map::print(bool _detailed) {
                 //fetch the identifier of Life
                 Creature * c = (Creature*) cell[j][i]->monster;
                 if ((*c).getPregnantTime()<((*c)).getMaxPregnantTime()) {
-                    art = (char*) "Q";
+                    art = (char*) "\033[1;31mQ\033[0m";
                 } else {
-                    art = (char*) "X";
+                    art = (char*) "\033[1;31mX\033[0m";
                 }
                 // sum TWF
                 sumTWFCII += c->getTimeWithoutFood();
@@ -291,7 +291,7 @@ void Map::print(bool _detailed) {
 
             } else if (dynamic_cast<Vegetal*> (cell[j][i]->monster)) {
 
-                art = (char*) "v";
+                art = (char*) "\033[1;32mv\033[0m";
 
                 //increase numberOfVeg
                 numberOfVeg++;

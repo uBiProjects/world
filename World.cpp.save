@@ -1,4 +1,5 @@
-/*
+
+ /*
  * World Class.
  */
 #include <iostream>
@@ -30,9 +31,7 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
     wheight = _height;
 
     //tell random to generate random numbers
-#ifndef TESTSCORE
     srand((unsigned) time(NULL));
-#endif
 
     //save maximal amount of steps
     maxsteps = mstep;
@@ -75,7 +74,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
     // create ConsumerI
     for (int i = 0; i < nC1; i++) {
         c = getRandomFreePosition();
-        if (!createNewConsumerI(c, i)) {
+        if (!createNewConsumerI(c, 0)) {
             exit_error(3);
         }
     }
@@ -83,7 +82,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
     //create ConsumerII:
     for (int i = 0; i < nC2; i++) {
         c = getRandomFreePosition();
-        if (!createNewConsumerII(c, i)) {
+        if (!createNewConsumerII(c, 0)) {
             exit_error(4);
         }
     }
@@ -154,15 +153,22 @@ Coordinate World::getRandomFreePosition() {
 void World::run(int fixedNumberOfVegetal) {
     Coordinate c;
 
-    for (int step = 0; step < maxsteps || maxsteps == -1; step++) {
+    for (int step = 0; step < maxsteps; step++) {
 
         performOneStep(step);
 
 #ifdef TESTFREE
         testfree();
 #endif
-      
+        // update the map and number of Vegetal
+        mp->print(false);
 
+        std::cout << "Step " << step + 1 << "\n";
+
+        // simulation ends if # of creatures =0
+        if (mp->getnumberOfCreature() == 0) {
+            return;
+        }
 
         // amount of Vegetal is fixed
         int acutalVegetal = mp->getnumberOfVegetal();
@@ -175,16 +181,8 @@ void World::run(int fixedNumberOfVegetal) {
                 }
             }
         }
-		// update the map and number of Vegetal
-		mp->print(false);
 
-		
-
-		// simulation ends if # of creatures =0
-		if (mp->getnumberOfCreature() == 0) {
-			return;
-		}
-	}
+    }
 }
 
 // create a new Vegetal at the position _c
@@ -253,14 +251,16 @@ Coordinate World::normCoordinateToWorld(Coordinate c) {
 // Performs one action like walking, eating, mating
 void World::performOneStep(int step) {
 
-    Coordinate c, newPosition;
+    Coordinate c, newPosition, deltaPos;
 
     // reset consumers to "walkable true" to ensure it can walk.
     // set walkable false is used later inside the loops to avoid that
     // a monster can move twice.
     setAllConsumersWalkableAndInteractable();
 
-       
+    // Print the step we're currently at
+    std::cout << "Step " << step + 1 << "\n";
+    
     // go through the map and perform an action if a cell is occupied by a
     // Creature.
     for (c.x = 0; c.x < wwidth; c.x++) {
@@ -284,39 +284,43 @@ void World::performOneStep(int step) {
                 mp->removeMonster(c);
 
                 // compute new position and delta values.
-                // calculate the best new position;
-				
-				smellAndGetBestDestination(currentCreature, &newPosition);
+                // calculate the best movement/direction (returns plusX,plusY = 0,1,-1)
+                smellAndGetBestDestination(currentCreature, &deltaPos);
 
-				// can the creature interact with the new position?
-				// return 2 = i can walk and eat
-				// return 1 = i can walk
-				// return 0 = stay
-				int index = interact(currentCreature, newPosition);
+                //calculate the new position modulo map size because creatures can pass the edge.
+                newPosition = addCoordinates(c, deltaPos);
+                newPosition = normCoordinateToWorld(newPosition);
 
-
-				// search nearby for eating or reproduce
-				if (index != 2) {
-					if (currentCreature->isHungry()) {							// hungry => find food
-						if (findFood(currentCreature, &newPosition)) {
-							index = 2;
-						}
-					} else {													// not hungry => try pregn
-						if (findMatingPartner(currentCreature, &newPosition)){
-							index = 3;
-						}
-					}
-				}
-
+                int index = -2;
+                // smell says do not move 
+                // the only thing the creature can do is get Pregnant
+                // if there is a creature of the same kind nearby
+                if ((deltaPos.x == 0) && (deltaPos.y == 0)) {
+                    if (currentCreature->isReadyForPregnant()) {
+                        // find a creature of the same kind nearby
+                        if (findMatingPartner(
+                                currentCreature, &newPosition)) {
+                            index = 0;
+                        } else {
+                            index = -2;
+                        }
+                    } else {
+                        index = -2;
+                    }
+                } else {
+                    // index of method "interact" tells how to
+                    // interact with the new coordinate 
+                    index = interact(currentCreature, newPosition);
+                }
 
                 switch (index) {
-                    case 0: // do not move and do not interact
+                    case -2: // do not move and do not interact
                         mp->insertMonster(currentCreature, c);
                         break;
-                    case 1: // walk: move creature to new position
+                    case -1: // walk: move creature to new position
                         mp->insertMonster(currentCreature, newPosition);
                         break;
-                    case 2: // eat something and walk
+                    case 1: // eat something and walk
                         // eat the meal.
                         mp->deleteMonster(newPosition);
                         // go to new position.
@@ -324,8 +328,7 @@ void World::performOneStep(int step) {
                         // reset time without food
                         currentCreature->setTimeWithoutFood(0);
                         break;
-
-                    case 3: // (try) to reproduce. Don't walk.
+                    case 0: // (try) to reproduce. Don't walk.
                         // Insert monster back onto the map
                         mp->insertMonster(currentCreature, c);
                         // set currentCreature Pregnant if possible
@@ -355,47 +358,7 @@ void World::performOneStep(int step) {
             }
         } // height
     } // width
-	std::cout << "Step " << step + 1 << "\n";
 }
-
-
-// Find food in a neighboring cell.
-bool World::findFood(Creature* _c, Coordinate* _newpos) {
-	Coordinate c, tmpPos, myPos;
-	char myChar;
-
-	myChar = _c->getCellChar();
-	myPos = _c->getPos();
-
-	// scan my neighbors;
-	for (c.x = -1; c.x <= 1; c.x++) {
-		for (c.y = -1; c.y <= 1; c.y++) {
-			// avoid (0,0) position
-			if ((c.x == 0) && (c.y == 0)) c.y++;
-			// norm position
-			tmpPos = addCoordinates(myPos, c);
-			tmpPos = normCoordinateToWorld(tmpPos);
-			// only scan creatures
-			if (cellIsFood(_c, tmpPos)) {
-					*_newpos = tmpPos;
-					return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-// test if the cell contains food for me
-bool World::cellIsFood(Creature* _c, Coordinate _newPos) {
-	char myChar = _c->getCellChar();
-	switch (myChar) {
-		case 'c': return (isAVegetal(_newPos));
-		case 'X': return (isAConsumerI(_newPos));
-	}
-	return false;
-}
-
 
 // Find a partner in a neighboring cell that you can mate with.
 bool World::findMatingPartner(Creature* _c, Coordinate* _newpos) {
@@ -415,7 +378,7 @@ bool World::findMatingPartner(Creature* _c, Coordinate* _newpos) {
             tmpPos = normCoordinateToWorld(tmpPos);
             // only scan creatures
             if (((myChar == 'c') && (isAConsumerI(tmpPos))) ||
-                ((myChar == 'X') && (isAConsumerII(tmpPos)))) {
+                    ((myChar == 'X') && (isAConsumerII(tmpPos)))) {
                 Creature* otherCreature;
                 otherCreature = (Creature*) mp->getMapItem(tmpPos)->monster;
                 // only take ready for pregnant creatures
@@ -430,34 +393,44 @@ bool World::findMatingPartner(Creature* _c, Coordinate* _newpos) {
 }
 
 
+// return 0 = reproduce
+// return 1 = i can eat that
+// return -1 = i can walk
+// return -2 = nothing to do 
+int World::interact(Creature* _a, Coordinate testpos) {
 
-// return 2 = i can walk and eat
-// return 1 = i can walk
-// return 0 = stay
-int World::interact(Creature* _c, Coordinate _newpos) {
+    char char_a = _a->getCellChar();
+    char char_b;
+    Coordinate mypos = _a->getPos();
 
+    // i can not interact with myself
+    if ((testpos.x == mypos.x) && (testpos.y == mypos.y)) {
+        exit_error(10);
+    }
 
-	// i can not interact with myself
-	if (isEqualCoordinates(_newpos, _c->getPos())) {
-		return 0;
-	}
+    if (cell_is_empty(testpos)) {
+        char_b = ' ';
+    } else {
+        char_b = mp->getMapItem(testpos)->monster->getCellChar();
+    }
 
-	// if is empty  =>  jump 
-	// i can walk there
-	if (cell_is_empty(_newpos)) {
-		return 1;
-	}
-
-	// cell not empty => if food jump
-	if (cellIsFood(_c,_newpos)) {
-		return 2;
-	}
-	// cell not empty and i can not eat that
-	// stay where you are
-	// TODO
-	// better would be => find the best place new this position (A*)
-	return 0;
-    
+    switch (char_a) {
+        case 'c':
+            if (char_b == 'c') return 0;        // i can reproduce
+            if (char_b == 'v') return 1;        // i can eat that
+            if (char_b == 'X') return -2;       // i can not do anything
+            return -1;                          // i can walk, cell is empty
+        case 'X':
+            if (char_b == 'X') return 0;        // i can reproduce
+            if (char_b == 'c') return 1;        // i can eat that
+            if (char_b == 'v') return -2;       // i can not do anything
+            return -1;                          // i can walk, cell is empty
+        default:
+            // this should never happen 
+            exit_error(5);
+            return -3;
+            break;
+    }
 }
 
 
@@ -485,29 +458,25 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 }
 /**
  * @param smellingCreature the creature which smells something
- * @param newpos Coordinate
+ * @param plusXY Coordinate
  * @return true if the smellingCreature smells something.
- *         new position in _newPos
+ *         deltaValue for movement in plusXY
  */
 bool World::smellAndGetBestDestination(
-            Creature* smellingCreature, Coordinate* _newPos) {
+        Creature* smellingCreature, Coordinate* plusXY) {
 
-	Coordinate bestDeltaDestination;
-	Coordinate bestDestination;
-	Coordinate oldCoordinate = smellingCreature->getPos();
-	Coordinate c;
-	bool cellempty;
-	bool cellContainsFood;
+    Coordinate bestDeltaDestination;
+    Coordinate bestDestination;
+    Coordinate oldCoordinate = smellingCreature->getPos();
+    Coordinate c;
+    int speed = smellingCreature->getSpeed();
+    int FE = 0, PE = 0, STE = 0;
+    double score;
 
-	int speed = smellingCreature->getSpeed();
-	int FE=0, PE=0, STE=0;
-	double score;
-	
-	double bestScore = -DBL_MAX;
-	bool smellSomeThing = false;
+    double bestScore = DBL_MIN;
+    bool smellSomeThing = false;
 
-
-    // the range of smell detection of the current creature
+    //the range of smell detection of the current creature
     int range = smellingCreature->getRangeOfSmellDetection();
 
     // the values for the computation of the index 
@@ -516,31 +485,27 @@ bool World::smellAndGetBestDestination(
     int MTWF = (*smellingCreature).getMaxTimeWithoutFood();
 
 
-    // Go through all fields that the current creature is able to detect.
+    //Go through all fields that the current creature is able to detect.
     for (c.x = oldCoordinate.x - range; c.x <= oldCoordinate.x + range; c.x++) {
         for (c.y = oldCoordinate.y - range; c.y <= oldCoordinate.y + range; c.y++) {
 
             Coordinate coord = normCoordinateToWorld(c);
 
-			// Compute food, predator, same type emission depending on type of
-			// smellingCreature.
-			if (isAConsumerI(smellingCreature)){
-        		FE  = mp->getMapItem(coord)->vEmission;		// food emission
-        		PE  = mp->getMapItem(coord)->c2Emission;	// predator emission
-        		STE = mp->getMapItem(coord)->c1Emission;	// same type emission
-        	} else {
-				FE = mp->getMapItem(coord)->c1Emission;		// food emission
-        		PE  = 0;									// predator emission
-        		STE = mp->getMapItem(coord)->c2Emission;	// same type emission
-        	}
-			cellContainsFood = cellIsFood(smellingCreature,coord);
-			cellempty = cell_is_empty(coord);
-			// bool isPregnant = smellingCreature->isPregnant();
+            // Compute food, predator, same type emission depending on type of
+            // smellingCreature.
+            if (isAConsumerI(smellingCreature)) {
+                FE = mp->getMapItem(coord)->vEmission;  // food emission
+                PE = mp->getMapItem(coord)->c2Emission; // predator emission
+                STE = mp->getMapItem(coord)->c1Emission;// same type emission
+            } else {
+                FE = mp->getMapItem(coord)->c1Emission; // food emission
+                PE = 0;                                 // predator emission
+                STE = mp->getMapItem(coord)->c2Emission;// same type emission
+            }
 
             // compute score
             // score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
-
-			score = computeScore(FE, TWF, MTWF, STE, PE, cellempty, cellContainsFood);
+            score = computeScore(FE, TWF, MTWF, STE, PE);
 
             // if one of the emissions is <>0 for only one cell 
             // the creature smells something
@@ -556,8 +521,6 @@ bool World::smellAndGetBestDestination(
             }
         }
     }
-
-
     // DeltaDestination must be in the range [-speed,speed]
     // oldCoordinate +- Speed 
     // delta  = getRandomNumber(-Speed,Speed)
@@ -565,57 +528,30 @@ bool World::smellAndGetBestDestination(
     if (!smellSomeThing) {
         bestDeltaDestination.x = getRandomNumber(-speed, speed);
         bestDeltaDestination.y = getRandomNumber(-speed, speed);
-	}
-	else {
-		// calculate delta to best destination
-		bestDeltaDestination = subCoordinates(bestDestination, oldCoordinate);
-		// max allowed range = +-speed
-		bestDeltaDestination.x =
-			sign(bestDeltaDestination.x) * MIN(abs(bestDeltaDestination.x), speed);
-		bestDeltaDestination.y =
-			sign(bestDeltaDestination.y) * MIN(abs(bestDeltaDestination.y), speed);
-	}
-	*_newPos = addCoordinates(oldCoordinate, bestDeltaDestination);
-	*_newPos = normCoordinateToWorld(*_newPos);
-	
-	return (smellSomeThing);
+        *plusXY = bestDeltaDestination;
+        return (false);
+    }
+
+    // calculate delta to best destination
+    bestDeltaDestination = subCoordinates(bestDestination, oldCoordinate);
+    // max allowed range = +-speed
+    bestDeltaDestination.x =
+            sign(bestDeltaDestination.x) * MIN(abs(bestDeltaDestination.x), speed);
+    bestDeltaDestination.y =
+            sign(bestDeltaDestination.y) * MIN(abs(bestDeltaDestination.y), speed);
+
+    // bestDeltaDestination.x = sign((bestDestination.x - oldCoordinate.x));
+    // bestDeltaDestination.y = sign((bestDestination.y - oldCoordinate.y));
+
+    *plusXY = bestDeltaDestination;
+
+    return (smellSomeThing);
 }
 
-
-
-
 // Computes the score.
-double World::computeScore(double FE, double TWF, double MTWF, double STE, double PE,
-							bool _cellIsEmpty, bool _containsFood) {
+double World::computeScore(double FE, double TWF, double MTWF, double STE, double PE) {
 	double score;
-	double score_hungry;
-	double score_walk;
-	double hungry = (TWF / MTWF);
-
-	// a creature can only go to a cell that is
-	// ether empty or contains food
-	// so all other cells should have a score of -DBL_MAX
-	if (!_cellIsEmpty && !_containsFood) {
-//		return (-DBL_MAX);
-	}
-
-
-	score_hungry = hungry * FE;
-	score_walk = (1.0 - hungry) * (STE - PE*4);
-
-
-	// if creature is very hungry => boost score_hungry
-	// places with food are better than empty places
-	if (hungry > 0.75) {
-		if (_containsFood) score_hungry *= 2.0;
-	}
-	// not hungry at the moment 
-	if (hungry < 0.25) {
-		if (_cellIsEmpty) score_walk *= 2.0;
-		score_hungry = 0;
-	}
-
-	score = score_hungry + score_walk;
+	score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
 	return score;
 }
 
@@ -775,7 +711,7 @@ bool World::isAVegetal(Coordinate _pos){
  *	8	[char*]	path to consumer2.txt
  */
 int main(int _anzParam, char *strings[]) {
-	
+
     int height;
     int width;
     int maxNumberOfSteps;
@@ -797,7 +733,7 @@ int main(int _anzParam, char *strings[]) {
     numberVegetal = numberConsumer1 * 2; // something to eat for consumer1
 
     //check whether integer values are correct (greater than 0)
-    if (maxNumberOfSteps < -1 || height <= 0 || width <= 0 ||
+    if (maxNumberOfSteps <= 0 || height <= 0 || width <= 0 ||
             numberConsumer1 < 0 || numberConsumer2 < 0) {
         exit_error(8);
     }
