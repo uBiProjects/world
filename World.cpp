@@ -809,7 +809,7 @@ int main(int _anzParam, char *strings[]) {
     Values::setInstance(strings[6], strings[7], strings[8]);
 
     // always clear the screen at the beginning
-    clear_screen();
+    clear_screen(true);
 
 #ifdef WINDOWS
 #ifdef DEBUG
