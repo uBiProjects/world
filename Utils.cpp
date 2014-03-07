@@ -30,7 +30,7 @@
 	#include <unistd.h>
 	#include <stdlib.h>
 	#include <stdio_ext.h>
-	#define CLRSCR system("clear")
+	#define CLRSCR std::cout << "\033[0;0H"
     #define FLUSH_KEYBOARD __fpurge(stdin)
     #define SLEEP usleep(milliseconds * 1000)
 #endif
