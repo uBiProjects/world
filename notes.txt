@@ -1,10 +1,12 @@
-Wenn 2. Par größer als 1. bei Dimension, gibt es Segmentation fault.
+﻿Wenn 2. Par größer als 1. bei Dimension, gibt es Segmentation fault.
 Bei 1. größer 2. gibt es am ende das Problem, was ganz unten steht.
 
 
 http://www.gnu.org/software/libc/manual/index.html#dir
 
 http://www.cplusplus.com/
+
+./World 20 20 -1 25 7 => 1.774.124 Steps
 
 
 Gute Startbedingungen:

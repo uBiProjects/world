@@ -24,8 +24,8 @@
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <windows.system.h>
-    #define CLRSCR system("cls");
-	#define TOPLEFT_CURSOR System::Console::SetCursorPosition(0, 0);
+    #define CLRSCR system("cls")
+	#define TOPLEFT_CURSOR System::Console::SetCursorPosition(0, 0)
 	#define FLUSH_KEYBOARD fflush(stdin)
 	#define SLEEP  Sleep(milliseconds)													
 // Linux:
@@ -172,8 +172,7 @@ void wait_for_keypressed() {
 
 // clears the screen
 void clear_screen(bool cls) {
-	if (cls)
-        CLRSCR;
+	if (cls) CLRSCR;
 	TOPLEFT_CURSOR;
 }
 

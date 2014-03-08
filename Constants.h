@@ -11,22 +11,22 @@
 
 
 // debugging
-#define TESTSCORE		// no random init							(comment out for normal run)
+// #define TESTSCORE	// no random init							(comment out for normal run)
 // #define DEBUG		// shows debug info							(comment out for normal run)
 // #define DEBUG1		// updates the screen afer every creature	(comment out for normal run)
 // #define DEBUG2		// print steps								(comment out/include for normal run)
 // #define TESTFREE		// calls the testfree routine				(comment out for normal run)
 #define CLEAR_SCREEN	// clears the scree after each round		(include     for normal run)
 #define FASTRUN			// no sleep after after a step				(comment out/include for normal run)
-// #define SUPERFAST		// no sleep and do not show map             (comment out/include for normal run)
+#define SUPERFAST		// no sleep and do not show map             (comment out/include for normal run)
 
 #define WAIT_MS			500		// milisec to wait if FASTRUN is not defined
 
 
 // only activate one of the following lines
-#define CELLSIZE 1		// 1 life form every 2. print position and no space lines
-// #define CELLSIZE 2		// 1 life form every 3. print position and one space lines
-// #define CELLSIZE 3		// 1 life form every 4. print position and one space lines
+#define CELLSIZE		1		// 1 life form every 2. print position and no space lines
+// #define CELLSIZE		2		// 1 life form every 3. print position and one space lines
+// #define CELLSIZE		3		// 1 life form every 4. print position and one space lines
 
 
 
