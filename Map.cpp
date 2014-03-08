@@ -3,6 +3,7 @@
  */
 #include <iostream>
 #include <sstream>
+#include <limits>
 #include <stdlib.h>
 #include <string>
 #include <stdio.h>		//printf
@@ -26,6 +27,13 @@
  * initializes the array
  */
 Map::Map(int _width, int _height) {
+
+	max_C1 = INT_MIN;
+	max_C2 = INT_MIN;
+	max_V = INT_MIN;
+	min_C1 = INT_MAX;
+	min_C2 = INT_MAX;
+	min_V = INT_MAX;
 
     //save width and height
     width = _width;
