@@ -1,7 +1,9 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include <Limits.h>
 #include "Constants.h"
+
 
 class Map {
 
