@@ -3,7 +3,7 @@
  */
 #include <iostream>
 #include <sstream>
-#include <limits>
+#include <limits.h>
 #include <stdlib.h>
 #include <string>
 #include <stdio.h>		//printf
