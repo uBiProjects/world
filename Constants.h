@@ -65,8 +65,13 @@
 #define C2_CHAR			'X'		// char for Consumer2 
 #define C2_CHAR_P		'H'		// char for Consumer2 if pregnant
 #define VE_CHAR			'v'		// char for Vegetal
+#define C1_STR			"c"		// char for Consumer1 
+#define C1_STR_P		"p"		// char for Consumer1 if pregnant
+#define C2_STR			"X"		// char for Consumer2 
+#define C2_STR_P		"H"		// char for Consumer2 if pregnant
+#define VE_STR			"v"		// char for Vegetal
 
-
+#define XSTR(arg)		STR_VALUE(arg)
 #define STR_VALUE(arg)	#arg
 
 #ifdef WINDOWS
@@ -82,11 +87,11 @@
 	#define ESC_GREEN "\033[1;32m"
 	#define ESC_RESET "\033[0m"
 
-	#define C1_PRINT_P  ESC_BLUE  STR_VALUE(C1_CHAR_P) ESC_RESET
-	#define C1_PRINT_N  ESC_BLUE  STR_VALUE(C1_CHAR)   ESC_RESET
-	#define C2_PRINT_P  ESC_RED   STR_VALUE(C2_CHAR_P) ESC_RESET
-	#define C2_PRINT_N  ESC_RED   STR_VALUE(C2_CHAR)   ESC_RESET
-	#define VE_PRINT	ESC_GREEN STR_VALUE(VE_CHAR)   ESC_RESET
+#define C1_PRINT_P  ESC_BLUE  C1_STR_P ESC_RESET
+#define C1_PRINT_N  ESC_BLUE  C1_STR   ESC_RESET
+#define C2_PRINT_P  ESC_RED   C2_STR_P ESC_RESET
+#define C2_PRINT_N  ESC_RED   C2_STR   ESC_RESET
+#define VE_PRINT	ESC_GREEN VE_STR   ESC_RESET
 #endif
 
 #endif
