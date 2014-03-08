@@ -1,7 +1,6 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <limits.h>
 #include "Constants.h"
 
 
@@ -37,12 +36,12 @@ class Map {
 #endif
 
 	private :
-		int max_C1 = INT_MIN;
-		int max_C2 = INT_MIN;
-		int max_V = INT_MIN;
-		int min_C1 = INT_MAX;
-		int min_C2 = INT_MAX;
-		int min_V = INT_MAX;
+		int max_C1;
+		int max_C2;
+		int max_V;
+		int min_C1;
+		int min_C2;
+		int min_V;
 		unsigned int width, height;
 		std::string firstLinesToPrint;
 		std::string spaceLinesToPrint;
