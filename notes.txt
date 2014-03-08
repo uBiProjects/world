@@ -7,6 +7,11 @@ http://www.gnu.org/software/libc/manual/index.html#dir
 http://www.cplusplus.com/
 
 
+ca 5*Felder/100 =>c1
+ca 1/3*c1       =>c2
+./World 35 80 -1 140 45 Vegetal.txt Consumer1.txt Consumer2.txt
+
+
 Gute Startbedingungen:
 68756 Steps
 

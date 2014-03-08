@@ -18,7 +18,7 @@
 // #define TESTFREE		// calls the testfree routine				(comment out for normal run)
 #define CLEAR_SCREEN	// clears the scree after each round		(include     for normal run)
 #define FASTRUN			// no sleep after after a step				(comment out/include for normal run)
-// #define SUPERFAST		// no sleep and do not show map             (comment out/include for normal run)
+//#define SUPERFAST		// no sleep and do not show map             (comment out/include for normal run)
 
 #define WAIT_MS			500		// milisec to wait if FASTRUN is not defined
 
