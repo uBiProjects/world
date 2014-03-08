@@ -370,7 +370,7 @@ void Map::print() {
 
 
 
-#if DEBUG
+#ifdef DEBUG
 
 /**
 * print the current map.

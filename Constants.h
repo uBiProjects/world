@@ -10,7 +10,7 @@
 #endif
 
 
-// debugging
+// debugging definitions
 // #define TESTSCORE	// no random init							(comment out for normal run)
 // #define DEBUG		// shows debug info							(comment out for normal run)
 // #define DEBUG1		// updates the screen afer every creature	(comment out for normal run)
@@ -18,7 +18,7 @@
 // #define TESTFREE		// calls the testfree routine				(comment out for normal run)
 #define CLEAR_SCREEN	// clears the scree after each round		(include     for normal run)
 #define FASTRUN			// no sleep after after a step				(comment out/include for normal run)
-#define SUPERFAST		// no sleep and do not show map             (comment out/include for normal run)
+//#define SUPERFAST		// no sleep and do not show map             (comment out/include for normal run)
 
 #define WAIT_MS			500		// milisec to wait if FASTRUN is not defined
 
@@ -74,6 +74,11 @@
 #define XSTR(arg)		STR_VALUE(arg)
 #define STR_VALUE(arg)	#arg
 
+#define ESC_BLUE  "\033[1;34m"
+#define ESC_RED	  "\033[1;31m"
+#define ESC_GREEN "\033[1;32m"
+#define ESC_RESET "\033[0m"
+
 #ifdef WINDOWS
 	
 	#define C1_PRINT_P	C1_CHAR_P;
@@ -82,11 +87,7 @@
 	#define C2_PRINT_N	C2_CHAR;
 	#define VE_PRINT	VE_CHAR;
 #else
-	#define ESC_BLUE  "\033[1;34m"
-	#define ESC_RED	  "\033[1;31m"
-	#define ESC_GREEN "\033[1;32m"
-	#define ESC_RESET "\033[0m"
-
+	
 #define C1_PRINT_P  ESC_BLUE  C1_STR_P ESC_RESET
 #define C1_PRINT_N  ESC_BLUE  C1_STR   ESC_RESET
 #define C2_PRINT_P  ESC_RED   C2_STR_P ESC_RESET
