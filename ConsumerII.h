@@ -1,6 +1,7 @@
 #ifndef ConsumerII_H
 #define ConsumerII_H
 
+#include "Constants.h"
 
 class ConsumerII : public Creature {
 
@@ -9,7 +10,7 @@ class ConsumerII : public Creature {
 		
 		ConsumerII(Coordinate);
 		virtual ~ConsumerII();
-		static const char cell_char = 'X';
+		static const char cell_char = C2_CHAR;
 };
 
 #endif

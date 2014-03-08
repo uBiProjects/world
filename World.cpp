@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <fstream>      //for checking whether file does not exist (in method main).
 
+#include "Constants.h"
 #include "Utils.h"
 #include "Life.h"
 #include "MapItem.h"
@@ -29,8 +30,8 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
     wwidth = _width;
     wheight = _height;
 
-    //tell random to generate random numbers
 #ifndef TESTSCORE
+	//tell random to generate random numbers
     srand((unsigned) time(NULL));
 #endif
 
@@ -44,7 +45,7 @@ World::World(int _width, int _height, int nC1, int nC2, int mstep, int nV) {
     initializeCreature(nC1, nC2, nV);
 
     // print fist screen
-    mp->print(false);
+    mp->print();
 
     // start life of creatures.
     run(nV);
@@ -56,6 +57,8 @@ World::~World() {
 	delete (mp);
 	delete (Values::getInstance());
 }
+
+
 
 /**
  * Initialize the creatures.
@@ -90,6 +93,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
     return true;
 }
 
+
 #ifdef TESTFREE
 	// debug routine to test if the values are correct
 	int World::testfree() {
@@ -109,6 +113,7 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 	return testam;
 	}
 #endif
+
 
 // Returns the coordinates of a random, free position.
 
@@ -154,15 +159,16 @@ Coordinate World::getRandomFreePosition() {
 void World::run(int fixedNumberOfVegetal) {
     Coordinate c;
 
+	// if simulation starts with -1 maxsteps = run forever
     for (int step = 0; step < maxsteps || maxsteps == -1; step++) {
-        
+    
+		// one step
         performOneStep(step);
+
 
 #ifdef TESTFREE
         testfree();
 #endif
-      
-
 
         // amount of Vegetal is fixed
         int acutalVegetal = mp->getnumberOfVegetal();
@@ -176,7 +182,7 @@ void World::run(int fixedNumberOfVegetal) {
             }
         }
 		// update the map and number of Vegetal
-		mp->print(false);
+		mp->print();
 
 		
 
@@ -184,8 +190,9 @@ void World::run(int fixedNumberOfVegetal) {
 		if (mp->getnumberOfCI() == 0 || mp->getnumberOfCII() == 0) {
 			return;
 		}
-	}
-}
+	} // for
+} 
+
 
 // create a new Vegetal at the position _c
 // return true on success
@@ -238,6 +245,7 @@ void World::setAllConsumersWalkableAndInteractable() {
         }
     }
 }
+
 
 // converts a Coordinate to a valid Coordinate inside
 // the world
@@ -388,8 +396,8 @@ bool World::findFood(Creature* _c, Coordinate* _newpos) {
 bool World::cellIsFood(Creature* _c, Coordinate _newPos) {
 	char myChar = _c->getCellChar();
 	switch (myChar) {
-		case 'c': return (isAVegetal(_newPos));
-		case 'X': return (isAConsumerI(_newPos));
+		case C1_CHAR: return (isAVegetal(_newPos));
+		case C2_CHAR: return (isAConsumerI(_newPos));
 	}
 	return false;
 }
@@ -412,8 +420,8 @@ bool World::findMatingPartner(Creature* _c, Coordinate* _newpos) {
             tmpPos = addCoordinates(myPos, c);
             tmpPos = normCoordinateToWorld(tmpPos);
             // only scan creatures
-            if (((myChar == 'c') && (isAConsumerI(tmpPos))) ||
-                ((myChar == 'X') && (isAConsumerII(tmpPos)))) {
+			if (((myChar == C1_CHAR) && (isAConsumerI(tmpPos))) ||
+				((myChar == C2_CHAR) && (isAConsumerII(tmpPos)))) {
                 Creature* otherCreature;
                 otherCreature = (Creature*) mp->getMapItem(tmpPos)->monster;
                 // only take ready for pregnant creatures
@@ -452,8 +460,6 @@ int World::interact(Creature* _c, Coordinate _newpos) {
 	}
 	// cell not empty and i can not eat that
 	// stay where you are
-	// TODO
-	// better would be => find the best place new this position (A*)
 	return 0;
     
 }
@@ -481,6 +487,8 @@ void World::impregnate(Creature* _c1, Creature* _c2) {
 #endif
     }
 }
+
+
 /**
  * @param smellingCreature the creature which smells something
  * @param newpos Coordinate
@@ -531,16 +539,15 @@ bool World::smellAndGetBestDestination(
         		PE  = 0;									// predator emission
         		STE = mp->getMapItem(coord)->c2Emission;	// same type emission
         	}
+
+
 			cellContainsFood = cellIsFood(smellingCreature,coord);
 			cellempty = cell_is_empty(coord);
-			// bool isPregnant = smellingCreature->isPregnant();
-
             // compute score
-            // score = FE * (TWF / MTWF) + (STE - PE) * ((MTWF - TWF) / MTWF);
-
 			score = computeScore(FE, TWF, MTWF, STE, PE, cellempty, cellContainsFood);
 
-            // if one of the emissions is <>0 for only one cell 
+
+			// if one of the emissions is <>0 for only one cell 
             // the creature smells something
             if ((FE != 0) || (STE != 0) || (PE != 0)) {
                 smellSomeThing = true;
@@ -599,18 +606,18 @@ double World::computeScore(double FE, double TWF, double MTWF, double STE, doubl
 
 
 	score_hungry = hungry * FE;
-	score_walk = (1.0 - hungry) * (STE - PE*4.0);
+	score_walk = (1.0 - hungry) * (STE - PE * PREDATOR_MUL);
 
 
 	// if creature is very hungry => boost score_hungry
 	// places with food are better than empty places
-	if (hungry > 0.75) {
-		if (_containsFood) score_hungry *= 2.0;
+	if (hungry > HUNGRY_PERCENT) {
+		if (_containsFood) score_hungry *= FOOD_MUL;
 	}
 	// not hungry at the moment 
-	if (hungry < 0.25) {
-		if (_cellIsEmpty) score_walk *= 2.0;
-		score_hungry = 0;
+	if (hungry < GORGED_PERCENT) {
+		if (_cellIsEmpty) score_walk *= WALK_MUL;
+		score_hungry *= NOT_HUNGRY_MUL;
 	}
 
 	score = score_hungry + score_walk;
@@ -656,7 +663,7 @@ void World::giveBirthToABaby(Creature* d) {
     int TWF = (*d).getTimeWithoutFood();
     int MTWF = (*d).getMaxTimeWithoutFood();
 
-    int childTWF = (MTWF + TWF) / 2;
+	int childTWF = (MTWF + TWF) / CHILD_FOOD;
 
     // find a place for the baby
     childPos = getAFreePositionAroundme(myPos);
@@ -678,6 +685,8 @@ void World::giveBirthToABaby(Creature* d) {
 #endif
     }
 }
+
+
 /**
  * Tests if a creature reaches its maximum LifeTime
  * or starves due to lack of food.
@@ -740,7 +749,7 @@ bool World::isAConsumerI(Coordinate _pos){
 // Check if a life is a ConsumerI.
 bool World::isAConsumerI(Life* _life){
 	if (_life == NULL) return false;
-	return _life->getCellChar() == 'c';
+	return _life->getCellChar() == C1_CHAR;
 }
 
 // Check if there is a ConsumerII on a certain coordinate.
@@ -752,13 +761,13 @@ bool World::isAConsumerII(Coordinate _pos){
 // Check if a life is a ConsumerII.
 bool World::isAConsumerII(Life* _life){
 	if (_life == NULL) return false;
-	return _life->getCellChar() == 'X';
+	return _life->getCellChar() == C2_CHAR;
 }
 
 // Check if there is a Vegetal on a certain coordinate.
 bool World::isAVegetal(Coordinate _pos){
 	if (cell_is_empty(_pos)) return false;
-	return mp->getMapItem(_pos)->monster->getCellChar() == 'v';
+	return mp->getMapItem(_pos)->monster->getCellChar() == VE_CHAR;
 }
 
 /* MAIN METHOD

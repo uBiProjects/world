@@ -11,11 +11,11 @@ class MapItem {
 		int c2Emission;
 		Life* monster;
 		
+		bool cell_empty();
+
 		MapItem();
 		~MapItem();
 		
-			
-
 
 };
 

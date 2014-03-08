@@ -3,8 +3,6 @@
 
 #include "Utils.h"
 
-#include "Utils.h"
-
 class Life{
 
 	protected:

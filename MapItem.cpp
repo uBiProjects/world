@@ -17,6 +17,11 @@ MapItem::MapItem() {
 
 }
 
+// is cell empty
+bool MapItem::cell_empty() {
+	return (monster == NULL);
+}
+
 // Destructor
 
 MapItem::~MapItem() {

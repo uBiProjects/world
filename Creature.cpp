@@ -1,9 +1,7 @@
 /*
  * Creature inherits from Life.
  */
-#include <iostream>
-#include <typeinfo>
-
+#include "Constants.h"
 #include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
@@ -21,19 +19,18 @@ Creature::Creature(Coordinate _pos,
         int _maxTimeWithoutFood,        //max time w/o food
         char _char,                     //char used for display
         int _currentLifeTime,           //life time
-        //max pregnant time
-        int _maxPregnantTime) : Life(_pos, _currentLifeTime, _smellEmission, _maxLifeTime, _char) {
+        int _maxPregnantTime):			//max pregnant time
+		Life(_pos, _currentLifeTime, _smellEmission, _maxLifeTime, _char) {
 
     //Sets values
-    timeWithoutFood = 0;
-    maxTimeWithoutFood = _maxTimeWithoutFood;
-    rangeOfSmellDetection = _smellDetection;
-    speed = _speed;
-    maxPregnantTime = _maxPregnantTime;
-    pregnantTime = maxPregnantTime + 1;
-	speedPregnant = 3 * _speed / 4;
-	// speedPregnant = _speed;
-	speedNormal = _speed;
+	timeWithoutFood			= TWF_NEW;
+    maxTimeWithoutFood		= _maxTimeWithoutFood;
+    rangeOfSmellDetection	= _smellDetection;
+    speed					= _speed;
+    maxPregnantTime			= _maxPregnantTime;
+    pregnantTime			= maxPregnantTime + 1;
+	speedPregnant			= SPEED_MUL_P * _speed / SPEED_DIV_P;
+	speedNormal				= _speed;
 }
 
 /* Destructor
@@ -114,14 +111,14 @@ bool Creature::isReadyForPregnant() {
 	// to become pregnant the creature
 	// 1. must be old enough
 	// 2. not pregnant
-	bool oldEnough = currentLifeTime > (maxLifeTime / 4);
+	bool oldEnough = currentLifeTime > (maxLifeTime / AGE_DIV_P);
     return (pregnantTime > maxPregnantTime) && oldEnough;
 }
 
 // returns true if time without food > 0.5 * max time without food
 bool Creature::isHungry() {
 	// TWF/MTWF > MTWF-TWF/MTWF
-	return  (2 * timeWithoutFood > maxTimeWithoutFood);
+	return  (HUNGRY_MUL * timeWithoutFood > maxTimeWithoutFood);
 	
 }
 
@@ -141,9 +138,9 @@ bool Creature::incrementPregnantTime() {
     return false; // no child this time
 }
 
-/* Changes a creature's position
- */
-void Creature::changePosition(int _plusX, int _plusY) {
-    setX(getX() + _plusX);
-    setY(getY() + _plusY);
-}
+///* Changes a creature's position
+// */
+//void Creature::changePosition(int _plusX, int _plusY) {
+//    setX(getX() + _plusX);
+//    setY(getY() + _plusY);
+//}

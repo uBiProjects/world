@@ -2,19 +2,13 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <string>
+
+#include "Constants.h"
 
 
-#define TESTSCORE		// no random init							(comment out for normal run)
-// #define DEBUG		// shows debug info							(comment out for normal run)
-// #define DEBUG1		// updates the screen afer every creature	(comment out for normal run)
-// #define DEBUG2		// print steps								(comment out/include for normal run)
-// #define TESTFREE		// calls the testfree routine				(comment out for normal run)
-#define FASTRUN       // wait only 5 millisecons after a step     (comment out for normal run)
-#define CLEAR_SCREEN	// clears the scree after each round		(include     for normal run)
-
-// check os system
-#if (defined _WIN32) || (defined _WIN64)
-	#define	WINDOWS
+// detect memory leaks for windows
+#if defined WINDOWS
 	#define _CRTDBG_MAP_ALLOC
 	#include <crtdbg.h>  // detect memory leaks
 	#ifdef _DEBUG   
@@ -22,10 +16,11 @@
 			#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )      
 			#define new DBG_NEW   
 		#endif
-	#endif  // _DEBUG
+	#endif  
 #else
 	#define	LINUX
 #endif
+
 
 // a min/max template
 #define MAX(a,b) (((a)>(b))?(a):(b))
@@ -57,5 +52,5 @@
 	bool isEqualCoordinates(Coordinate, Coordinate);		// compare if 2 coordinates are equal
 	int getggT(int, int);									// compute greates common divisor of 2 ints
 	int getkgV(int, int);									// compute least common multiple of 2 ints
-
+	std::string convertInt(int _number, int _size);			// convert an integer to a string of a given size
 #endif /* UTILS_H_ */

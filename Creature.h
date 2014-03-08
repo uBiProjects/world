@@ -48,7 +48,7 @@ public:
 //	void setMaxLifeTime(int);
 	void setPregnant(bool);
 	
-	void changePosition(int, int);
+//	void changePosition(int, int);
 	
 	void computeNewCoordinates(int, int);
 	void checkWeatherFoodFound();

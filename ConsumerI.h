@@ -1,6 +1,7 @@
 #ifndef ConsumerI_H
 #define ConsumerI_H
 
+#include "Constants.h"
 
 class ConsumerI : public Creature {
 	
@@ -9,7 +10,7 @@ class ConsumerI : public Creature {
 		
 		ConsumerI(Coordinate);
 		virtual ~ConsumerI();
-		static const char cell_char = 'c';
+		static const char cell_char = C1_CHAR;
 		static void setSource(char*);
 		static char* getSource();
 		

@@ -1,8 +1,7 @@
 /* 
  * Consumer I inherits from Creature.
  */
-#include <iostream>
-#include "stdlib.h"
+#include "Constants.h"
 #include "Utils.h"
 #include "Life.h"
 #include "Creature.h"
@@ -11,21 +10,21 @@
 
 /* Constructor
  */
-ConsumerI::ConsumerI(Coordinate _pos) : Creature(_pos,
-(int) Values::getInstance()->getCIMaxLifeTime(),        //max life time
-(int) Values::getInstance()->getCISmellEmission(),      //smell emission
-(int) Values::getInstance()->getCISmellDetection(),     //smell detection
-(int) Values::getInstance()->getCISpeed(),              //speed
-(int) Values::getInstance()->getCIMaxTimeWithoutFood(), //max time w/o food
-(char) cell_char,                                       //char used for display
-Values::getInstance()->getCILifeTime(),                 //life time
-(int) (Values::getInstance()->getCIMaxLifeTime() / 5)) {//max pregnant time                                  
+ConsumerI::ConsumerI(Coordinate _pos) : 
+			Creature(_pos,
+					(int) Values::getInstance()->getCIMaxLifeTime(),				//max life time
+					(int) Values::getInstance()->getCISmellEmission(),				//smell emission
+					(int) Values::getInstance()->getCISmellDetection(),				//smell detection
+					(int) Values::getInstance()->getCISpeed(),						//speed
+					(int) Values::getInstance()->getCIMaxTimeWithoutFood(),			//max time w/o food
+					(char) cell_char,												//char used for display
+					Values::getInstance()->getCILifeTime(),							//life time
+					(int)(Values::getInstance()->getCIMaxLifeTime() / C1_P_DIV)){	//max pregnant time
 }
 
 
 /* Destructor
  */
 ConsumerI:: ~ConsumerI(){
-
 }
 

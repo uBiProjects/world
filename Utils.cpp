@@ -6,12 +6,14 @@
  */
 
 #include <stdio.h>
+#include <string>
+#include <sstream>
 #include <iostream>
 #include <errno.h>		//for getting error number in method is_file
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fstream>
-#include <string>
+
 
 // program includes
 #include "Utils.h"
@@ -22,7 +24,7 @@
 #ifdef WINDOWS
 	#include <windows.h>
 	#include <windows.system.h>
-    #define CLRSCR System::Console::SetCursorPosition(0, 0);
+    #define CLRSCR system("cls");
 	#define TOPLEFT_CURSOR System::Console::SetCursorPosition(0, 0);
 	#define FLUSH_KEYBOARD fflush(stdin)
 	#define SLEEP  Sleep(milliseconds)													
@@ -31,8 +33,8 @@
 	#include <unistd.h>
 	#include <stdlib.h>
 	#include <stdio_ext.h>
-	#define TOPLEFT_CURSOR std::cout << "\033[0;0H"
-	#define CLRSCR system("clear")
+	#define TOPLEFT_CURSOR std::cout << "\033[0;0H";
+	#define CLRSCR system("clear");
     #define FLUSH_KEYBOARD __fpurge(stdin)
     #define SLEEP usleep(milliseconds * 1000)
 #endif
@@ -42,7 +44,25 @@ void sleepd(unsigned milliseconds) {
 SLEEP;
 }
 
-	
+
+// CONVERT FUNCTIONS:
+
+/**
+ * int to string
+ */
+std::string convertInt(int _number, int _size) {
+	using namespace std;
+	stringstream ss;	// create a stream
+	switch (_size)	{
+		case 1: _number = modulo(_number, 10); break;
+		case 2: _number = modulo(_number, 100); break;
+		case 3: _number = modulo(_number, 1000); break;
+	}
+	ss.width(_size);
+	ss << _number;
+	return ss.str();
+}
+
 // MATHS FUNCTIONS:
 
 /**
