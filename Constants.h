@@ -37,7 +37,7 @@
 #define TWF_NEW			0       // normal time without food for Creatures
 #define HUNGRY_MUL      2		// a crature returns hungry if TWF*HUNGRY_MUL > MTWF
 								// 2 means => TWF/MTWF > 1/2
-#define PREDATOR_MUL    4.0		// factor to boost the sell emission of an perdator over same type
+#define PREDATOR_MUL    4.0		// factor to boost the smell emission of a perdator over same type
 
 #define HUNGRY_PERCENT  0.75    // above this % a creature is very hungry
 #define FOOD_MUL        2.0     // factor to boost a cell with food if a creature is very hungry => eat,eat,eat

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="89">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="cc">
+      <in>ConsumerI.cpp</in>
+      <in>ConsumerI.h</in>
+      <in>ConsumerII.cpp</in>
+      <in>ConsumerII.h</in>
+      <in>Creature.cpp</in>
+      <in>Creature.h</in>
+      <in>Life.cpp</in>
+      <in>Life.h</in>
+      <in>Map.cpp</in>
+      <in>Map.h</in>
+      <in>Map.s</in>
+      <in>MapItem.cpp</in>
+      <in>MapItem.h</in>
+      <in>Test.cpp</in>
+      <in>Test.h</in>
+      <in>Utils.cpp</in>
+      <in>Utils.h</in>
+      <in>Vegetal.cpp</in>
+      <in>Vegetal.h</in>
+      <in>World.cpp</in>
+      <in>World.h</in>
+      <in>World.s</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <ccTool>
+            <incDir>
+              <pElem></pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="ConsumerI.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="ConsumerI.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ConsumerII.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="ConsumerII.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Creature.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="Creature.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Life.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="Life.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Map.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="Map.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Map.s" ex="false" tool="4" flavor2="0">
+      </item>
+      <item path="MapItem.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="MapItem.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Test.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="Test.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Utils.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="Utils.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Vegetal.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="Vegetal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="World.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="World.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="World.s" ex="false" tool="4" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
