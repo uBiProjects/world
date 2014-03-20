@@ -67,21 +67,8 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
 
     Coordinate c;
 
-    // create nV Vegetals 
-    for (int i = 0; i < nV; i++) {
-        c = getRandomFreePosition();
-        if (!createNewVegetal(c)) {
-            exit_error(2);
-        }
-    }
 
-    // create ConsumerI
-    for (int i = 0; i < nC1; i++) {
-        c = getRandomFreePosition();
-        if (!createNewConsumerI(c, i)) {
-            exit_error(3);
-        }
-    }
+
 
     //create ConsumerII:
     for (int i = 0; i < nC2; i++) {
@@ -90,7 +77,22 @@ bool World::initializeCreature(int nC1, int nC2, int nV) {
             exit_error(4);
         }
     }
-    return true;
+
+	// create ConsumerI
+	for (int i = 0; i < nC1; i++) {
+		c = getRandomFreePosition();
+		if (!createNewConsumerI(c, i)) {
+			exit_error(3);
+		}
+	}
+	// create nV Vegetals 
+	for (int i = 0; i < nV; i++) {
+		c = getRandomFreePosition();
+		if (!createNewVegetal(c)) {
+			exit_error(2);
+		}
+	}
+	return true;
 }
 
 
