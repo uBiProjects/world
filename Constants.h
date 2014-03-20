@@ -55,7 +55,8 @@
 #define SPEED_DIV_P             4               // divisor for speed if crature is pregnant
 // to become pregnant creature must be older than maxLifeTime / AGE_DIV_P)
 #define AGE_DIV_P               4
-
+// factor vegetal consumer1     
+#define VEGETAL_MUL				1.5
 
 
 
@@ -79,7 +80,7 @@
 #define ESC_GREEN "\033[1;32m"
 #define ESC_RESET "\033[0m"
 
-#ifdef WINDOWS1
+#ifdef WINDOWS
 
         #define C1_PRINT_P      C1_CHAR_P
         #define C1_PRINT_N      C1_CHAR

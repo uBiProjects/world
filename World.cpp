@@ -694,10 +694,14 @@ void World::giveBirthToABaby(Creature* d) {
 bool World::creatureMustDie(Creature* d) {
     bool idie = false;
     if ((*d).getTimeWithoutFood() >= (*d).getMaxTimeWithoutFood()) {
+
         idie = true;
+
     }
     if ((*d).getCurrentLifeTime() >= (*d).getMaxLifeTime()) {
+
         idie = true;
+
     }
 #ifdef DEBUG
     if (idie) {
@@ -801,7 +805,7 @@ int main(int _anzParam, char *strings[]) {
     maxNumberOfSteps = atoi(strings[3]);
     numberConsumer1 = atoi(strings[4]);
     numberConsumer2 = atoi(strings[5]);
-    numberVegetal = numberConsumer1 * 2; // something to eat for consumer1
+	numberVegetal = VEGETAL_MUL * numberConsumer1;  // something to eat for consumer1
 
     //check whether integer values are correct (greater than 0)
     if (maxNumberOfSteps < -1 || height <= 0 || width <= 0 ||
