@@ -56,7 +56,7 @@
 // to become pregnant creature must be older than maxLifeTime / AGE_DIV_P)
 #define AGE_DIV_P               4
 // factor vegetal consumer1     
-#define VEGETAL_MUL				1.5
+#define VEGETAL_MUL				1.8
 
 
 
