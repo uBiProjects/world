@@ -318,7 +318,7 @@ void Map::print() {
 							art = C2_PRINT_P;
 						}
 						else {
-							art = C1_PRINT_N;
+							art = C2_PRINT_N;
 						}
 
 						// sum TWF

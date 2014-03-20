@@ -1,3 +1,3 @@
 @echo off
 cls
-Debug\World 10 10 1000 5 10 bla.txt bla.txt bla.txt
+Debug\World 35 50 -1 300 100 Vegetal.txt Consumer1.txt Consumer2.txt
