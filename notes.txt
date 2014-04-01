@@ -1,3 +1,7 @@
+Checkstyle Link: http://deadlock.netbeans.org/hudson/job/sqe/lastStableBuild/artifact/build/full-sqe-updatecenter/updates.xml
+
+
+
 ﻿Wenn 2. Par größer als 1. bei Dimension, gibt es Segmentation fault.
 Bei 1. größer 2. gibt es am ende das Problem, was ganz unten steht.
 
