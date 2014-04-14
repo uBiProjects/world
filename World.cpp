@@ -202,6 +202,12 @@ void World::run(int fixedNumberOfVegetal) {
 
 			return;
 		}
+		if (step%1000==0){
+			  std::ofstream myfile;
+			  myfile.open ("plot.txt");
+			  myfile << "plot([" << mp->plot << "])";
+			  myfile.close();
+		}
 	} // for
 
 			

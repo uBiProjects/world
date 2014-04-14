@@ -2,6 +2,8 @@
 <configurationDescriptor version="89">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="cc">
+      <in>Constants.cpp</in>
+      <in>Constants.h</in>
       <in>ConsumerI.cpp</in>
       <in>ConsumerI.h</in>
       <in>ConsumerII.cpp</in>
@@ -19,6 +21,8 @@
       <in>Test.h</in>
       <in>Utils.cpp</in>
       <in>Utils.h</in>
+      <in>Values.cpp</in>
+      <in>Values.h</in>
       <in>Vegetal.cpp</in>
       <in>Vegetal.h</in>
       <in>World.cpp</in>
