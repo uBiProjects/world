@@ -7,6 +7,7 @@
 class Map {
 
 	public :
+		std::string plot;
 
 		//constructor and destructor
 		Map(int,int);

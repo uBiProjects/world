@@ -21,6 +21,9 @@
 #include "Vegetal.h"
 #include "Values.h"
 
+#include <iostream>
+#include <fstream>
+
 /*
  * Constructor
  */
@@ -190,9 +193,23 @@ void World::run(int fixedNumberOfVegetal) {
 
 		// simulation ends if # of creatures =0
 		if (mp->getnumberOfCI() == 0 || mp->getnumberOfCII() == 0) {
+
+			
+			  std::ofstream myfile;
+			  myfile.open ("plot.txt");
+			  myfile << "plot([" << mp->plot << "])";
+			  myfile.close();
+
 			return;
 		}
 	} // for
+
+			
+			  std::ofstream myfile;
+			  myfile.open ("plot.txt");
+			  myfile << "plot([" << mp->plot << "])";
+			  myfile.close();
+
 } 
 
 

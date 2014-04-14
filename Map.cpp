@@ -21,7 +21,6 @@
 
 
 
-
 /**
  * Constructor:
  * initializes the array
@@ -345,10 +344,17 @@ void Map::print() {
 		
     }
 	// if superfast => do not print map
-#ifndef SUPERFAST
-	std::cout << outstring;
+#ifdef SUPERFAST
+	//std::cout << outstring;
 	outstring = "";
-#endif
+	#endif
+
+
+
+
+	std::ostringstream oss;
+	oss << numberOfCI << "," << numberOfVeg << "," << numberOfCII << ";";
+	plot += oss.str();
 
     
 	max_C1 = MAX(numberOfCI, max_C1);
@@ -366,6 +372,8 @@ void Map::print() {
     else hungry = sumTWFCII * 100 / sumMTWFCII;
     printf("Nr of Consumer2: %4i  hungry:%3i%%  min:%4i  max:%4i\n", numberOfCII, hungry, min_C2,max_C2);
 	printf("Nr of Vegetals:  %4i               min:%4i  max:%4i\n", numberOfVeg, min_V, max_V);
+	
+
 }
 
 
