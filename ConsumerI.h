@@ -14,6 +14,7 @@ class ConsumerI : public Creature {
 		
 	private:
 
+
 };
 
 #endif
